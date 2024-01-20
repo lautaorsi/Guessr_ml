@@ -1,0 +1,95 @@
+<!DOCTYPE html >
+<html lang="es">
+  <head>
+    <script src="https://randojs.com/2.0.0.js"></script>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Gabarito&family=Mukta">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/> 
+    <title>VideoGuessr</title>
+    <script type="text/javascript" src="./leaflet/leaflet.js"></script>
+
+  </head>
+
+  <body>
+    <audio id="cheers">
+        <source src="static/cheer.mp3" type="audio/mp3">
+    </audio>
+    <audio src="static/tic.mp3" id="tic"></audio>
+    <button id="return" onclick="myFunction()" >
+        <i class="fa-solid fa-arrow-left" style="color: #000000;"></i>
+    </button>
+    <div id="pausecontainer">
+        <button id="pausebutton" onclick="pause()">PAUSAR⏸</button>
+        <button id="playbutton" onclick="play()">CONTINUAR▶️</button>
+    </div>
+    <div id="timercontainer">
+        <p id="timer"></p>
+    </div>
+    <div id="roundcontainer">
+        <p id="round">/</p>
+    </div>
+    <div class="open_map">
+        <button id="Open_map" onclick="window.modal.showModal(), invsze(),  map_open()" data-title="Click to guess!"><img src="./static/globe.png" id = "globe"></button>
+        <p id="howto">Aprieta el globo para adivinar!</p>
+    </div>
+    <div class="custom-controls">
+        
+        <button id="rewindButton" onclick="rewindVideo()"><i class="fa-solid fa-backward" style="color: #003aad;"></i> 5s</button>
+        <div id="speedcontainer">
+            <button id="reduceSpeedButton"  style="font-size: large;">x1</button>
+            <input type="range" id="speedrange" min="0.25" max="2" step="0.25"  > 
+        </div>
+        <button id="restartVideo" onclick="restartVideo()">Restart Video</button>
+    </div>
+    <div id="credits_container">
+        <a href="" target="_blank" id="credits"></a>
+    </div>
+    <table width = "200" class="scoretable" id="scoretable">
+        <tr>
+            <th>Puntaje</th>
+                <td id="points">0</td>
+          </tr>
+    </table>
+    <div id="volumecontainer">
+        <i class="fa-solid fa-volume-xmark" style="color: #0057f8;" id="volume_icon"></i>
+        <input type="range" name="volume" id="volumerange" class="volumerange" min="0" max="100" value="30">
+    </div>
+   
+    <div class="video-background">
+        <div class="video-foreground">
+            <div id="myvid" class="ytplayer-nbvz">
+                <iframe src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+        <dialog id="modal">
+                <div id="map"></div>
+                <div id="lowermodal">
+                    <div id="distance">
+                        <h2 id="h2"></h2>
+                    </div>
+                    <button id="close_map" onclick="window.modal.close(),  map_open()">Cerrar</button>
+                    <a href="#" id="guess" class="btn btn-white btn-        animate" onclick="final_guess(true)">Adivinar</a>
+                    <button id = "continue" onclick="next()">Continuar</button>
+                 </div>
+        </dialog>
+        <div id="warning-container">
+            <text id="warning">Clickea el mapa para adivinar!</text>
+            <i class="fa-solid fa-location-dot fa-bounce" id="marker_warning" style="color: #005eff;"></i> 
+        </div>
+</body>
+
+<script>
+    function myFunction(){
+        window.location.href = 'index.html'
+    }
+</script>
+<link rel="stylesheet" href='classic.css'>
+<script type="text/javascript" src="main.js"></script>
+<script src="https://kit.fontawesome.com/493860cbeb.js" crossorigin="anonymous"></script>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+
+</html>
