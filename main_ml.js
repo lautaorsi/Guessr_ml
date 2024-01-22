@@ -501,6 +501,7 @@ socket.on('new_vid', index => {
     roundhtml.innerHTML = `${rounds}/${prround}`
 
     playing = true
+    pausado = false
     
     //end()
     
@@ -733,6 +734,7 @@ function final_guess(c) {
     else{
 
         console.log('pressed guess')
+        pausado = true
         try{
              //if user tried guessing without clicking map show warning
             if (marker_coords[0] == null ||  marker_coords[1] == null){
