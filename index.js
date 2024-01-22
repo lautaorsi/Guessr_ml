@@ -297,10 +297,15 @@ io.on('connection', (socket) => {
 
 
   socket.on('start', () => {
-    var video = rando(video_list.length)
+    if(socket.id == rooms[room]['Players'][0][2]){
+      var video = rando(video_list.length)
     rooms[room]['VIDEOS'] = []
     rooms[room]['VIDEOS'].push(video)
     io.to(room).emit('game start', video)
+    }
+    else{
+      console.log('not host')
+    }
   })
 
   socket.on('user_guessed', (data) => {
