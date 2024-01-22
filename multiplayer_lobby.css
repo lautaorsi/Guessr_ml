@@ -4,14 +4,18 @@ body{
     margin: 0;
 }
 
+#main_lobby{
+  width: fit-content;
+  margin-left: 15%;
+}
+
 #main_container{
     position: relative;
-    margin-left: 20%;
     margin-top: 10%;
     border-radius: 7px;
     background-color: rgb(250, 255, 253);
     min-height: 50%;
-    width: 60%;
+    width: 70vw;
     height: fit-content;
     border: 2px solid black;
     padding: 10px;
@@ -24,18 +28,7 @@ h1{
 
 }
 
-#room_id{
-    font-size: x-large;
-    font-family: 'Mukta';
-    position: relative;
-    background-color: #fff;
-    padding: 25px;
-    padding-left: 25px;
-    padding-right: 25px;
-    margin-left: 45%;
-    width: fit-content;
-    border-radius: 6px;
-}
+
 
 
 
@@ -54,18 +47,26 @@ h1{
     padding: 15;
     border: 1px solid;
     font-family: "Roboto";
-    background-color: rgb(204, 202, 202);
+    background-color: rgb(231, 229, 229);
     border-radius: 5px;
 }
 
 .right{
-    font-size: 25;
-    bottom: 12;
     position: absolute;
     right: 5%;
 }
 
+.marker{
+  font-size: 25;
+  bottom: 12;
+}
 
+.score{
+  font-size: 22;
+  bottom: -10;
+  text-align: center;
+  font-family: 'Gabarito';
+}
 
 #return{
     left: 1%;
@@ -114,6 +115,41 @@ h1{
 #return:hover {
     box-shadow: rgba(39, 174, 96, .2) 0 6px 12px;
 }
+
+
+
+#room_id{
+  font-size: x-large;
+  font-family: 'Mukta';
+  position: relative;
+  background-color: #fff;
+  padding: 25px;
+  padding-left: 25px;
+  padding-right: 25px;
+  margin: auto;
+  margin-top: 25px;
+  width: fit-content;
+  border-radius: 6px;
+}
+
+
+#start_button{
+  display: none;
+  font-size: x-large;
+  font-family: 'Mukta';
+  position: relative;
+  background-color: #02c91d;
+  padding: 5px;
+  font-size: larger;
+  padding-left: 25px;
+  padding-right: 25px;
+  width: fit-content;
+  margin: auto;
+  margin-top: 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 
 
 .pre{
