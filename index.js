@@ -238,6 +238,7 @@ io.on('connection', (socket) => {
     //when user joins, join him to existent list or create one (w/ random color) 
     if(room in rooms){
       (rooms[room])['Players'].push([data[0],color,socket.id]);
+      (rooms[room])['points'][data[0]] = 0
       console.log('user is not host')
       console.log(`rules are ${rooms[room][['Rules']]}`)
       socket.emit('rules', rooms[room][['Rules']])
@@ -249,11 +250,13 @@ io.on('connection', (socket) => {
         'guesses' : 0,
         'guess_data': {},
         'current_round':1,
-        'players_ready': 0
+        'players_ready': 0,
+        'points': {}
       };
 
       //add player to property
       (rooms[room])['Players'].push([data[0],color,socket.id]);
+      (rooms[room])['points'][data[0]] = 0
       socket.emit('rules?',(rules) => {
           console.log('asked for rules')
           rooms[room]['Rules'] = []
@@ -297,11 +300,18 @@ io.on('connection', (socket) => {
 
 
   socket.on('start', () => {
+    //only host can start the match (person in first position)
     if(socket.id == rooms[room]['Players'][0][2]){
-      var video = rando(video_list.length)
-    rooms[room]['VIDEOS'] = []
-    rooms[room]['VIDEOS'].push(video)
-    io.to(room).emit('game start', video)
+      //to start, minimum of 2 players required
+      if(rooms[room]['Players'].length < 2){
+        var video = rando(video_list.length)
+        rooms[room]['VIDEOS'] = []
+        rooms[room]['VIDEOS'].push(video)
+        io.to(room).emit('game start', video)
+      }
+      else{
+        console.log('not enough players')
+      }
     }
     else{
       console.log('not host')
@@ -311,6 +321,9 @@ io.on('connection', (socket) => {
   socket.on('user_guessed', (data) => {
     rooms[room].guesses += 1
     rooms[room].guess_data[data[0]] = [data[1],data[2],data[3],data[4]]
+    rooms[room].points[data[0]] += parseInt(data[3]) 
+    console.log(rooms[room].points)
+    console.log(rooms[room].points[data[0]])
     //format: {playerX: [coord 1, coord 2, points, color]}
 
     console.log(`player ${data[0]} guess: ${rooms[room].guess_data[data[0]]}`)
@@ -323,14 +336,10 @@ io.on('connection', (socket) => {
   })
 
   socket.on('player_ready', () => {
-    console.log('next pressed')
     rooms[room].players_ready += 1
-    console.log(`players ready = ${rooms[room].players_ready}`)
     if(rooms[room].players_ready == rooms[room]['Players'].length){
       rooms[room]['current_round'] += 1
       if(rooms[room]['current_round'] <= parseInt(rooms[room]['rounds'])){
-        console.log(rooms[room]['current_round'])
-        console.log(rooms[room]['rounds'])
         video = rando(video_list.length)
         while(rooms[room]['VIDEOS'].includes(video)){
           console.log('video already played')
@@ -343,7 +352,7 @@ io.on('connection', (socket) => {
         rooms[room].players_ready = 0
         }
       else{
-        console.log('game ends')
+        io.to(room).emit('end', rooms[room].points)
       }
     }
   })
