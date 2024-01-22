@@ -561,13 +561,16 @@ socket.on('new_vid', index => {
 
 
 
-function end(){
-    score = parseInt(score)
-    localStorage.setItem('points', score)
-    document.getElementById("continue").onclick = window.location.href = 'resume.html';
+socket.on('end', scores =>{
+    console.log(scores)
+    func(scores, false)
+    document.getElementsByClassName('pre')[0].style.display = 'block'
+    document.getElementsByClassName('post')[0].style.display = 'none'
+
+
+})
 
     
-}
 
 
 function startTimer(){
