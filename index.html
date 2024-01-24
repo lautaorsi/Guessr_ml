@@ -80,11 +80,9 @@
             if(hname == ''){
                 alert('Debes introducir un nombre de usuario')
             }
-            if(hname.length > 15){
+            if(hname.length > 15 && hname != 'MegaLanchaUrbanaDeNieveElectrica72' && hname != 'MonoArañaProctologo420'){
                 //little easter egg :)
-                if(hname != 'MegaLanchaUrbanaDeNieveElectrica72' && hname != 'MonoArañaProctologo420'){
-                    alert('El nombre de usuario es muy largo!')
-                }
+                alert('El nombre de usuario es muy largo!')
             }
             else{
                 localStorage.setItem('usern',hname)
