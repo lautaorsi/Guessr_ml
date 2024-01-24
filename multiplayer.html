@@ -1,0 +1,247 @@
+<html>
+    <head>
+        <script src="https://randojs.com/2.0.0.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/> 
+    <script type="text/javascript" src="./leaflet/leaflet.js"></script>
+        <link rel="stylesheet" href="./multiplayer_lobby.css" type="text/css">
+        <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Gabarito&family=Mukta&family=Roboto">
+        <script src="https://kit.fontawesome.com/493860cbeb.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <a onclick="got()">
+            <button id="return" >
+                <i class="fa-solid fa-arrow-left" style="color: #000000;"></i>
+            </button>
+        </a>
+        <div id="main_lobby" class="pre">
+            <div id="main_container">
+                <h1>Jugadores</h1>
+                <div id="players">
+                </div>
+            </div>
+            <div id="room_id_container" >
+                <h3 id="room_id">ID de Sala: b7129gxmjae</h3>
+                <div id="start_button">
+                    <h3 id="start_text" style="font-family: Mukta;" onclick="game()">Empezar</h3>
+                </div>
+            </div>
+
+        </div>
+    
+
+        <div id="main_game" class="post">
+            <audio id="cheers">
+                <source src="static/cheer.mp3" type="audio/mp3">
+            </audio>
+            <audio src="static/tic.mp3" id="tic"></audio>
+            <div id="pausecontainer" >
+                <button id="pausebutton" onclick="pause()">PAUSAR⏸</button>
+                <button id="playbutton" onclick="play()">CONTINUAR▶️</button>
+            </div>
+            <div id="timercontainer" >
+                <p id="timer"></p>
+            </div>
+            <div id="roundcontainer" >
+                <p id="round">/</p>
+            </div>
+            <div class="open_map" >
+                <button id="Open_map" onclick="window.modal.showModal(), invsze(),  map_open()" data-title="Click to guess!"><img src="./static/globe.png" id = "globe" ></button>
+                <p id="howto" >Aprieta el globo para adivinar!</p>
+            </div>
+            <div class="custom-controls" >
+                
+                <button id="rewindButton" onclick="rewindVideo()"><i class="fa-solid fa-backward" style="color: #003aad;"></i> 5s</button>
+                <div id="speedcontainer">
+                    <button id="reduceSpeedButton"  style="font-size: large;">x1</button>
+                    <input type="range" id="speedrange" min="0.25" max="2" step="0.25"  > 
+                </div>
+                <button id="restartVideo" onclick="restartVideo()">Restart Video</button>
+            </div>
+            <div id="credits_container" >
+                <a href="" target="_blank" id="credits"></a>
+            </div>
+            <table width = "200" class="scoretable" id="scoretable">
+                <th>Puntaje</th>
+            </table>
+            <div id="volumecontainer" >
+                <i class="fa-solid fa-volume-xmark" style="color: #0057f8;" id="volume_icon"></i>
+                <input type="range" name="volume" id="volumerange" class="volumerange" min="0" max="100" value="30">
+            </div>
+        
+            <div class="video-background">
+                <div class="video-foreground">
+                    <div id="myvid" class="ytplayer-nbvz">
+                        <iframe src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+                <dialog id="modal">
+                        <div id="map"></div>
+                        <div id="lowermodal">
+                            <div id="distance">
+                                <h2 id="h2"></h2>
+                            </div>
+                            <button id="close_map" onclick="window.modal.close(),  map_open()">Cerrar</button>
+                            <a href="#" id="guess" class="btn btn-white btn-        animate" onclick="final_guess(true)">Adivinar</a>
+                            <button id = "continue" onclick="next()">Continuar</button>
+                        </div>
+                </dialog>
+                <div id="warning-container" >
+                    <text id="warning">Clickea el mapa para adivinar!</text>
+                    <i class="fa-solid fa-location-dot fa-bounce" id="marker_warning" style="color: #005eff;"></i> 
+                </div>
+        </div>
+    <script>
+        function got(){
+                window.location.href = 'index.html'
+        }
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        var start_id
+
+
+
+
+        function game(){
+            socket.emit('start')
+        }
+
+        var players = []
+ 
+        function func(list,cond){
+            //if cond == True => initial board w/ marker colors
+            //if cond == False => final board w/ scores
+            players = list
+            document.querySelectorAll('.player').forEach(e => e.remove());
+            //when called, func will delete the html content and create a new one with the updated list
+            if(cond){
+                for(var element = 0; element < list.length; element++ ){
+                console.log(list);
+                var x = document.createElement('div');
+                x.classList.add('player', list[element][0]);
+                x.innerHTML = `${list[element][0]} <i class="fa-solid fa-location-dot right marker ${list[element][0]} " style="color: #005eff;"></i>`;
+                document.getElementById("players").appendChild(x);
+                document.getElementsByClassName(`right ${list[element][0]}`)[0].style.color = list[element][1];
+            };   
+            }
+            else{
+
+                //create final scoreboard with all players
+                for(let element in list){
+                    var x = document.createElement('div');
+                    x.classList.add('player', element);
+                    x.innerHTML = `${element} <p class="right score">${list[element]}</p>`;
+                    document.getElementById("players").appendChild(x);
+                }
+
+                //Paint 1st place gold
+                document.getElementsByClassName(`player`)[0].style.backgroundColor = '#ffd700'
+
+                //if there is 2+ players add Silver
+                if(document.getElementsByClassName('player').length >= 2){
+                    document.getElementsByClassName(`player`)[1].style.backgroundColor = '#c0c0c0'
+                }
+
+                //if 3+ players add Bronze
+                if(document.getElementsByClassName('player').length >= 3){
+                document.getElementsByClassName(`player`)[2].style.backgroundColor = '#996515'
+                }
+            }
+            
+        }
+
+
+        const socket = io();
+        socket.on('users', (users) => {
+            //add user to html list and array on new user connection
+            func(users['Players'], true)
+            player_list = users
+        })
+
+        const username = localStorage.getItem('usern')
+        var room_id = localStorage.getItem('roomid')
+        console.log(room_id)
+        if(room_id == 1){
+            room_id = Math.random().toString(36).substring(2, 13); 
+        }
+        socket.on('accepted',(rules) => {
+            document.getElementById('room_id').innerHTML = `ID de Sala : ${room_id}`
+            //emit username on connection
+            socket.emit('username', [username,room_id], callback => {
+                console.log(callback.col)
+                color = callback.col
+            })
+        })
+        socket.on('rules?', response => {
+            console.log(`got asked for rules (${[localStorage.getItem('mode'), localStorage.getItem('rounds'), localStorage.getItem('time')]})`)
+            document.getElementById('start_button').style.display = 'block'
+            response({
+                mode: localStorage.getItem('mode'), 
+                rounds: localStorage.getItem('rounds'), 
+                time :localStorage.getItem('time')
+            })
+        })
+
+        socket.on('rules', data => {
+            console.log('received rules')
+            localStorage.setItem('mode', data[0])
+            localStorage.setItem('rounds', data[1])
+            localStorage.setItem('time', data[2])
+            console.log([localStorage.getItem('mode'), localStorage.getItem('rounds'), localStorage.getItem('time')])
+
+        })
+        socket.on("session", ({ sessionID, userID }) => {
+        // attach the session ID to the next reconnection attempts
+        socket.auth = { sessionID };
+        // store it in the localStorage
+        localStorage.setItem("sessionID", sessionID);
+        // save the ID of the user
+        socket.userID = userID;
+        });
+
+        socket.on('player_disconnected', (data) =>{
+            //rebuild player list (delete html elements and update list)
+            document.querySelectorAll(`.${data['username']}`).forEach(e => e.remove());
+
+            //update client side player list
+            players = data['new_list']
+        })
+
+        socket.on('game start', (id) => {
+            start_id = id
+            document.getElementsByClassName('pre')[0].style.display = 'none'
+            document.getElementsByClassName('post')[0].style.display = 'block'
+
+            const table = document.getElementById('scoretable')
+            for(var e in players){
+            console.log(players)
+            console.log(e)
+            var row = table.insertRow(1)
+            var cell1 = row.insertCell(0)
+            cell1.classList.add('username')
+            var cell2 = row.insertCell(1)
+            cell2.classList.add('points')
+            cell1.innerHTML = players[e][0]
+            cell2.innerHTML = 0
+            }
+
+            var script = document.createElement('script');
+            script.src = './main_ml.js';
+            document.head.appendChild(script)
+            
+        })
+
+
+
+
+    </script>
+
+
+
+    </body>
+</html>
