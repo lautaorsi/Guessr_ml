@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div id="room_id_container" >
-                <h3 id="room_id">ID de Sala: b7129gxmjae</h3>
+                <h3 id="room_id">ID de Sala:</h3>
                 <div id="start_button">
                     <h3 id="start_text" style="font-family: Mukta;" onclick="game()">Empezar</h3>
                 </div>
@@ -108,7 +108,13 @@
 
 
         function game(){
-            socket.emit('start')
+            if(players.length < 2){
+                alert('No hay suficientes jugadores!')
+            }
+            else{
+                socket.emit('start')
+            }
+            
         }
 
         var players = []
