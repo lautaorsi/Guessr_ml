@@ -847,7 +847,9 @@ socket.on('all_guessed', data => {
 })
 
 
-
+socket.on('player_guessed_nice', () => {
+    document.getElementById('nice').play()
+});
 
 
 
