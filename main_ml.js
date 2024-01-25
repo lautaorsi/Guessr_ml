@@ -454,7 +454,7 @@ function calc_points(){
         return(480 + 3000/distance )
     }  
 
-    if (100 < distance & distance <= 500 ){
+    if (40 < distance & distance <= 500 ){
         return(400 + 3000/distance )
     }  
 
@@ -473,6 +473,7 @@ function calc_points(){
     if (10000 < distance){
         return(250)
     }  
+
     
 }
 
@@ -601,7 +602,7 @@ function updatetime(){
         if(time <= 10 && playing){
             playing = false
             document.getElementById('tic').play()
-            console.log('audio play')
+            
         }
     }
     
@@ -696,7 +697,9 @@ function final_guess(c) {
         
         socket.emit(`user_guessed`,([username,marker_coords[0],marker_coords[1],point.toFixed(0),color]))
     
-    
+        socket.on('player_guessed', () => {
+            
+        })
     
     
         vidmarker = L.layerGroup();
@@ -768,14 +771,12 @@ function final_guess(c) {
     }
     switchbtn()
 
-    console.log(marker_coords[0])
-    console.log(marker_coords[1])
-    console.log(video_coords)
+
 
     //calculate points
     var point = Number(calc_points())
 
-    console.log(point)
+
 
 
     
