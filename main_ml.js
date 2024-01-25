@@ -768,8 +768,14 @@ function final_guess(c) {
     }
     switchbtn()
 
+    console.log(marker_coords[0])
+    console.log(marker_coords[1])
+    console.log(video_coords)
+
     //calculate points
     var point = Number(calc_points())
+
+    console.log(point)
 
 
     
