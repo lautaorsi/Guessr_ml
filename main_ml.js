@@ -847,8 +847,16 @@ socket.on('all_guessed', data => {
 })
 
 
-socket.on('player_guessed_nice', () => {
+socket.on('player_guessed', user => {
     document.getElementById('nice').play()
+    var x = document.createElement('div');
+    x.innerHTML = `${user} adivinó!`
+    x.classList.add('notif');
+    x.setAttribute("id", `${user}` )
+    document.getElementById("notif-placeholder").prepend(x);
+    setTimeout(function(){
+        document.getElementById(user).remove();
+   },3000);
 });
 
 

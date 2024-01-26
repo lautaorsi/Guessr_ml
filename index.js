@@ -164,7 +164,7 @@ io.on('connection', (socket) => {
     rooms[room].guess_data[data[0]] = [data[1],data[2],data[3],data[4]]
     rooms[room].points[data[0]] += parseInt(data[3]) 
     //format: {playerX: [coord 1, coord 2, points, color]}
-    io.to(room).emit('player_guessed')
+    io.to(room).emit('player_guessed', data[0])
     if (rooms[room].guesses == rooms[room]['Players'].length){
       io.to(room).emit('all_guessed',rooms[room].guess_data)
       rooms[room].guess_data = {}
