@@ -153,11 +153,11 @@ h1{
 
 
 .pre{
-    display: none;
+    display: block;
 }
 
 .post{
-    display: block;
+    display: none;
 }
 
 
