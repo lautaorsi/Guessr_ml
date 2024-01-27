@@ -12,11 +12,10 @@ const io = new Server(server, {
 const {rando, randoSequence} = require('@nastyox/rando.js');
 
 var colors = ["#CC2A3D", "#9D2ECC", "#CBC52B", "#CB852B", "#3E3E3E", "#2C83CB"]
-var r_colors = ["#CC2A3D", "#9D2ECC", "#CBC52B", "#CB852B", "#3E3E3E", "#2C83CB"]
 
 var scr, vid_index, active_video, active_playlist
 
-const videos_qty = 151
+const videos_qty = 153
 
 
 
@@ -40,7 +39,7 @@ app.get('/', (req, res) => {
 
 app.use(express.static(__dirname));
 
-
+var player_count = 0
 
 let rooms = {}
 
@@ -61,7 +60,8 @@ let player_id = {}
 
 
 io.on('connection', (socket) => {
-  var room = ''
+  player_count += 1;
+  var room = '';
   socket.emit('accepted'); 
 
 
@@ -125,11 +125,9 @@ io.on('connection', (socket) => {
   }) 
 
   socket.on("disconnect", (reason) => {
+    player_count -= 1;
     //when user disconnects, remove him from the player list
-    console.log(`${player_id[socket.id]} disconnected`)
-    console.log(`players in room ${room}: ${rooms[room]['Players']}`)
     for(var i = 0 ; i < (rooms[room]['Players']).length ; i++){
-      console.log(`player ${i}: ${(rooms[room]['Players'])[i]}`)
       if((rooms[room]['Players'])[i][0] == player_id[socket.id]){
         (rooms[room]['Players']).splice(i, 1)
       }
@@ -193,7 +191,6 @@ io.on('connection', (socket) => {
   })
 
   socket.on('player_unready', () => {
-    console.log(`players ready = ${rooms[room].players_ready}`)
     rooms[room].players_ready -= 1
   })
 
