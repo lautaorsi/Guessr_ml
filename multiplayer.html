@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div id="room_id_container" >
-                <h3 id="room_id">ID de Sala:</h3>
+                <h3 id="room_id">ID de Sala: xxxxxxxxxxx</h3>
                 <div id="start_button">
                     <h3 id="start_text" style="font-family: Mukta;" onclick="game()">Empezar</h3>
                 </div>
@@ -175,7 +175,6 @@
 
         const username = localStorage.getItem('usern')
         var room_id = localStorage.getItem('roomid')
-        console.log(room_id)
         if(room_id == 1){
             room_id = Math.random().toString(36).substring(2, 13); 
         }
@@ -183,12 +182,10 @@
             document.getElementById('room_id').innerHTML = `ID de Sala : ${room_id}`
             //emit username on connection
             socket.emit('username', [username,room_id], callback => {
-                console.log(callback.col)
                 color = callback.col
             })
         })
         socket.on('rules?', response => {
-            console.log(`got asked for rules (${[localStorage.getItem('mode'), localStorage.getItem('rounds'), localStorage.getItem('time')]})`)
             document.getElementById('start_button').style.display = 'block'
             response({
                 mode: localStorage.getItem('mode'), 
@@ -198,12 +195,9 @@
         })
 
         socket.on('rules', data => {
-            console.log('received rules')
             localStorage.setItem('mode', data[0])
             localStorage.setItem('rounds', data[1])
             localStorage.setItem('time', data[2])
-            console.log([localStorage.getItem('mode'), localStorage.getItem('rounds'), localStorage.getItem('time')])
-
         })
         socket.on("session", ({ sessionID, userID }) => {
         // attach the session ID to the next reconnection attempts
@@ -229,8 +223,6 @@
 
             const table = document.getElementById('scoretable')
             for(var e in players){
-            console.log(players)
-            console.log(e)
             var row = table.insertRow(1)
             var cell1 = row.insertCell(0)
             cell1.classList.add('username')

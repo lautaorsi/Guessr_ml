@@ -48,8 +48,8 @@ input{
 }
 
 
-#player_username{
-
+.username_input{
+    font-size: medium;
     bottom: 41%;
     position: inherit;
     right: 32%;

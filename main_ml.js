@@ -249,6 +249,8 @@ var video_list = [["kXAHDqHfXAQ", 39.467269, -0.374927, ,'ES', 'CarpoWalks','htt
 ['gA1aLQCCZQE',52.51392118526781, 13.378696152051283,3240,'DE','POPtravel','https://www.youtube.com/@poptravelorg' ],
 ['gA1aLQCCZQE',52.51631158134281, 13.378436903451522,3641,'DE','POPtravel','https://www.youtube.com/@poptravelorg' ],
 ['V5q8f_eluOg',54.59482020760334, -5.934534194681385,43,'IRE','POPtravel','https://www.youtube.com/@poptravelorg' ],
+['AWHkUszwLf4',35.6807522,139.7630938,65,'JAP','Taka Soyama','https://www.pexels.com/@taka-soyama-4618245/']
+['42Sq_ePHpCc',35.282887,129.0706587,828, 'SK','ZERO ONE', 'https://www.youtube.com/@zeroone_01']
 ]
 
 

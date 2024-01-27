@@ -16,7 +16,7 @@ var r_colors = ["#CC2A3D", "#9D2ECC", "#CBC52B", "#CB852B", "#3E3E3E", "#2C83CB"
 
 var scr, vid_index, active_video, active_playlist
 
-const videos_qty = 150
+const videos_qty = 151
 
 
 
