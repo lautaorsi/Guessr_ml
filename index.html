@@ -2,6 +2,9 @@
     <head>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4047903443253489"
      crossorigin="anonymous"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="index.css">
         <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Gabarito&family=Merriweather Sans">
@@ -10,7 +13,6 @@
         <script>
 
         var lmode = localStorage.getItem('lightMode')
-        console.log(lmode)
         function whiten(){
             var body = document.getElementsByTagName('body')[0];
             body.style.backgroundImage = 'url(./static/background_small.jpg)';
@@ -31,9 +33,10 @@
             for (let i = 0; i < keys.length; i++) {
                 keys[i].style.color = 'black' 
             }
+            document.getElementById('black').style.display = 'none'
+            document.getElementById('white').style.display = 'block'
             document.getElementById('whiten').style.display = 'block'
             document.getElementById('darken').style.display = 'none'
-            document.getElementById('main_container').style.background = 'linear-gradient(180deg, rgba(0,107,254,1) 0%, rgba(60,127,250,1) 53%, rgba(65,190,255,1) 84%, rgba(154,233,255,1) 100%)'
         }
 
 
@@ -59,6 +62,8 @@
             for (let i = 0; i < keys.length; i++) {
                 keys[i].style.color = 'white' 
             }
+            document.getElementById('black').style.display = 'block'
+            document.getElementById('white').style.display = 'none'
             document.getElementById('darken').style.display = 'block'
             document.getElementById('whiten').style.display = 'none'
         }
@@ -98,137 +103,68 @@
 
     </head>
     <body>
-            <img src="./static/logo.png" alt="logo" class="logoimg" draggable="false">
+            
             <a onclick="got()">
                 <button id="return" >
                     <i class="fa-solid fa-arrow-left" style="color: #000000;"></i>
                 </button>
             </a>
             <div id="main_container">
-                <h2 id="gamemode">Crear partida</h2>
-                <div id="selectors">
-                        <select id="modeselect" class="selects">
-                            <option value="none">Modo</option>
-                            <option value='CLASICO' >Normal</option>
-                            <option value='INVERTIDO' >Invertido</option>
-                        </select>
-                        <select id="roundselect" class="selects">
-                            <option value="none">Rondas</option>
-                            <option value=5 >5 rondas</option>
-                            <option value=10 >10 rondas</option>
-                            <option value=15 >15 rondas</option>
-                            <option value=20 >20 rondas</option>
-                        </select>
-                        <select id="timeselect" class="selects">
-                            <option value="none">Tiempo</option>
-                            <option value=30 id="time1">30s</option>
-                            <option value=50 id="time2">50s</option>
-                            <option value=90 id="time3">90s</option>
-                            <option value=120 id="time4" >120s</option>
-                            <option value=210 id="time5">210s</option>
-                        </select>
+                <div id="create_container">
+                    <h2 id="gamemode">Crear partida</h2>
+                    <div id="selectors">
+                            <select id="modeselect" class="selects">
+                                <option value="none">Modo</option>
+                                <option value='CLASICO' >Normal</option>
+                                <option value='INVERTIDO' >Invertido</option>
+                            </select>
+                            <select id="roundselect" class="selects">
+                                <option value="none">Rondas</option>
+                                <option value=5 >5 rondas</option>
+                                <option value=10 >10 rondas</option>
+                                <option value=15 >15 rondas</option>
+                                <option value=20 >20 rondas</option>
+                            </select>
+                            <select id="timeselect" class="selects">
+                                <option value="none">Tiempo</option>
+                                <option value=30 id="time1">30s</option>
+                                <option value=50 id="time2">50s</option>
+                                <option value=90 id="time3">90s</option>
+                                <option value=120 id="time4" >120s</option>
+                                <option value=210 id="time5">210s</option>
+                            </select>
+                    </div>
+                    <input type="text" name="Host_name" class="username_input" id="HostName" size="25" placeholder="Nombre de Usuario (15 Letras Max)">
+                    <button id="create_session" onclick="nam(true)">Crear sala</button>
                 </div>
-                <input type="text" name="Host_name" class="username_input" id="HostName" size="25" placeholder="Nombre de Usuario (15 Letras Max)">
-                <button id="create_session" onclick="nam(true)">Crear sala</button>
-            </div>
-            <div id="middle_container">
-                
-            </div>
-            <div id="join_container">
-                <h2 id="join_title">Unirse a partida</h2>
-                <input type="text" id="lobby_id" placeholder="ID Sala">
-                <input type="text" id="player_username" class="username_input" placeholder="Nombre de Usuario (15 Letras Max)">
-                <button id="join_room" onclick="nam(false)">Unirse</button>
+                <div id="middle_container">
+                    <div id="title">
+                        <h2 id="t_p">VideoGuessr logo</h2>
+                    </div>
+                </div>
+                <div id="join_container">
+                    <h2 id="join_title">Unirse a partida</h2>
+                    <input type="text" id="lobby_id" placeholder="ID Sala">
+                    <div id="lower_half">
+                        <input type="text" id="player_username" class="username_input" placeholder="Nombre de Usuario (15 Letras Max)">
+                        <button id="join_room" onclick="nam(false)">Unirse</button>
+                    </div>
+                </div>
             </div>
             <div id="mode">
                 <a id="darken" onclick="whiten()" display="none">🌑</a>
                 <a id="whiten" onclick="darken()">🔆</a>
             </div> 
+            <div id="credits_container">
+                <a href="https://www.pexels.com/photo/downtown-buenos-aires-agrentina-15574935/" target="_blank" class="credits" id="white">Photo by Renan Braz</a>
+                <a href="https://www.pexels.com/photo/monument-of-al-chacho-penaloza-in-la-rioja-argentina-13572011/" target="_blank" class="credits" id="black">Photo by Maxi Leiva</a>
+            </div>
     </body>
 </html>
 
 
 <script>    
-    
-        if(localStorage.getItem('lightMode') === 'disabled'){
-            darken()
-        }
-        else{
-            whiten()
-        }
-
-        function whiten(){
-            var body = document.getElementsByTagName('body')[0];
-            body.style.backgroundImage = 'url(./static/background_small.jpg)';
-            var ps = document.getElementsByTagName('p')
-            for (let i = 0; i < ps.length; i++) {
-                ps[i].style.color = 'black' 
-            }
-            var h3s = document.getElementsByTagName('h3')
-            for (let i = 0; i < h3s.length; i++) {
-                h3s[i].style.color = 'black' 
-            }
-            var headers = document.getElementsByClassName('headers')
-            for (let i = 0; i < headers.length; i++) {
-                headers[i].style.color = 'black' 
-            }
-            var keys = document.getElementsByClassName('s')
-            for (let i = 0; i < keys.length; i++) {
-                keys[i].style.color = 'black' 
-            }
-            document.getElementById('whiten').style.display = 'block'
-            document.getElementById('darken').style.display = 'none'
-            document.getElementById('main_container').style.background = 'linear-gradient(180deg, rgba(0,107,254,1) 0%, rgba(60,127,250,1) 53%, rgba(65,190,255,1) 84%, rgba(154,233,255,1) 100%)'
-            document.getElementById('controlcont').style.backgroundColor = 'white'
-        }
-
-        function darken(){
-            var body = document.getElementsByTagName('body')[0];
-            body.style.backgroundImage = 'url(./static/night_background.jpg)';
-            var ps = document.getElementsByTagName('p')
-            for (let i = 0; i < ps.length; i++) {
-                ps[i].style.color = 'white' 
-            }
-            var h3s = document.getElementsByTagName('h2')
-            for (let i = 0; i < h3s.length; i++) {
-                h3s[i].style.color = 'white' 
-            }
-            var keys = document.getElementsByClassName('s')
-            for (let i = 0; i < keys.length; i++) {
-                keys[i].style.color = 'white' 
-            }
-            document.getElementById('main_container').style.background = 'linear-gradient(180deg, #04003d 0%, #0030da 70%, #1570fe 90%, #00aad9 100%)'
-            document.getElementById('darken').style.display = 'block'
-            document.getElementById('whiten').style.display = 'none'
-            document.getElementById('controlcont').style.backgroundColor = '#0d0d0d'
-        }
-    
-    
-
-    
-    const gamename = JSON.parse(gamemodestr)
-    descript.innerHTML = descriptions[gamename.hello]
-    wimg.src = images[gamename.hello]
-    title.innerHTML=titles[gamename.hello]
-    var warning_elem = document.getElementById('warning')
     const btn = document.getElementById("start");
-    console.log(gamename)
-    if (gamename.hello == 'contrarreloj' || gamename.hello == '1hp'){
-        document.getElementById('roundselect').setAttribute("hidden", "hidden")
-        document.getElementById('timeselect').style.marginLeft = "20%"
-        document.getElementById('time1').innerHTML = "30s"
-        document.getElementById('time1').value = 30
-        document.getElementById('time2').innerHTML = "50s"
-        document.getElementById('time2').value = 50
-        document.getElementById('time3').innerHTML = "80s"
-        document.getElementById('time3').value = 80
-        document.getElementById('time4').innerHTML = "100s"
-        document.getElementById('time4').value = 100
-        document.getElementById('time5').innerHTML = "120s"
-        document.getElementById('time5').value = 120
-    }
-
-
 
     function myFunction(){
         var time = document.getElementById('timeselect').value
@@ -260,15 +196,7 @@
                 }, 4000);
         }
     }
-    function showWarning(){
-        console.log('warning hidden')
-        warning_elem.style.display = 'none'
-        color_warning.style.display = 'none'
-        time_warning.style.display = 'none'
-        rounds_warning.style.display = 'none'
-        radius_warning.style.display = 'none'
-        warning_elem.style.animation = ''
-    }
+
 
     function got(){
         window.location.href = 'index.html'
