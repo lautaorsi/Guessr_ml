@@ -343,54 +343,6 @@ option{
     50% { transform: translateX(-5px) }
     75% { transform: translateX(5px) }
     100% { transform: translateX(0) }
-   }
-
-
-   @media (max-width: 1020px) {
-    #main_container{
-        width: 300;
-
-    }
-    #join_container{
-        width: 300;
-        
-    }
-    #join_room{
-        font-size: 15 !important;
-        padding-left: 6;
-        
-    }
-    .username_input{
-        font-size: 10px !important ;
-    }
-
 }
 
 
-
-@media (max-height: 775px) {
-    #join_room{
-        font-size: 15 !important;
-        padding-left: 6;
-        
-    }
-    #main_container{
-        width: 300;
-
-    }
-    #join_container{
-        width: 300;
-        
-    }
-
-
-    #hostname {
-      bottom: 20% !important;
-    }
-    #create_session{
-        bottom: 10% !important;
-    }
-    .username_input{
-        font-size: 10px !important ;
-    }
-  }
