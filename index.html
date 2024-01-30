@@ -16,10 +16,6 @@
         function whiten(){
             var body = document.getElementsByTagName('body')[0];
             body.style.backgroundImage = 'url(./static/background_small.jpg)';
-            var ps = document.getElementsByTagName('p')
-            for (let i = 0; i < ps.length; i++) {
-                ps[i].style.color = 'black' 
-            }
             var h3s = document.getElementsByTagName('h3')
             for (let i = 0; i < h3s.length; i++) {
                 h3s[i].style.color = 'black' 
@@ -46,10 +42,6 @@
         function darken(){
             var body = document.getElementsByTagName('body')[0];
             body.style.backgroundImage = 'url(./static/night_background.jpg)';
-            var ps = document.getElementsByTagName('p')
-            for (let i = 0; i < ps.length; i++) {
-                ps[i].style.color = 'white' 
-            }
             var h3s = document.getElementsByTagName('h3')
             for (let i = 0; i < h3s.length; i++) {
                 h3s[i].style.color = 'white' 
@@ -71,25 +63,32 @@
 
         
         function nam(e){
-            
-            console.log(e)
             if(e){
                 localStorage.setItem('roomid',1)
-                var hname = document.getElementById('HostName').value
-                localStorage.setItem('mode', document.getElementById('modeselect').value)
-                localStorage.setItem('rounds', document.getElementById('roundselect').value)
-                localStorage.setItem('time', document.getElementById('timeselect').value)
+                var hname = document.getElementById('HostName').value.replace(/\s/g, "")
+                if(document.getElementById('modeselect').value == 'none' || document.getElementById('roundselect').value == 'none' || document.getElementById('timeselect').value == 'none'){
+                    alert('Debes elegir modo, rondas y tiempo!')
+                    return('error')
+                }
+                else{
+                    localStorage.setItem('mode', document.getElementById('modeselect').value)
+                    localStorage.setItem('rounds', document.getElementById('roundselect').value)
+                    localStorage.setItem('time', document.getElementById('timeselect').value)
+                }
+                
             }
             else{
                 localStorage.setItem('roomid',(document.getElementById('lobby_id').value))
-                var hname = document.getElementById('player_username').value
+                var hname = document.getElementById('player_username').value.replace(/\s/g, "")
             }
             if(hname == ''){
                 alert('Debes introducir un nombre de usuario')
+                return('error')
             }
             if(hname.length > 15 && hname != 'MegaLanchaUrbanaDeNieveElectrica72' && hname != 'MonoArañaProctologo420'){
                 //little easter egg :)
                 alert('El nombre de usuario es muy largo!')
+                return('error')
             }
             else{
                 localStorage.setItem('usern',hname)
@@ -134,19 +133,27 @@
                                 <option value=210 id="time5">210s</option>
                             </select>
                     </div>
-                    <input type="text" name="Host_name" class="username_input" id="HostName" size="25" placeholder="Nombre de Usuario (15 Letras Max)">
+                    <input type="text" name="Host_name" class="username_input" id="HostName" size="25" placeholder="Nombre de Usuario">
                     <button id="create_session" onclick="nam(true)">Crear sala</button>
                 </div>
                 <div id="middle_container">
+                    <div id="Ads"></div>
                     <div id="title">
                         <h2 id="t_p">VideoGuessr logo</h2>
+                    </div>
+                    <div id="tips">
+                        <p id="tip_title">Consejos:</p>
+                        <p id="tip">&#x2022; Mantente atento a las patentes de los autos &#x2022;</p>
+                        <p id="tip">&#x2022; Escucha a la gente hablar y observa sus rasgos físicos &#x2022;</p>
+                        <p id="tip">&#x2022; Si no conoces el lugar, coloca un marcador al azar, pocos puntos son mejores que ninguno &#x2022;</p>
+                        <p id="tip">&#x2022; Al final del dia es un juego, usar el google maps y hacer trampa solo arruinara tu diversión! &#x2022;</p>
                     </div>
                 </div>
                 <div id="join_container">
                     <h2 id="join_title">Unirse a partida</h2>
                     <input type="text" id="lobby_id" placeholder="ID Sala">
                     <div id="lower_half">
-                        <input type="text" id="player_username" class="username_input" placeholder="Nombre de Usuario (15 Letras Max)">
+                        <input type="text" id="player_username" class="username_input" placeholder="Nombre de Usuario">
                         <button id="join_room" onclick="nam(false)">Unirse</button>
                     </div>
                 </div>
@@ -164,44 +171,9 @@
 
 
 <script>    
-    const btn = document.getElementById("start");
-
-    function myFunction(){
-        var time = document.getElementById('timeselect').value
-        var rounds = document.getElementById('roundselect').value
-        var attention = document.getElementById('attention')
-        if (time == 'none'){
-            console.log('time not selected')
-            var time_warning = document.getElementById('time_warning')
-            warning_elem.style.display = 'block'
-            time_warning.style.display = 'block'
-        }
-        if (rounds == 'none'){
-            console.log('rounds not selected')
-            var rounds_warning = document.getElementById('rounds_warning')
-            warning_elem.style.display = 'block'
-            rounds_warning.style.display = 'block'
-        }
-        if(time != 'none' && rounds != 'none'){
-            var checkbox = document.getElementById('checkmute').checked
-            localStorage.setItem('mute', checkbox)
-            localStorage.setItem('rounds', rounds)
-            localStorage.setItem('time', time)
-            window.location.href = 'multiplayer_lobby.html' 
-        }
-        else{
-            warning_elem.style.animation = 'horizontal-shaking 1.5s 0s'
-            setTimeout(function(){
-                showWarning()
-                }, 4000);
-        }
-    }
-
 
     function got(){
         window.location.href = 'index.html'
     }
-
-
 
 </script>

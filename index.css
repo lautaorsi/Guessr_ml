@@ -31,6 +31,9 @@ input{
     position: absolute;
 }
 
+p{
+    font-family: 'Gabarito';
+}
 
 /*                              CREATE SECTION                                 */
 
@@ -164,21 +167,23 @@ textarea:focus, input:focus{
 
 #middle_container{
     margin-top: 4%;
+    position: relative;
     height: 80vh;
     top: 2%;
     bottom: 0%;
-    position: relative;
-    border-radius: 8px;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: 2fr 1fr 2fr ;
+    grid-gap: 1rem;
+    width: 100%;
 }
 
 #title{
-    margin-top: 50% !important;
     margin: auto;
     padding: 10px;
     width: 80%;
     background-color: rgb(65, 65, 65);
     border-radius: 8px;
-
 }
 
 #t_p{
@@ -188,7 +193,24 @@ textarea:focus, input:focus{
     2px 2px black, -2px -2px black, 2px -2px black, -2px 2px black;
 }
 
+#tips{
+    background-color: rgb(151, 180, 132);
+    border-radius: 8px;
+    height: 100%;
+    width: 80%;
+    margin: auto;
+}
 
+#tip_title{
+    text-align: center;
+    font-size: x-large;
+}
+
+#tip{
+    font-weight: bold;
+    font-size: large;
+    text-align: center;
+}
 
 
 #darken{
