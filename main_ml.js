@@ -841,9 +841,14 @@ socket.on('all_guessed', data => {
     //update scoreboard
     
     for(var k in data){
+
+        //format: {playerX: [coord 1, coord 2, points, color]}
+
+        if(data[k][0] != 0 &&  data[k][1] != 0){
         var latlng = L.latLng(data[k][0], data[k][1]);
         L.marker((latlng), {icon: color_list[data[k][3]]}).addTo(marker)
         .bindPopup(`${k}`);
+        }
         
         var table = document.getElementById('scoretable')
         for(let rw = 1; rw < table.rows.length; rw++){
@@ -875,8 +880,6 @@ socket.on('player_guessed', user => {
 map.on('click', function(e){
     if (Enable_marking == true){
         mark(e)
-       
-  
     }
 });
 
