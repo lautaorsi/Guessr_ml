@@ -259,7 +259,7 @@ var video_list = [["kXAHDqHfXAQ", 39.467269, -0.374927, ,'ES', 'CarpoWalks','htt
 ['Ad_QDNC_1g0',-23.5672806,-46.6496069,191,'BR','Walk This Way', 'https://www.youtube.com/@walkthisway001'],
 ['rktKwPbXLZs',22.2846002,114.2135811,59,'CH','Lazy Explorer','https://www.youtube.com/@lazy_explorer'],
 ['5ZcYgv9ffzU',37.0704012,-8.1081289,697,'PT','Walking Portugal','https://www.youtube.com/@Walking_Portugal'],
-['5ZcYgv9ffzU',37.06696758422314, -8.102253299954697,1854,'PT','Walking Portugal','https://www.youtube.com/@Walking_Portugal'],]
+['5ZcYgv9ffzU',37.06696758422314, -8.102253299954697,1854,'PT','Walking Portugal','https://www.youtube.com/@Walking_Portugal']]
 
 
 
@@ -523,7 +523,9 @@ socket.on('new_vid', index => {
     switchbtn()
 
     //clear all map layers
-    marker.clearLayers()
+    if(marker.getLayers().length > 0){
+        marker.clearLayers()
+    }
     if(guessed){
     polyline.removeFrom(map)
     marker_coords.length = 0
@@ -576,12 +578,14 @@ socket.on('end', scores =>{
     console.log(scores)
     func(scores, false)
     document.getElementsByClassName('pre')[0].style.display = 'block'
-    document.getElementsByClassName('post')[0].style.display = 'none'
-
-
+    document.getElementById('room_id_container').style.display = 'none'
+    document.getElementsByClassName('post')[0].remove()
+    player.pauseVideo()
 })
 
     
+
+
 
 
 function startTimer(){
@@ -649,6 +653,7 @@ function final_guess(c) {
     
     //if user didn't guess
     if(c == false){
+        guessed = false
         console.log('didnt press guess')
         
         guessed = false
@@ -669,7 +674,7 @@ function final_guess(c) {
                 var latlng = L.latLng(video_coords[0], video_coords[1]);
                 L.marker((latlng), {icon: greenIcon}).addTo(vidmarker);
             
-                socket.emit(`user_guessed`,([username,0,0,0,color]))
+                socket.emit(`user_guessed`,([username,0,0,0,color, 0]))
 
                 map.addLayer(vidmarker);
                 switchbtn()
@@ -688,13 +693,13 @@ function final_guess(c) {
         var latlng = L.latLng(video_coords[0], video_coords[1]);
         L.marker((latlng), {icon: greenIcon}).addTo(vidmarker);
     
-        socket.emit(`user_guessed`,([username,0,0,0,color]))
+        socket.emit(`user_guessed`,([username,0,0,0,color, 0]))
 
         map.addLayer(vidmarker);
         switchbtn()
         return
         }     
-        console.log('had marker placed')
+        
         guessed = true
         Enable_marking = false
 
@@ -706,7 +711,7 @@ function final_guess(c) {
         //calculate points
         var point = Number(calc_points())
         
-        socket.emit(`user_guessed`,([username,marker_coords[0],marker_coords[1],point.toFixed(0),color]))
+        socket.emit(`user_guessed`,([username,marker_coords[0],marker_coords[1],point.toFixed(0),color,distance]))
     
         socket.on('player_guessed', () => {
             
@@ -748,8 +753,8 @@ function final_guess(c) {
         }
 
     else{
+        guessed = true
 
-        console.log('pressed guess')
         pausado = true
         try{
              //if user tried guessing without clicking map show warning
@@ -791,7 +796,7 @@ function final_guess(c) {
 
 
     
-    socket.emit(`user_guessed`,([username,marker_coords[0],marker_coords[1],point.toFixed(0),color]))
+    socket.emit(`user_guessed`,([username,marker_coords[0],marker_coords[1],point.toFixed(0),color, distance]))
 
     vidmarker = L.layerGroup();
 
@@ -837,18 +842,23 @@ function final_guess(c) {
 
 
 socket.on('all_guessed', data => {
-    marker.clearLayers()
+    console.log(marker.getLayers().length)
     //update scoreboard
     
     for(var k in data){
+        //data format: {playerX1: [coord 1, coord 2, points, color],
+        //              playerX2: [coord 1, coord 2, points, color],...}
 
-        //format: {playerX: [coord 1, coord 2, points, color]}
+        if(data[k][0] != 0 && data[k][1] != 0){
+        
 
-        if(data[k][0] != 0 &&  data[k][1] != 0){
-        var latlng = L.latLng(data[k][0], data[k][1]);
-        L.marker((latlng), {icon: color_list[data[k][3]]}).addTo(marker)
-        .bindPopup(`${k}`);
+            var lsd = L.latLng(data[k][0], data[k][1]);
+
+            
+            L.marker((lsd), {icon: color_list[data[k][3]]}).addTo(marker)
+            .bindPopup(`${k}`);
         }
+        
         
         var table = document.getElementById('scoretable')
         for(let rw = 1; rw < table.rows.length; rw++){
@@ -863,15 +873,16 @@ socket.on('all_guessed', data => {
 })
 
 
-socket.on('player_guessed', user => {
+socket.on('player_guessed', data => {
+    //data = [user, distance]
     document.getElementById('nice').play()
     var x = document.createElement('div');
-    x.innerHTML = `${user} adivinó!`
+    x.innerHTML = `${data[0]} adivinó! <br>  (${data[1]} KM)`
     x.classList.add('notif');
-    x.setAttribute("id", `${user}` )
+    x.setAttribute("id", `${data[0]}` )
     document.getElementById("notif-placeholder").prepend(x);
     setTimeout(function(){
-        document.getElementById(user).remove();
+        document.getElementById(data[0]).remove();
    },3000);
 });
 
