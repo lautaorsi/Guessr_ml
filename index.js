@@ -40,6 +40,7 @@ app.get('/', (req, res) => {
 app.use(express.static(__dirname));
 
 var player_count = 0
+var current_players = 0
 
 let rooms = {}
 
@@ -60,7 +61,10 @@ let player_id = {}
 
 
 io.on('connection', (socket) => {
+  current_players += 1;
   player_count += 1;
+  console.log(`current players = ${current_players}`)
+  console.log(`overall players = ${player_count}`)
   var room = '';
   socket.emit('accepted'); 
 
@@ -80,14 +84,12 @@ io.on('connection', (socket) => {
     socket.join(data[1]) 
     room = data[1]
     var color = getColor()
-    console.log(color)
+
 
     //when user joins, join him to existent list or create one (w/ random color) 
     if(room in rooms){
       (rooms[room])['Players'].push([data[0],color,socket.id]);
       (rooms[room])['points'][data[0]] = 0
-      console.log('user is not host')
-      console.log(`rules are ${rooms[room][['Rules']]}`)
       socket.emit('rules', rooms[room][['Rules']])
     }
     else{
@@ -105,14 +107,11 @@ io.on('connection', (socket) => {
       (rooms[room])['Players'].push([data[0],color,socket.id]);
       (rooms[room])['points'][data[0]] = 0
       socket.emit('rules?',(rules) => {
-          console.log('asked for rules')
           rooms[room]['Rules'] = []
           rooms[room]['Rules'].push(rules.mode)
           rooms[room]['Rules'].push(rules.rounds)
           rooms[room]['Rules'].push(rules.time)
           rooms[room]['rounds'] = rules.rounds
-
-          console.log(`added rules to game ${rooms[room]['Rules']}`)
       })   
     }
      
@@ -125,7 +124,8 @@ io.on('connection', (socket) => {
   }) 
 
   socket.on("disconnect", (reason) => {
-    player_count -= 1;
+    current_players -= 1;
+
     //when user disconnects, remove him from the player list
     for(var i = 0 ; i < (rooms[room]['Players']).length ; i++){
       if((rooms[room]['Players'])[i][0] == player_id[socket.id]){
