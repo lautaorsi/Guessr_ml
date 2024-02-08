@@ -181,6 +181,7 @@ textarea:focus, input:focus{
 #title{
     margin: auto;
     padding: 10px;
+    text-align: center;
     width: 80%;
     background-color: rgb(65, 65, 65);
     border-radius: 8px;
@@ -191,6 +192,12 @@ textarea:focus, input:focus{
     font-size: xx-large !important;
     text-shadow: 3px 0 black, -3px 0 black, 0 3px black, 0 -3px black,
     2px 2px black, -2px -2px black, 2px -2px black, -2px 2px black;
+}
+
+#logo_middle{
+    position:  relative;
+    height: 100;
+    width: 140;
 }
 
 #tips{
@@ -211,6 +218,15 @@ textarea:focus, input:focus{
     font-size: large;
     text-align: center;
 }
+
+#Ads{
+    margin: auto;
+    width: 80%;
+    background-color: antiquewhite;
+    height: 100%;
+}
+
+
 
 
 #darken{
