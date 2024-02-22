@@ -51,6 +51,11 @@ h1{
     border-radius: 5px;
 }
 
+.winner{
+  width: 60% !important;
+  font-size: x-large !important;
+}
+
 .right{
     position: absolute;
     right: 5%;

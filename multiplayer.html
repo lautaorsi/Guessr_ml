@@ -136,8 +136,12 @@
                 x.classList.add('player', list[element][0]);
                 x.innerHTML = `${list[element][0]} <i class="fa-solid fa-location-dot right marker ${list[element][0]} " style="color: #005eff;"></i>`;
                 document.getElementById("players").appendChild(x);
-                document.getElementsByClassName(`right ${list[element][0]}`)[0].style.color = list[element][1];
+
+
+
             };   
+            
+
             }
             else{
 
@@ -149,21 +153,18 @@
                     document.getElementById("players").appendChild(x);
                 }
 
-                //Paint 1st place gold
-                document.getElementsByClassName(`player`)[0].style.backgroundColor = '#ffd700'
 
-                //if there is 2+ players add Silver
-                if(document.getElementsByClassName('player').length >= 2){
-                    document.getElementsByClassName(`player`)[1].style.backgroundColor = '#c0c0c0'
-                }
+                //find user w max score
+                const max = Math.max(...Object.values(list))
+                const max_index = (Object.values(list)).indexOf(max)
 
-                //if 3+ players add Bronze
-                if(document.getElementsByClassName('player').length >= 3){
-                document.getElementsByClassName(`player`)[2].style.backgroundColor = '#996515'
-                }
-            }
+                //paint gold
+                document.getElementsByClassName(`player`)[max_index].style.backgroundColor = '#ffd700'
+                document.getElementsByClassName(`player`)[max_index].classList.add('winner')
+
             
         }
+    }
 
 
         const socket = io();
