@@ -18,7 +18,7 @@
         </a>
         <div id="main_lobby" class="pre">
             <div id="main_container">
-                <h1>Jugadores</h1>
+                <h1 id="title">Jugadores</h1>
                 <div id="players">
                 </div>
             </div>
@@ -138,13 +138,12 @@
                 document.getElementById("players").appendChild(x);
 
 
-
             };   
             
 
             }
             else{
-
+                document.getElementById('title').innerHTML = 'Scoreboard'
                 //create final scoreboard with all players
                 for(let element in list){
                     var x = document.createElement('div');
@@ -155,8 +154,9 @@
 
 
                 //find user w max score
-                const max = Math.max(...Object.values(list))
-                const max_index = (Object.values(list)).indexOf(max)
+                const score_array = Object.values(list)
+                const max = Math.max(...score_array)
+                const max_index = (score_array).indexOf(max)
 
                 //paint gold
                 document.getElementsByClassName(`player`)[max_index].style.backgroundColor = '#ffd700'
@@ -240,6 +240,23 @@
         })
 
 
+
+
+
+        //TESTING     
+
+
+        //-------------bots won't actually join the game-------------//
+        function bot(n){
+            for(var i = 0; i < n; i++){
+            var usern = Math.random(50)
+            var x = document.createElement('div');
+            x.classList.add('player', usern);
+            x.innerHTML = `${usern} <i class="fa-solid fa-location-dot right marker ${usern} " style="color: #005eff;"></i>`;
+            document.getElementById("players").appendChild(x);
+            }
+            return(`${n} bots added`)
+        }
 
 
     </script>
