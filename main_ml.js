@@ -184,7 +184,7 @@ var video_list = [
     ["rFfWAwsdZWI", 59.9119644,10.7485938,1725,'NW', 'Atmos Walks','https://www.youtube.com/@AtmosWalks','Oslo'],
     ['sKTox7DglVg',37.8093724,-122.4759122,301, 'US', 'Traveling w/ Andrew', 'https://www.youtube.com/@TravelingwithAndrew','San Francisco'],
     ['sKTox7DglVg',37.8084333,-122.4729643,1400, 'US', 'Traveling w/ Andrew', 'https://www.youtube.com/@TravelingwithAndrew','San Francisco'],
-    // ['a6VI-4YNHR0',40.7567671,-73.9865428,6, 'US', 'Traveling w/ Andrew', 'https://www.youtube.com/@TravelingwithAndrew',''],
+    ['a6VI-4YNHR0',40.7567671,-73.9865428,6, 'US', 'Traveling w/ Andrew', 'https://www.youtube.com/@TravelingwithAndrew',''],
     ['4ugekTk2_Ss',40.6908017,-74.045311,315, 'US', 'Traveling w/ Andrew', 'https://www.youtube.com/@TravelingwithAndrew','New York'],
     ['-jHtx64DUuw',21.4310782,-157.8315108,5, 'US', 'Traveling w/ Andrew', 'https://www.youtube.com/@TravelingwithAndrew','Yucatan'],
     ['0WFAbXjpC1s',21.281624, -157.830731,107, 'US', 'Traveling w/ Andrew', 'https://www.youtube.com/@TravelingwithAndrew','Hawaii'],
@@ -340,7 +340,8 @@ player = new YT.Player("myvid", {
                 origin: "http://localhost:3000/multiplayer.html"
             },
             events: {
-                onReady: onPlayerReady
+                onReady: onPlayerReady,
+                onError: onPlayerError
             },
 });
 
@@ -376,6 +377,13 @@ function onPlayerReady(event) {
     a.innerHTML = `${active_playlist[vid_index][5]}`
     
     setTimeout(() => {  document.getElementById('howto').style.display = "none"; }, 4500)
+    startTimer()
+}
+
+function onPlayerError(event){
+    console.log('reporting error')
+    socket.emit('video_error')
+    
 }
 
 
@@ -515,6 +523,7 @@ function next(e) {
             console.log('listo')
         socket.emit('player_ready')
         document.getElementById('continue').innerHTML = 'Esperando a los jugadores'
+        document.getElementById('continue').style.backgroundColor = 'green'
     }
 
 
@@ -535,6 +544,7 @@ socket.on('new_vid', index => {
 
     //update continue button
     document.getElementById('continue').innerHTML = 'Continuar'
+    document.getElementById('continue').style.backgroundColor = '#ffffff'
     switchbtn()
 
     //clear all map layers
@@ -559,7 +569,6 @@ socket.on('new_vid', index => {
     document.getElementById('modal').close()
 
 
-    //data will be video list index
 
     //get new video
     var newvid = video_list[index]
@@ -587,6 +596,32 @@ socket.on('new_vid', index => {
 })
 
 
+socket.on(`replace_vid`, index => {
+    console.log('new video aknowledged')
+    //get new video
+    var newvid = video_list[index]
+    vid_index = index
+    active_video = newvid
+    console.log(newvid)
+    video_coords = [active_video[1],active_video[2]]
+    console.log(newvid)
+
+
+    //update video
+    player.loadVideoById(newvid[0],newvid[3]);
+
+
+    //update credits
+    var a = document.getElementById('credits');
+    a.href = active_playlist[vid_index][6]
+    a.innerHTML = `${active_playlist[vid_index][5]}`
+        
+    time = abstime
+    pausado = false
+    //start timer
+    startTimer()
+})
+
 
 
 socket.on('end', scores =>{
@@ -612,13 +647,16 @@ function startTimer(){
 }
 
 function looptime(){
-    if(time < 1){
-        final_guess(false)
+    if(time < 1 && marker_placed){
+        final_guess(true)
     }
-    else{
+    if(time >= 1){
        interval = setTimeout(function() {
           updatetime()
         }, 1000);
+    }
+    if(time < 1 && marker_placed == false){
+        final_guess(false)
     }
     
 }
@@ -658,17 +696,57 @@ function play(){
 }
 
 
-//guessing secuence 
-//c == false => user made no guess, otherwise user guessed
 
+
+
+//guessing secuence
 function final_guess(c) {
+    if(c){
+        try{
+            //if user tried guessing without clicking map show warning
+           if (marker_coords[0] == null ||  marker_coords[1] == null){
+              
+               showWarning()
+               return
+           }
+       }
+       catch(err){
+          
+           showWarning()
+           return
+    
+       }
+
+    }
+
+
+
     playing = false
     document.getElementById('tic').currentTime = 0
     document.getElementById('tic').pause()
+    pausado = true
+
+                            
+    //add marker on vid coords 
+    vidmarker = L.layerGroup();
+    var latlng = L.latLng(video_coords[0], video_coords[1]);
+    var green_marker = L.marker((latlng), {icon: greenIcon})
+        .addTo(vidmarker)
+        .bindPopup(`${active_playlist[vid_index][7]}, ${country(active_playlist[vid_index][4])}`);
+    map.addLayer(vidmarker);
+    green_marker.openPopup();
+
+
+    //if c == false user didn't guess
     
-    //if user didn't guess
+    //if user didn't guess on these gamemodes, game ends
+    if(c == false && (gamemode == 'contrarreloj' || gamemode == '1hp' || gamemode == 'radius')){
+        
+        end()
+    }
+
+    //if user didn't guess on regular gamemodes
     if(c == false){
-        guessed = false
         console.log('didnt press guess')
         
         guessed = false
@@ -677,98 +755,35 @@ function final_guess(c) {
         
         Enable_marking = false
         try{
-            //if user didn't place marker on map
+            //if user tried guessing without clicking map show warning
            if (marker_coords[0] == null ||  marker_coords[1] == null){
                 //give 0 points
                 score = 0
-                
+                socket.emit(`user_guessed`,([username,marker_coords[0],marker_coords[1],point.toFixed(0),color,distance]))
                 document.getElementById("h2").innerHTML = "El tiempo acabo! ";
 
-            
-                socket.emit(`user_guessed`,([username,0,0,0,color, 0]))
-
                 switchbtn()
-
                return
            }
        }
        catch(err){
         //give 0 points
         score = 0
-
+        socket.emit(`user_guessed`,([username,marker_coords[0],marker_coords[1],point.toFixed(0),color,distance]))
         document.getElementById("h2").innerHTML = "El tiempo acabo! ";
+        
 
-        socket.emit(`user_guessed`,([username,0,0,0,color, 0]))
+
+
         switchbtn()
         return
-        }     
-        
-        guessed = true
-        Enable_marking = false
-
-        //calculate distance between user's guess and vid coords
-        distance = distance_calc([marker_coords[0], marker_coords[1]], video_coords)
-    
-        switchbtn()
-    
-        //calculate points
-        var point = Number(calc_points())
-        
-        socket.emit(`user_guessed`,([username,marker_coords[0],marker_coords[1],point.toFixed(0),color,distance]))
-    
-        socket.on('player_guessed', () => {
-            
-        })
-    
-    
-
-    
-        //draw line between the 2 markers
-        var latlngs = [];
-        latlngs.push(L.latLng(marker_coords[0],marker_coords[1]));
-        latlngs.push(L.latLng(video_coords[0],video_coords[1]));
-        polyline = L.polyline(latlngs, {color: 'black'})
-        try{polyline.addTo(map);}
-        catch(err){
-            
-            showWarning()
-            return
-        }    
-    
-        //zoom into line
-        map.fitBounds(polyline.getBounds());
-    
-    
-        //display distance from guess to right answer
-        if(distance < 1){
-            document.getElementById("h2").innerHTML = "El tiempo acabo! " + Number((Number((distance))*1000).toFixed(0)) + " M";
-        }
-        else{
-        document.getElementById("h2").innerHTML = "El tiempo acabo! " + Number((distance).toFixed(2)) + " KM";
-        }
-        showDistance()
-        }
-
+        }}
     else{
-        guessed = true
+        console.log('pressed guess')
 
-        pausado = true
-        try{
-             //if user tried guessing without clicking map show warning
-            if (marker_coords[0] == null ||  marker_coords[1] == null){
-               
-                showWarning()
-                return
-            }
-        }
-        catch(err){
-           
-            showWarning()
-            return
-    
-        }
 
     Enable_marking = false
+    guessed = true
 
 
 
@@ -784,18 +799,11 @@ function final_guess(c) {
     }
     switchbtn()
 
-
-
     //calculate points
     var point = Number(calc_points())
 
-
-
-
+    socket.emit(`user_guessed`,([username,marker_coords[0],marker_coords[1],point.toFixed(0),color,distance]))
     
-    socket.emit(`user_guessed`,([username,marker_coords[0],marker_coords[1],point.toFixed(0),color, distance]))
-
-
 
     //draw line between the 2 markers
     var latlngs = [];
@@ -824,16 +832,9 @@ function final_guess(c) {
     }
 
 
-    
-    //add marker on vid coords 
-    vidmarker = L.layerGroup();
-    var latlng = L.latLng(video_coords[0], video_coords[1]);
-    var green_marker = L.marker((latlng), {icon: greenIcon})
-        .addTo(vidmarker)
-        .bindPopup(`${active_playlist[vid_index][7]}, ${country(active_playlist[vid_index][4])}`);
-    map.addLayer(vidmarker);
-    green_marker.openPopup();
-    
+
+
+
     
     
 }
@@ -922,7 +923,7 @@ document.addEventListener('keydown', (event) => {
     if (name === 'Enter' && bool_map) {
         if (x.style.visibility != "hidden"){
            
-            final_guess()
+            final_guess(true)
         }
         else{
             next()
@@ -969,5 +970,74 @@ window.onclick = function(event) {
 if (window.performance.getEntriesByType) {
     if (window.performance.getEntriesByType("navigation")[0].type === "reload") {
         window.location.href = './index.html';
+    }
+}
+
+function country(index){
+    switch (index){
+        case 'MX':
+            return('Mexico');
+        case 'AR':
+            return('Argentina');
+        case 'ITA':
+            return('Italy');        
+        case 'FR':
+            return('France');
+        case 'US':
+            return('United States');
+        case 'UK':
+            return('United Kingdom');
+        case 'CRO':
+            return('Croatia');
+        case 'BR':
+            return('Brazil');
+        case 'CA':
+            return('Canada');
+        case 'JAP':
+            return('Japan');
+        case 'CH':
+            return('China');
+        case 'POL':
+            return('Poland');
+        case 'TR':
+            return('Turkey');
+        case 'UR':
+            return('Uruguay');
+        case 'TH':
+            return('Thailand');
+        case 'RU':
+            return('Russia');
+        case 'PK':
+            return('Pakistan');
+        case 'SK':
+            return('South Korea');
+        case 'PT':
+            return('Portugal');
+        case 'DE':
+            return('Germany');            
+        case 'SZ':
+            return('Switzerland');
+        case 'LTV':
+            return('Latvia');
+        case 'IRE':
+            return('Ireland');     
+        case 'KH':
+            return('Cambodia');
+        case 'EG':
+            return('Egypt');         
+        case 'BE':
+            return('Belgium');
+        case 'NW':
+            return('Norway');    
+        case 'VN':
+            return('Vietnam');
+        case 'CZ':
+            return('Czech Republic');
+        case 'SG':
+            return('Singapore')
+        case 'PAR':
+            return('Paraguay')
+        default:
+            return('Unknown')
     }
 }

@@ -90,7 +90,6 @@
                             </div>
                             <button id="close_map" onclick="window.modal.close(),  map_open()">Cerrar</button>
                             <a href="#" id="guess" class="btn btn-white btn-        animate" onclick="final_guess(true)">Adivinar</a>
-                            <button id = "continue" onclick="next()">Continuar</button>
                         </div>
                 </dialog>
                 <div id="warning-container" >
@@ -98,6 +97,7 @@
                     <i class="fa-solid fa-location-dot fa-bounce" id="marker_warning" style="color: #005eff;"></i> 
                 </div>
             <div id="notif-placeholder"></div>
+            <button id = "continue" onclick="next()">Continuar</button>
         </div>
     <script>
         function got(){
@@ -135,10 +135,8 @@
                 console.log(list);
                 var x = document.createElement('div');
                 x.classList.add('player', list[element][0]);
-                x.innerHTML = `${list[element][0]} <i class="fa-solid fa-location-dot right marker ${list[element][0]} " style="color: #005eff;"></i>`;
+                x.innerHTML = `${list[element][0]} <i class="fa-solid fa-location-dot right marker ${list[element][0]} " style="color: ${list[element][1]};"></i>`;
                 document.getElementById("players").appendChild(x);
-
-
             };   
             
 
@@ -175,7 +173,7 @@
             player_list = users
         })
 
-        const username = localStorage.getItem('usern')
+        var username = localStorage.getItem('usern')
         var room_id = localStorage.getItem('roomid')
         if(room_id == 1){
             room_id = Math.random().toString(36).substring(2, 13); 
@@ -183,8 +181,9 @@
         socket.on('accepted',(rules) => {
             document.getElementById('room_id').innerHTML = `ID de Sala : ${room_id}`
             //emit username on connection
-            socket.emit('username', [username,room_id], callback => {
+            socket.emit('username', [username,room_id.replace(/\s/g, "")], callback => {
                 color = callback.col
+                username = callback.name
             })
         })
         socket.on('rules?', response => {
@@ -241,6 +240,9 @@
         })
 
 
+        socket.on('admin', () => {
+            document.getElementById('start_button').style.display = 'block'
+        })
 
 
 

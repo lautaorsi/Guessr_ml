@@ -20,6 +20,7 @@ const videos_qty = 171
 
 
 
+
 function getColor(){
       return colors[rando(colors.length - 1)]
 }
@@ -61,6 +62,7 @@ let player_id = {}
 
 
 io.on('connection', (socket) => {
+  var video
   current_players += 1;
   player_count += 1;
   console.log(`current players = ${current_players}`)
@@ -88,24 +90,33 @@ io.on('connection', (socket) => {
 
     //when user joins, join him to existent list or create one (w/ random color) 
     if(room in rooms){
+      while(((rooms[room])['names']).includes(data[0])){
+        data[0] = `${data[0]}${rando(100)}`
+        player_id[socket.id] = data[0]
+      }
       (rooms[room])['Players'].push([data[0],color,socket.id]);
-      (rooms[room])['points'][data[0]] = 0
-      socket.emit('rules', rooms[room][['Rules']])
+      ((rooms[room])['names']).push(data[0]);
+      (rooms[room])['points'][data[0]] = 0;
+      socket.emit('rules', rooms[room][['Rules']]);
+      console.log(rooms[room].names)
     }
     else{
       //create room object within rooms dictionary
       rooms[room] = {
         'Players': [],
+        'names': [data[0]],
         'guesses' : 0,
         'guess_data': {},
         'current_round':1,
         'players_ready': 0,
-        'points': {}
+        'points': {},
+        'error_counter': 0
       };
 
       //add player to property
       (rooms[room])['Players'].push([data[0],color,socket.id]);
       (rooms[room])['points'][data[0]] = 0
+      console.log(rooms[room].names)
       socket.emit('rules?',(rules) => {
           rooms[room]['Rules'] = []
           rooms[room]['Rules'].push(rules.mode)
@@ -119,7 +130,8 @@ io.on('connection', (socket) => {
     //update player list to all players in room
     io.to(room).emit('users', rooms[room])
     callback({
-      col: color
+      col: color,
+      name: data[0]
     });
   }) 
 
@@ -129,7 +141,21 @@ io.on('connection', (socket) => {
     //when user disconnects, remove him from the player list
     for(var i = 0 ; i < (rooms[room]['Players']).length ; i++){
       if((rooms[room]['Players'])[i][0] == player_id[socket.id]){
+
+        //if admin left, give admin to next player
+        if(i == 0 && rooms[room]['Players'].length > 1){
+          io.to((rooms[room]['Players'])[1][2]).emit('admin')
+        }
+
+
         (rooms[room]['Players']).splice(i, 1)
+        break
+      }
+    }
+    //remove him from name list
+    for(var i = 0 ; i < (rooms[room]['names']).length ; i++){
+      if((rooms[room]['names'])[i][0] == player_id[socket.id]){
+        (rooms[room]['names']).splice(i, 1)
       }
     }
 
@@ -149,7 +175,7 @@ io.on('connection', (socket) => {
     if(socket.id == rooms[room]['Players'][0][2]){
       //to start, minimum of 2 players required
       if(rooms[room]['Players'].length >= 2){
-        var video = rando(videos_qty)
+         video = rando(videos_qty)
         rooms[room]['VIDEOS'] = []
         rooms[room]['VIDEOS'].push(video)
         io.to(room).emit('game start', video)
@@ -171,6 +197,24 @@ io.on('connection', (socket) => {
       rooms[room].guesses = 0
     }
 
+  })
+
+  socket.on('video_error', () => {
+    (rooms[room]).error_counter += 1
+    console.log(`error reported, counted: ${(rooms[room]).error_counter}`)
+    if((rooms[room]).error_counter >= (rooms[room]['Players'].length/2)){
+      console.log('error aknowledged')
+      while(rooms[room]['VIDEOS'].includes(video)){
+        video =  rando(videos_qty)
+        console.log('searching new video')
+      }
+      console.log('new video found')
+      rooms[room]['VIDEOS'].push(video)
+      io.to(room).emit('replace_vid', video)
+      rooms[room].players_ready = 0
+      rooms[room].error_counter = 0
+      console.log(`resetting error counter: ${rooms[room].error_counter}`)
+    }
   })
 
   socket.on('player_ready', () => {

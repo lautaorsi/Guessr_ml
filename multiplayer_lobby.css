@@ -668,11 +668,13 @@ h1{
     transition: box-shadow 0.25s ease-in-out;
     font-size: medium;
     padding: 15px 30px;
-    top: 20%;
-    right: 3%;
+    bottom: 10%;
+    right: 5%;
     position: absolute;
     visibility: hidden;
   }
+
+
   
   
   
