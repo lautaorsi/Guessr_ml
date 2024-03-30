@@ -1,0 +1,183 @@
+<html lang="es">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="../static/logo.png">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4047903443253489"
+     crossorigin="anonymous"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../index_test.css">
+        <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Gabarito&family=Merriweather Sans">
+        <script src="https://kit.fontawesome.com/493860cbeb.js" crossorigin="anonymous"></script>
+
+        <script>
+        var lmode = localStorage.getItem('lightMode')
+        function whiten(){
+            var body = document.getElementsByTagName('body')[0];
+            body.style.backgroundImage = 'url(../static/background_small.jpg)';
+            var h3s = document.getElementsByTagName('h3')
+            for (let i = 0; i < h3s.length; i++) {
+                h3s[i].style.color = 'black' 
+            }
+            var headers = document.getElementsByClassName('headers')
+            for (let i = 0; i < headers.length; i++) {
+                headers[i].style.color = 'black' 
+            }
+            var keys = document.getElementsByClassName('s')
+            console.log(keys)
+            for (let i = 0; i < keys.length; i++) {
+                keys[i].style.color = 'black' 
+            }
+            document.getElementById('black').style.display = 'none'
+            document.getElementById('white').style.display = 'block'
+            document.getElementById('whiten').style.display = 'block'
+            document.getElementById('darken').style.display = 'none'
+        }
+
+
+
+
+
+        function darken(){
+            var body = document.getElementsByTagName('body')[0];
+            body.style.backgroundImage = 'url(../static/night_background.jpg)';
+            var h3s = document.getElementsByTagName('h3')
+            for (let i = 0; i < h3s.length; i++) {
+                h3s[i].style.color = 'white' 
+            }
+            var headers = document.getElementsByClassName('headers')
+            for (let i = 0; i < headers.length; i++) {
+                headers[i].style.color = 'white' 
+            }
+            var keys = document.getElementsByClassName('s')
+            for (let i = 0; i < keys.length; i++) {
+                keys[i].style.color = 'white' 
+            }
+            document.getElementById('black').style.display = 'block'
+            document.getElementById('white').style.display = 'none'
+            document.getElementById('darken').style.display = 'block'
+            document.getElementById('whiten').style.display = 'none'
+        }
+
+
+        
+        function nam(e){
+            if(e){
+                localStorage.setItem('roomid',1)
+                var hname = document.getElementById('HostName').value.replace(/\s/g, "")
+                if(document.getElementById('modeselect').value == 'none' || document.getElementById('roundselect').value == 'none' || document.getElementById('timeselect').value == 'none'){
+                    alert('Debes elegir modo, rondas y tiempo!')
+                    return('error')
+                }
+                else{
+                    localStorage.setItem('mode', document.getElementById('modeselect').value)
+                    localStorage.setItem('rounds', document.getElementById('roundselect').value)
+                    localStorage.setItem('time', document.getElementById('timeselect').value)
+                }
+                
+            }
+            else{
+                localStorage.setItem('roomid',(document.getElementById('lobby_id').value))
+                var hname = document.getElementById('player_username').value.replace(/\s/g, "")
+            }
+            if(hname == ''){
+                alert('Insert username')
+                return('error')
+            }
+            if(hname.length > 15 && hname != 'MegaLanchaUrbanaDeNieveElectrica72' && hname != 'MonoArañaProctologo420'){
+                //little easter egg :)
+                alert('Username is too long!')
+                return('error')
+            }
+            else{
+                localStorage.setItem('usern',hname)
+                window.location.href = 'multiplayer.html'
+            }
+            
+        }
+
+        </script>
+
+
+    </head>
+    <body>
+            <title>VideoGuessr - Online Menu</title>
+            <a onclick="got()">
+                <button id="return" >
+                    <i class="fa-solid fa-arrow-left" style="color: #000000;"></i>
+                </button>
+            </a>
+            <div id="main_container">
+                <div id="create_container">
+                    <h2 id="gamemode">Create Lobby</h2>
+                    <div id="selectors">
+                            <select id="modeselect" class="selects">
+                                <option value="none" disabled selected>Mode</option>
+                                <option value='CLASICO' >Normal</option>
+                                <option value='INVERTIDO' >Upside Down</option>
+                            </select>
+                            <select id="roundselect" class="selects">
+                                <option value="none" disabled selected>Rounds</option>
+                                <option value=5 >5 rounds</option>
+                                <option value=10 >10 rounds</option>
+                                <option value=15 >15 rounds</option>
+                                <option value=20 >20 rounds</option>
+                            </select>
+                            <select id="timeselect" class="selects">
+                                <option value="none" disabled selected>Time</option>
+                                <option value=30 id="time1">30s</option>
+                                <option value=50 id="time2">50s</option>
+                                <option value=90 id="time3">90s</option>
+                                <option value=120 id="time4" >120s</option>
+                                <option value=210 id="time5">210s</option>
+                            </select>
+                    </div>
+                    <input type="text" name="Host_name" class="username_input" id="HostName" size="25" placeholder="Username">
+                    <div class="create_button_container">    
+                        <button id="create_session" onclick="nam(true)">Create Lobby</button>
+                    </div>
+                </div>
+                <div id="middle_container">
+                    <div id="Ads"></div>
+                    <div id="title">
+                        <img src="../static/logo.png" id="logo_middle">
+                        <!-- <h2 id="t_p">VideoGuessr</h2> -->
+                    </div>
+                    <div id="tips">
+                        <p id="tip_title">Tips:</p>
+                        <p id="tip">&#x2022; Keep an eye on license plates! &#x2022;</p>
+                        <p id="tip">&#x2022; Listen and identify the language spoken throughout the video &#x2022;</p>
+                        <p id="tip">&#x2022; A random answer is better than none &#x2022;</p>
+                        <p id="tip">&#x2022; Cheating will only ruin your own fun! &#x2022;</p>
+                    </div>
+                </div>
+                <div id="join_container">
+                    <h2 id="join_title">Join Game</h2>
+                    <input type="text" id="lobby_id" placeholder="Lobby ID">
+                    <div id="lower_half">
+                        <input type="text" id="player_username" class="username_input" placeholder="Username">
+                        <button id="join_room" onclick="nam(false)">Join</button>
+                    </div>
+                </div>
+            </div>
+            <div id="mode">
+                <a id="darken" onclick="whiten()" display="none">🌑</a>
+                <a id="whiten" onclick="darken()">🔆</a>
+            </div> 
+            <div id="credits_container">
+                <a href="https://www.pexels.com/photo/downtown-buenos-aires-agrentina-15574935/" target="_blank" class="credits" id="white">Photo by Renan Braz</a>
+                <a href="https://www.pexels.com/photo/monument-of-al-chacho-penaloza-in-la-rioja-argentina-13572011/" target="_blank" class="credits" id="black">Photo by Maxi Leiva</a>
+            </div>
+    </body>
+</html>
+
+
+<script>    
+
+    function got(){
+        window.location.href = 'index.html'
+    }
+
+</script>

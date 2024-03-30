@@ -1,0 +1,283 @@
+<html>
+    <head>
+        <link rel="icon" href="../static/logo.png">
+        <script src="https://randojs.com/2.0.0.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/> 
+    <script type="text/javascript" src="../leaflet/leaflet.js"></script>
+        <link rel="stylesheet" href="../multiplayer_lobby.css" type="text/css">
+        <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Gabarito&family=Mukta&family=Roboto">
+        <script src="https://kit.fontawesome.com/493860cbeb.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <title>VideoGuessr - Partida Online</title>
+        <a onclick="got()">
+            <button id="return" >
+                <i class="fa-solid fa-arrow-left" style="color: #000000;"></i>
+            </button>
+        </a>
+        <div id="main_lobby" class="pre">
+            <div id="main_container">
+                <h1 id="title">Jugadores</h1>
+                <div id="players">
+                </div>
+            </div>
+            <div id="room_id_container" >
+                <h3 id="room_id">ID de Sala: xxxxxxxxxxx</h3>
+                <div id="start_button" onclick="game()">
+                    <h3 id="start_text" style="font-family: Mukta;">Empezar</h3>
+                </div>
+            </div>
+
+        </div>
+    
+
+        <div id="main_game" class="post">
+            <audio id="cheers">
+                <source src="../static/cheer.mp3" type="audio/mp3">
+            </audio>
+            <audio id="nice">
+                <source src="../static/nice.wav" type="audio/mp3">
+            </audio>
+            <audio src="../static/tic.mp3" id="tic"></audio>
+            <div id="pausecontainer" >
+                <button id="pausebutton" onclick="pause()">PAUSAR⏸</button>
+                <button id="playbutton" onclick="play()">CONTINUAR▶️</button>
+            </div>
+            <div id="timercontainer" >
+                <p id="timer"></p>
+            </div>
+            <div id="roundcontainer" >
+                <p id="round">/</p>
+            </div>
+            <div class="open_map" >
+                <button id="Open_map" onclick="window.modal.showModal(), invsze(),  map_open()" data-title="Click to guess!"><img src="../static/globe.png" id = "globe" ></button>
+                <p id="howto" >Aprieta el globo para adivinar!</p>
+            </div>
+            <div class="custom-controls" >
+                
+                <button id="rewindButton" onclick="rewindVideo()"><i class="fa-solid fa-backward" style="color: #003aad;"></i> 5s</button>
+                <div id="speedcontainer">
+                    <button id="reduceSpeedButton"  style="font-size: large;">x1</button>
+                    <input type="range" id="speedrange" min="0.25" max="2" step="0.25"  > 
+                </div>
+                <button id="restartVideo" onclick="restartVideo()">Restart Video</button>
+            </div>
+            <div id="credits_container" >
+                <a href="" target="_blank" id="credits"></a>
+            </div>
+            <table width = "200" class="scoretable" id="scoretable">
+                <th>Puntaje</th>
+            </table>
+            <div id="volumecontainer" >
+                <i class="fa-solid fa-volume-xmark" style="color: #0057f8;" id="volume_icon"></i>
+                <input type="range" name="volume" id="volumerange" class="volumerange" min="0" max="100" value="30">
+            </div>
+        
+            <div class="video-background">
+                <div class="video-foreground">
+                    <div id="myvid" class="ytplayer-nbvz">
+                        <iframe src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+                <dialog id="modal">
+                        <div id="map"></div>
+                        <div id="lowermodal">
+                            <div id="distance">
+                                <h2 id="h2"></h2>
+                            </div>
+                            <button id="close_map" onclick="window.modal.close(),  map_open()">Cerrar</button>
+                            <a href="#" id="guess" class="btn btn-white btn-        animate" onclick="final_guess(true)">Adivinar</a>
+                        </div>
+                </dialog>
+                <div id="warning-container" >
+                    <text id="warning">Clickea el mapa para adivinar!</text>
+                    <i class="fa-solid fa-location-dot fa-bounce" id="marker_warning" style="color: #005eff;"></i> 
+                </div>
+            <div id="notif-placeholder"></div>
+            <button id = "continue" onclick="next()">Continuar</button>
+        </div>
+    <script>
+        function got(){
+                window.location.href = 'index.html'
+        }
+    </script>
+    <script src="../socket.io/socket.io.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        var start_id
+
+
+
+
+        function game(){
+            if(players.length < 2){
+                alert('No hay suficientes jugadores!')
+            }
+            else{
+                socket.emit('start')
+            }
+            
+        }
+
+        var players = []
+ 
+        function func(list,cond){
+            //if cond == True => initial board w/ marker colors
+            //if cond == False => final board w/ scores
+            players = list
+            document.querySelectorAll('.player').forEach(e => e.remove());
+            //when called, func will delete the html content and create a new one with the updated list
+            if(cond){
+                for(var element = 0; element < list.length; element++ ){
+                    var x = document.createElement('div');
+                    x.classList.add('player', list[element].username);
+                    x.innerHTML = `${list[element].username} <i class="fa-solid fa-location-dot right marker ${list[element].username} " style="color: ${list[element].color};"></i>`;
+                    document.getElementById("players").appendChild(x);
+                };   
+            }
+            else{
+                document.getElementById('title').innerHTML = 'Scoreboard'
+                //create final scoreboard with all players
+                for(let element in list){
+                    var x = document.createElement('div');
+                    x.classList.add('player', element);
+                    x.innerHTML = `${list[element].username} <p class="right score">${list[element].points}</p>`;
+                    document.getElementById("players").appendChild(x);
+                }
+
+                document.getElementsByClassName(`player`)[0].classList.add('winner', 'p1')
+                document.getElementsByClassName(`player`)[1].classList.add('winner','p2')
+                if((document.getElementsByClassName('player')).length >= 3){
+                    document.getElementsByClassName(`player`)[2].classList.add('winner','p3')
+                }
+
+                //paint gold
+                document.getElementsByClassName(`player`)[0].style.backgroundColor = '#ffd700'
+                //paint silver
+                document.getElementsByClassName(`player`)[1].style.backgroundColor = '#c0c0c0'
+                if((document.getElementsByClassName('player')).length >= 3){
+                    //paint copper
+                    document.getElementsByClassName(`player`)[2].style.backgroundColor = '#b87333'
+                }
+
+                
+
+            
+        }
+    }
+    </script>
+    <script>
+        const socket = io();
+        socket.on('users', (users) => {
+            //add user to html list and array on new user connection
+            func(users['Players'], true)
+            player_list = users
+        })
+
+        var username = localStorage.getItem('usern')
+        var room_id = localStorage.getItem('roomid')
+        if(room_id == 1){
+            room_id = Math.random().toString(36).substring(2, 13); 
+        }
+        socket.on('accepted',(rules) => {
+            document.getElementById('room_id').innerHTML = `ID de Sala : ${room_id}`
+            //emit username on connection
+            socket.emit('username', {username:username,roomID:room_id.replace(/\s/g, "")}, callback => {
+                color = callback.col
+                username = callback.name
+            })
+        })
+        socket.on('rules?', response => {
+            document.getElementById('start_button').style.display = 'block'
+            response({
+                mode: localStorage.getItem('mode'), 
+                rounds: localStorage.getItem('rounds'), 
+                time :localStorage.getItem('time')
+            })
+        })
+
+        socket.on('rules', data => {
+            localStorage.setItem('mode', data.mode)
+            localStorage.setItem('rounds', data.rounds)
+            localStorage.setItem('time', data.time)
+        })
+        socket.on("session", ({ sessionID, userID }) => {
+        // attach the session ID to the next reconnection attempts
+        socket.auth = { sessionID };
+        // store it in the localStorage
+        localStorage.setItem("sessionID", sessionID);
+        // save the ID of the user
+        socket.userID = userID;
+        });
+
+        socket.on('player_disconnected', (data) =>{
+            //rebuild player list (delete html elements and update list)
+            document.querySelectorAll(`.${data['username']}`).forEach(e => e.remove());
+            
+            //update client side player list
+            players = data['new_list']
+        })
+
+        socket.on('game start', (id) => {
+            start_id = id
+            document.getElementsByClassName('pre')[0].style.display = 'none'
+            document.getElementsByClassName('post')[0].style.display = 'block'
+
+            const table = document.getElementById('scoretable')
+            for(var e in players){
+            var row = table.insertRow(1)
+            var cell1 = row.insertCell(0)
+            cell1.classList.add('username')
+            var cell2 = row.insertCell(1)
+            cell2.classList.add('points')
+            cell1.innerHTML = players[e].username
+            cell2.innerHTML = 0
+            }
+
+            var script = document.createElement('script');
+            script.src = '../main_ml.js';
+            document.head.appendChild(script)
+            
+        })
+
+
+        socket.on('admin', () => {
+            document.getElementById('start_button').style.display = 'block'
+        })
+
+
+
+        //TESTING     
+
+
+        //-------------bots won't actually join the game-------------//
+        function bot(n){
+            for(var i = 0; i < n; i++){
+            var usern = Math.random(50)
+            var x = document.createElement('div');
+            x.classList.add('player', usern);
+            x.innerHTML = `${usern} <i class="fa-solid fa-location-dot right marker ${usern} " style="color: #005eff;"></i>`;
+            document.getElementById("players").appendChild(x);
+            }
+            return(`${n} bots added`)
+        }
+
+
+    </script>
+
+    <script>
+        if (window.performance.getEntriesByType) {
+            if (window.performance.getEntriesByType("navigation")[0].type === "reload") {
+                window.location.href = './index.html';
+            }
+        }
+    </script>
+
+
+
+    </body>
+</html>

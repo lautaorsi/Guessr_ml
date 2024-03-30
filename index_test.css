@@ -84,18 +84,7 @@ p{
         width: 150;
         font-size: small;
     }
-    #create_session{
-        position: inherit;
-        border-radius: 6px;
-        background-color: #27ae60;
-        border-style: none;
-        padding: 15px;
-        font-family: 'Gabarito', serif;
-        font-size: large;
-        margin-left: 25%;
-        cursor: pointer;
-        top: 20%;
-    }
+
 
 
     #lower_half{
@@ -123,14 +112,15 @@ p{
 #selectors{
     left: 22%;
     position: inherit;
-    top: 5%;
+    top: 13%;
     display: grid;
     width: 55%;
 }
 
 
 select {
-    margin-top: 10px;
+    font-family: 'Gabarito';
+    margin-top: 15px;
     appearance: none;
     /*  safari  */
     -webkit-appearance: none;
@@ -140,18 +130,19 @@ select {
     background-color: #fff;
     border: 1px solid #caced1;
     border-radius: 0.25rem;
+    border-color: #000;
     color: #000;
     cursor: pointer;
     text-align: center;
 }
 
 option{
-    text-align: left;
+    text-align: center;
 }
 
 #hostname{
     position: inherit;
-    top: 15%;
+    top: 25%;
     left: 22%;
     text-align: center;
 }
@@ -160,19 +151,23 @@ textarea:focus, input:focus{
     outline: none;
 }
 
-
+.create_button_container{
+    position: inherit;
+    top: 35%;
+    width: 100%;
+}
 
 #create_session{
-    position: inherit;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 6px;
-    background-color: #27ae60;
     border-style: none;
-    padding: 15px;
+    background-color: #27ae60;
+    padding: 20px;
     font-family: 'Gabarito', serif;
-    font-size: large;
-    margin-left: 40%;
+    font-size: x-large;
     cursor: pointer;
-    top: 20%;
 }
 
 
@@ -261,16 +256,11 @@ textarea:focus, input:focus{
     border-radius: 8px;
 }
 
-#t_p{
-    color: #27ae60 !important;
-    font-size: xx-large !important;
-    text-shadow: 3px 0 black, -3px 0 black, 0 3px black, 0 -3px black,
-    2px 2px black, -2px -2px black, 2px -2px black, -2px 2px black;
-}
+
 
 #logo_middle{
     position:  relative;
-    height: 100;
+    height: 105;
     width: 140;
 }
 
@@ -461,5 +451,3 @@ h2{
     75% { transform: translateX(5px) }
     100% { transform: translateX(0) }
 }
-
-

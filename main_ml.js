@@ -92,7 +92,7 @@ var color_list = {
 
 document.getElementById("marker_warning").style.color = color_list[color]
 
-var score, video_coords, Enable_marking, points, marker_coords, map, marker, score_id, vidmarker, polyline, src, lat, lng, active_video, playersmarkers, time, inter, pause, interval, player, active_playlist
+var score, video_coords, Enable_marking,marker_coords, map, marker, score_id, vidmarker, polyline, src, lat, lng, active_video, playersmarkers, time, inter, pause, interval, player, active_playlist, marker_placed
 var guessed = true
 var pausado = false
 var playing = true
@@ -271,8 +271,15 @@ var video_list = [
     ['zUUT06KHbw8',46.62425461112303, 8.035429897480348,150,'SZ','Chris L','https://www.youtube.com/@christopherlzt','Grindelwald'],
     ['8fOxvqVbPvc',56.950837338520955, 24.104650581006652,662,'LTV','Streets Of Ambience','https://www.youtube.com/@streetsambience6054','Riga'],
     ['K4HWfOy93k8',20.6896872,-88.201725,112,'MX','Paseos de Aventura', 'https://www.youtube.com/@MiddleAgeAdventureWalks','Valladolid'],
-    ['tHhTHoPcRB8',48.86042795329101, 2.3377860527069623,409,'FR','People Places & Events','https://www.youtube.com/@PeoplePlacesEvents','Paris']
-    ]
+    ['tHhTHoPcRB8',48.86042795329101, 2.3377860527069623,409,'FR','People Places & Events','https://www.youtube.com/@PeoplePlacesEvents','Paris'],
+    ['RnWLl2HRgOQ',-34.61227406477105, -58.36359412429127,1583,'AR','Life & Travel Channel','https://www.youtube.com/@Life-Travel-Channel','Buenos Aires'],
+    ['RnWLl2HRgOQ',-34.605027402533324, -58.367107801435225,5025,'AR','Life & Travel Channel','https://www.youtube.com/@Life-Travel-Channel','Buenos Aires'],
+    ['RnWLl2HRgOQ',-34.60801046177624, -58.37103582651056,5509,'AR','Life & Travel Channel','https://www.youtube.com/@Life-Travel-Channel','Buenos Aires'],
+    ['RnWLl2HRgOQ',-34.60273514997674, -58.38345687276528,6771,'AR','Life & Travel Channel','https://www.youtube.com/@Life-Travel-Channel','Buenos Aires'],
+    ['RnWLl2HRgOQ',-34.609690498628794, -58.38968946476691,7831,'AR','Life & Travel Channel','https://www.youtube.com/@Life-Travel-Channel','Buenos Aires']
+
+
+]
 
 
 
@@ -415,6 +422,7 @@ function mark(e){
     lng = coord.lng;
     L.marker((e.latlng), {icon: color_list[color]}).addTo(marker);
     marker_coords = [coord.lat, coord.lng]
+    marker_placed = true
 }
 
 //show or hide map
@@ -534,7 +542,7 @@ function next(e) {
 socket.on('new_vid', index => {
     rounds += 1
     roundhtml.innerHTML = `${rounds}/${prround}`
-
+    marker_placed = false
     playing = true
     pausado = false
     
@@ -625,8 +633,27 @@ socket.on(`replace_vid`, index => {
 
 
 socket.on('end', scores =>{
-    console.log(scores)
-    func(scores, false)
+    var pointarr = []
+    var users = {}
+    var orgscores = {}
+    for(let element in scores){
+        var points = scores[element].points
+        var usern = scores[element].username
+        pointarr.push(points)
+        users[points] = {username: usern, points:points, socket:element}
+    }
+    pointarr = pointarr.sort((a, b) => b - a);
+    for(let i = 0; i < pointarr.length; i++){
+        var user = users[pointarr[i]]
+        console.log(user)
+
+        orgscores[user.socket] = {username: user.username,points:user.points}
+    } 
+    console.log(orgscores)
+
+
+
+    func(orgscores, false)
     document.getElementsByClassName('pre')[0].style.display = 'block'
     document.getElementById('room_id_container').style.display = 'none'
     document.getElementsByClassName('post')[0].remove()
@@ -700,25 +727,21 @@ function play(){
 
 
 //guessing secuence
-function final_guess(c) {
-    if(c){
+function final_guess(player_guessed) {
+    var points = 0
+    if(player_guessed && time != 0){
         try{
             //if user tried guessing without clicking map show warning
            if (marker_coords[0] == null ||  marker_coords[1] == null){
-              
                showWarning()
                return
            }
        }
        catch(err){
-          
            showWarning()
            return
-    
        }
-
     }
-
 
 
     playing = false
@@ -736,99 +759,73 @@ function final_guess(c) {
     map.addLayer(vidmarker);
     green_marker.openPopup();
 
-
-    //if c == false user didn't guess
     
-    //if user didn't guess on these gamemodes, game ends
-    if(c == false && (gamemode == 'contrarreloj' || gamemode == '1hp' || gamemode == 'radius')){
-        
-        end()
-    }
+    if(player_guessed == false && time == 0){
 
-    //if user didn't guess on regular gamemodes
-    if(c == false){
-        console.log('didnt press guess')
         
         guessed = false
         document.getElementById('modal').showModal()
         invsze()
         
         Enable_marking = false
-        try{
-            //if user tried guessing without clicking map show warning
-           if (marker_coords[0] == null ||  marker_coords[1] == null){
-                //give 0 points
-                score = 0
-                socket.emit(`user_guessed`,([username,marker_coords[0],marker_coords[1],point.toFixed(0),color,distance]))
-                document.getElementById("h2").innerHTML = "El tiempo acabo! ";
-
-                switchbtn()
-               return
-           }
-       }
-       catch(err){
         //give 0 points
-        score = 0
-        socket.emit(`user_guessed`,([username,marker_coords[0],marker_coords[1],point.toFixed(0),color,distance]))
+        points = 0
+        marker_coords[0] = 0
+        marker_coords[1] = 0
         document.getElementById("h2").innerHTML = "El tiempo acabo! ";
-        
-
-
 
         switchbtn()
-        return
-        }}
-    else{
-        console.log('pressed guess')
+    }
+    if(player_guessed){
+        console.log('guessed')
 
 
-    Enable_marking = false
-    guessed = true
+        Enable_marking = false
+        guessed = true
 
 
 
 
-    //calculate distance between user's guess and vid coords
-    distance = distance_calc([marker_coords[0], marker_coords[1]], video_coords)
-    if(distance <= 10){
-        document.getElementById('cheers').play()
-        document.getElementById('cheers').addEventListener("ended", function(){
+        //calculate distance between user's guess and vid coords
+        distance = distance_calc([marker_coords[0], marker_coords[1]], video_coords)
+        if(distance <= 10){
+            document.getElementById('cheers').play()
+            document.getElementById('cheers').addEventListener("ended", function(){
             this.currentTime = 0;
             this.pause();
         });
-    }
-    switchbtn()
+        }
+        switchbtn()
 
-    //calculate points
-    var point = Number(calc_points())
+        //calculate points
+        points = Number(calc_points())
 
-    socket.emit(`user_guessed`,([username,marker_coords[0],marker_coords[1],point.toFixed(0),color,distance]))
     
 
-    //draw line between the 2 markers
-    var latlngs = [];
-    latlngs.push(L.latLng(marker_coords[0],marker_coords[1]));
-    latlngs.push(L.latLng(video_coords[0],video_coords[1]));
-    polyline = L.polyline(latlngs, {color: 'black'})
-    try{polyline.addTo(map);}
-    catch(err){
+        //draw line between the 2 markers
+        var latlngs = [];
+        latlngs.push(L.latLng(marker_coords[0],marker_coords[1]));
+        latlngs.push(L.latLng(video_coords[0],video_coords[1]));
+        polyline = L.polyline(latlngs, {color: 'black'})
+        try{polyline.addTo(map);}
+        catch(err){
         
-        showWarning()
-        return
-    }    
+            showWarning()
+            return
+        }    
 
-    //zoom into line
-    map.fitBounds(polyline.getBounds());
+        //zoom into line
+        map.fitBounds(polyline.getBounds());
 
 
-    //display distance from guess to right answer
-    if(distance < 1){
-        document.getElementById("h2").innerHTML = Number((Number((distance))*1000).toFixed(0)) + " M";
-    }
-    else{
-    document.getElementById("h2").innerHTML = Number((distance).toFixed(2)) + " KM";
-    }
-    showDistance()
+        //display distance from guess to right answer
+        if(distance < 1){
+            document.getElementById("h2").innerHTML = Number((Number((distance))*1000).toFixed(0)) + " M";
+        }
+        else{
+        document.getElementById("h2").innerHTML = Number((distance).toFixed(2)) + " KM";
+        }
+        showDistance()
     }
 
 
@@ -836,7 +833,7 @@ function final_guess(c) {
 
 
     
-    
+    socket.emit(`user_guessed`,({username: username,coords1:marker_coords[0],coords2:marker_coords[1],points:points.toFixed(0),color:color,distance:distance}))
 }
 
 
@@ -848,13 +845,13 @@ socket.on('all_guessed', data => {
         //data format: {playerX1: [coord 1, coord 2, points, color],
         //              playerX2: [coord 1, coord 2, points, color],...}
 
-        if(data[k][0] != 0 && data[k][1] != 0){
+        if(data[k].coords1 != 0 && data[k].coords2 != 0){
         
 
-            var lsd = L.latLng(data[k][0], data[k][1]);
+            var lsd = L.latLng(data[k].coords1, data[k].coords2);
 
             
-            L.marker((lsd), {icon: color_list[data[k][3]]}).addTo(marker)
+            L.marker((lsd), {icon: color_list[data[k].color]}).addTo(marker)
             .bindPopup(`${k}`);
         }
         
@@ -862,7 +859,7 @@ socket.on('all_guessed', data => {
         var table = document.getElementById('scoretable')
         for(let rw = 1; rw < table.rows.length; rw++){
             if(k == table.rows[rw].getElementsByClassName('username')[0].innerHTML){
-                table.rows[rw].getElementsByClassName('points')[0].innerHTML = parseInt(table.rows[rw].getElementsByClassName('points')[0].innerHTML) + parseInt(data[k][2])
+                table.rows[rw].getElementsByClassName('points')[0].innerHTML = parseInt(table.rows[rw].getElementsByClassName('points')[0].innerHTML) + parseInt(data[k].points)
             }
         }
 
@@ -873,15 +870,16 @@ socket.on('all_guessed', data => {
 
 
 socket.on('player_guessed', data => {
+    console.log(data)
     //data = [user, distance]
     document.getElementById('nice').play()
     var x = document.createElement('div');
-    x.innerHTML = `${data[0]} adivinó! <br>  (${data[1]} KM)`
+    x.innerHTML = `${data.username} adivinó! <br>  (${data.distance} KM)`
     x.classList.add('notif');
-    x.setAttribute("id", `${data[0]}` )
+    x.setAttribute("id", `${data.username}` )
     document.getElementById("notif-placeholder").prepend(x);
     setTimeout(function(){
-        document.getElementById(data[0]).remove();
+        document.getElementById(data.username).remove();
    },3000);
 });
 

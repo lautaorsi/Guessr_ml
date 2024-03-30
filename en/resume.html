@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <link rel="icon" href="../static/logo.png">
+        <script src="https://randojs.com/2.0.0.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/> 
+    <script type="text/javascript" src="../leaflet/leaflet.js"></script>
+        <link rel="stylesheet" href="../multiplayer_lobby.css" type="text/css">
+        <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Gabarito&family=Mukta&family=Roboto">
+        <script src="https://kit.fontawesome.com/493860cbeb.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <title>VideoGuessr - Partida Online</title>
+        <a onclick="got()">
+            <button id="return" >
+                <i class="fa-solid fa-arrow-left" style="color: #000000;"></i>
+            </button>
+        </a>
+        <div id="main_lobby" class="pre">
+            <div id="main_container">
+                <h1 id="title">Marcador</h1>
+                <div id="players">
+                </div>
+            </div>
+        </div>
+    
+
+    <script>
+        function got(){
+                window.location.href = 'index.html'
+        }
+    </script>
+
+    <script>
+        var start_id
+
+
+
+        var players = []
+ 
+        function func(list,cond){
+            //if cond == True => initial board w/ marker colors
+            //if cond == False => final board w/ scores
+            players = list
+            document.querySelectorAll('.player').forEach(e => e.remove());
+            //when called, func will delete the html content and create a new one with the updated list
+            if(cond){
+                for(var element = 0; element < list.length; element++ ){
+                    var x = document.createElement('div');
+                    x.classList.add('player', list[element].username);
+                    x.innerHTML = `${list[element].username} <i class="fa-solid fa-location-dot right marker ${list[element].username} " style="color: ${list[element].color};"></i>`;
+                    document.getElementById("players").appendChild(x);
+                };   
+            }
+            else{
+                document.getElementById('title').innerHTML = 'Scoreboard'
+                //create final scoreboard with all players
+                for(let element in list){
+                    var x = document.createElement('div');
+                    x.classList.add('player', element);
+                    x.innerHTML = `${list[element].username} <p class="right score">${list[element].points}</p>`;
+                    document.getElementById("players").appendChild(x);
+                }
+
+
+                document.getElementsByClassName(`player`)[0].classList.add('winner')
+                document.getElementsByClassName(`player`)[1].classList.add('winner')
+                if(list.length >= 3){
+                    document.getElementsByClassName(`player`)[2].classList.add('winner')
+                }
+
+                //paint gold
+                document.getElementsByClassName(`player`)[0].style.backgroundColor = '#ffd700'
+                //paint silver
+                document.getElementsByClassName(`player`)[1].style.backgroundColor = '#c0c0c0'
+                if(list.length >= 3){
+                    //paint copper
+                    document.getElementsByClassName(`player`)[2].style.backgroundColor = '#b87333'
+                }
+
+                
+
+            
+        }
+    }
+    </script>
+
+
+    <script>
+        if (window.performance.getEntriesByType) {
+            if (window.performance.getEntriesByType("navigation")[0].type === "reload") {
+                window.location.href = './index.html';
+            }
+        }
+    </script>
+
+
+
+    </body>
+</html>

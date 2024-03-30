@@ -182,7 +182,7 @@ textarea:focus, input:focus{
     margin: auto;
     padding: 10px;
     text-align: center;
-    width: 80%;
+    width: fit-content;
     border-radius: 8px;
 }
 
@@ -386,5 +386,8 @@ h2{
     75% { transform: translateX(5px) }
     100% { transform: translateX(0) }
 }
+
+
+
 
 
