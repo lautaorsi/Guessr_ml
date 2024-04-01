@@ -8,24 +8,33 @@
     <script type="text/javascript" src="../leaflet/leaflet.js"></script>
         <link rel="stylesheet" href="../multiplayer_lobby.css" type="text/css">
         <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Gabarito&family=Mukta&family=Roboto">
+        href="https://fonts.googleapis.com/css2?family=Gabarito&family=Mukta&family=Roboto&family=Merriweather Sans">
         <script src="https://kit.fontawesome.com/493860cbeb.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <title>VideoGuessr - Partida Online</title>
+        <title>VideoGuessr - Resumen</title>
         <a onclick="got()">
             <button id="return" >
                 <i class="fa-solid fa-arrow-left" style="color: #000000;"></i>
             </button>
         </a>
-        <div id="main_lobby" class="pre">
+        <div id="main_lobby">
             <div id="main_container">
                 <h1 id="title">Marcador</h1>
                 <div id="players">
                 </div>
             </div>
         </div>
+        <div class="bott_container">
+            <div class="mobile_credit">
+                <a href="https://www.videoguessr.com/en/creditos.html" target="_blank">Creditos</a>
+            </div>
+            <div class="credit_cont" id="credit_cont">
+                <div id="credit_title">Creditos:</div>
+            </div>
+        </div>
     
+
 
     <script>
         function got(){
@@ -34,56 +43,42 @@
     </script>
 
     <script>
-        var start_id
-        const scores = localStorage.getItem('scores');
+        const scores = JSON.parse(localStorage.getItem('scores'));
+        const credits = JSON.parse(localStorage.getItem('credits'));
         func(scores)
-        var players = []
  
-        function func(list,cond){
-            //if cond == True => initial board w/ marker colors
-            //if cond == False => final board w/ scores
-            players = list
-            document.querySelectorAll('.player').forEach(e => e.remove());
-            //when called, func will delete the html content and create a new one with the updated list
-            if(cond){
-                for(var element = 0; element < list.length; element++ ){
-                    var x = document.createElement('div');
-                    x.classList.add('player', list[element].username);
-                    x.innerHTML = `${list[element].username} <i class="fa-solid fa-location-dot right marker ${list[element].username} " style="color: ${list[element].color};"></i>`;
-                    document.getElementById("players").appendChild(x);
-                };   
+        function func(list){
+            for(let element in list){
+                var x = document.createElement('div');
+                x.classList.add('player', element);
+                x.innerHTML = `${list[element].username} <p class="right score">${list[element].points}</p>`;
+                document.getElementById("players").appendChild(x);
             }
-            else{
-                document.getElementById('title').innerHTML = 'Scoreboard'
-                //create final scoreboard with all players
-                for(let element in list){
-                    var x = document.createElement('div');
-                    x.classList.add('player', element);
-                    x.innerHTML = `${list[element].username} <p class="right score">${list[element].points}</p>`;
-                    document.getElementById("players").appendChild(x);
-                }
 
+            document.getElementsByClassName(`player`)[0].classList.add('winner', 'p1')
+            document.getElementsByClassName(`player`)[1].classList.add('winner','p2')
+            if((document.getElementsByClassName('player')).length >= 3){
+                document.getElementsByClassName(`player`)[2].classList.add('winner','p3')
+            }
 
-                document.getElementsByClassName(`player`)[0].classList.add('winner')
-                document.getElementsByClassName(`player`)[1].classList.add('winner')
-                if(list.length >= 3){
-                    document.getElementsByClassName(`player`)[2].classList.add('winner')
-                }
-
-                //paint gold
-                document.getElementsByClassName(`player`)[0].style.backgroundColor = '#ffd700'
-                //paint silver
-                document.getElementsByClassName(`player`)[1].style.backgroundColor = '#c0c0c0'
-                if(list.length >= 3){
-                    //paint copper
-                    document.getElementsByClassName(`player`)[2].style.backgroundColor = '#b87333'
-                }
-
-                
-
-            
+            //paint gold
+            document.getElementsByClassName(`player`)[0].style.backgroundColor = '#ffd700'
+            //paint silver
+            document.getElementsByClassName(`player`)[1].style.backgroundColor = '#c0c0c0'
+            if((document.getElementsByClassName('player')).length >= 3){
+                //paint copper
+                document.getElementsByClassName(`player`)[2].style.backgroundColor = '#b87333'
+            }
         }
-    }
+
+        credits.forEach(function(element) {
+            var x = document.createElement('div');
+            x.classList.add('credit');
+            x.innerHTML = `${element['round']}: <a href="${element['link']}" style='color:#c8c8c8;' target="_blank">${element['name']}</a>`;
+            document.getElementById("credit_cont").appendChild(x);
+        })
+
+
     </script>
 
 

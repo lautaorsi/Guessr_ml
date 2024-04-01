@@ -92,10 +92,7 @@ var color_list = {
 
 document.getElementById("marker_warning").style.color = color_list[color]
 
-var score, video_coords, Enable_marking,marker_coords, map, marker, score_id, vidmarker, polyline, src, lat, lng, active_video, playersmarkers, time, inter, pause, interval, player, active_playlist, marker_placed
-var guessed = true
-var pausado = false
-var playing = true
+
 const modal = document.getElementById('modal')
 
 var video_list = [ 
@@ -119,10 +116,10 @@ var video_list = [
     ["4xJf5PfuMjg", 44.117593, 15.219858,390,'CRO', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Zadar'], 
     ["4xJf5PfuMjg", 44.117593, 15.219858,1028,'CRO', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Zadar'], 
     ["4xJf5PfuMjg", 44.117593, 15.219858,1615,'CRO', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Zadar'], 
-    ["GkhMz52zMG0", 46.004807, 8.948346,345,'SWZ', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Lugano'], 
-    ["GkhMz52zMG0", 46.004807, 8.948346,670,'SWZ', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Lugano'], 
-    ["GkhMz52zMG0", 46.004807, 8.948346,1246,'SWZ', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Lugano'], 
-    ["GkhMz52zMG0", 46.004807, 8.948346,1693,'SWZ', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Lugano'], 
+    ["GkhMz52zMG0", 46.004807, 8.948346,345,'SZ', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Lugano'], 
+    ["GkhMz52zMG0", 46.004807, 8.948346,670,'SZ', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Lugano'], 
+    ["GkhMz52zMG0", 46.004807, 8.948346,1246,'SZ', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Lugano'], 
+    ["GkhMz52zMG0", 46.004807, 8.948346,1693,'SZ', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Lugano'], 
     ["cSWv6YJYBHM", 43.508254, 16.440185,103,'CRO', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Split'], 
     ["cSWv6YJYBHM", 43.508254, 16.440185,732,'CRO', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Split'], 
     ["cSWv6YJYBHM", 43.508254, 16.440185,1060,'CRO', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Split'], 
@@ -131,9 +128,9 @@ var video_list = [
     ["RInBAatA11Q", 52.247803, 21.013650,656,'POL', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Warsaw'], 
     ["RInBAatA11Q", 52.247803, 21.013650,1180,'POL', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Warsaw'], 
     ["RInBAatA11Q", 52.247803, 21.013650,1654,'POL', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Warsaw'], 
-    ["ZL4LNXe_F2Y", 42.642014, 18.112509,98,'POL', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Dubrovnik'], 
-    ["ZL4LNXe_F2Y", 42.642014, 18.112509,845,'POL', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Dubrovnik'], 
-    ["ZL4LNXe_F2Y", 42.642014, 18.112509,1415,'POL', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Dubrovnik'], 
+    ["ZL4LNXe_F2Y", 42.642014, 18.112509,98,'CRO', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Dubrovnik'], 
+    ["ZL4LNXe_F2Y", 42.642014, 18.112509,845,'CRO', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Dubrovnik'], 
+    ["ZL4LNXe_F2Y", 42.642014, 18.112509,1415,'CRO', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Dubrovnik'], 
     ["KQ5TW0DCXb0", 45.659127, 10.047541,99,'ITA', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Iseo'], 
     ["KQ5TW0DCXb0", 45.659127, 10.047541,551,'ITA', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Iseo'], 
     ["KQ5TW0DCXb0", 45.659127, 10.047541,1002,'ITA', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Iseo'], 
@@ -276,7 +273,8 @@ var video_list = [
     ['RnWLl2HRgOQ',-34.605027402533324, -58.367107801435225,5025,'AR','Life & Travel Channel','https://www.youtube.com/@Life-Travel-Channel','Buenos Aires'],
     ['RnWLl2HRgOQ',-34.60801046177624, -58.37103582651056,5509,'AR','Life & Travel Channel','https://www.youtube.com/@Life-Travel-Channel','Buenos Aires'],
     ['RnWLl2HRgOQ',-34.60273514997674, -58.38345687276528,6771,'AR','Life & Travel Channel','https://www.youtube.com/@Life-Travel-Channel','Buenos Aires'],
-    ['RnWLl2HRgOQ',-34.609690498628794, -58.38968946476691,7831,'AR','Life & Travel Channel','https://www.youtube.com/@Life-Travel-Channel','Buenos Aires']
+    ['RnWLl2HRgOQ',-34.609690498628794, -58.38968946476691,7831,'AR','Life & Travel Channel','https://www.youtube.com/@Life-Travel-Channel','Buenos Aires'],
+    ['7WCK5_JodiU',40.18206776788928, 44.52088794136007,1453,'ARM','Travel Monkey','https://www.youtube.com/@travelmonkey2022','Yerevan'],
 
 
 ]
@@ -295,14 +293,18 @@ const list = {
 
 
 
-
-
+var score, video_coords, Enable_marking,marker_coords, map, marker, score_id, vidmarker, polyline, src, lat, lng, active_video, playersmarkers, time, inter, pause, interval, player, active_playlist, marker_placed, players_ready
+var guessed = true
+var pausado = false
+var playing = true
+var total_players = document.getElementsByClassName('player').length
+var players_guessed = 0
 
 
 var x = document.getElementById("warning-container")
 var myvid = document.getElementById('myvid');
 var bool_map = false
-var backvideo 
+var credit_array = []
 
 
 
@@ -363,6 +365,11 @@ document.getElementById('volumerange').oninput = function(){
     player.setVolume(parseFloat((document.getElementById('volumerange')).value))
 };
 
+var language =  ((document.getElementsByTagName('meta'))[0]).getAttribute('content')
+console.log(language)
+
+
+
 
 function onPlayerReady(event) {
     if(gamemode == 'INVERTIDO'){
@@ -385,6 +392,9 @@ function onPlayerReady(event) {
     
     setTimeout(() => {  document.getElementById('howto').style.display = "none"; }, 4500)
     startTimer()
+
+    addtocredit(active_video)
+
 }
 
 function onPlayerError(event){
@@ -522,24 +532,42 @@ function calc_points(){
 
 
 function next(e) {
-    if(document.getElementById('continue').innerHTML == 'Esperando a los jugadores'){
-        console.log('no listo')
+    var button_classes = (document.getElementById('continue').classList)
+    console.log(`Classes: ${button_classes}`)
+    if(button_classes.contains(0)){
+        console.log('unready')
         socket.emit('player_unready')
-        document.getElementById('continue').innerHTML = 'Continuar'
+        button_classes.remove(0)
+        button_classes.add(1)
+        if(language == 'es'){
+            document.getElementById('continue').innerHTML = 'Continuar'
+        }
+        if(language == 'en'){
+            document.getElementById('continue').innerHTML = 'Continue'
+        } 
+        document.getElementById('continue').style.backgroundColor = 'white'
     }
-    else{
-            console.log('listo')
-        socket.emit('player_ready')
-        document.getElementById('continue').innerHTML = 'Esperando a los jugadores'
+    if(button_classes.contains(1)){
+        console.log('ready')
+        button_classes.remove(1)
+        button_classes.add(0)
+        socket.emit('player_ready', callback =>{
+            players_ready = callback.users_ready
+            if(language == 'es'){
+                document.getElementById('continue').innerHTML = `Esperando a los jugadores (${players_ready}/${total_players})`
+            }
+            if(language == 'en'){
+                document.getElementById('continue').innerHTML = `Waiting for players (${players_ready}/${total_players})`
+            } 
+            
+        })
         document.getElementById('continue').style.backgroundColor = 'green'
     }
-
-
-
 }
 
 
 socket.on('new_vid', index => {
+    addtocredit(active_video)
     rounds += 1
     roundhtml.innerHTML = `${rounds}/${prround}`
     marker_placed = false
@@ -550,10 +578,7 @@ socket.on('new_vid', index => {
     
     Enable_marking = true
 
-    //update continue button
-    document.getElementById('continue').innerHTML = 'Continuar'
-    document.getElementById('continue').style.backgroundColor = '#ffffff'
-    switchbtn()
+
 
     //clear all map layers
     if(marker.getLayers().length > 0){
@@ -597,6 +622,24 @@ socket.on('new_vid', index => {
         
     time = abstime
     pausado = false
+
+
+    //update reset buttons
+    var continue_button = document.getElementById('continue') 
+    if(continue_button.classList.contains('en')){
+        continue_button.innerHTML = 'Continue'
+    }
+    if(continue_button.classList.contains('es')){
+        continue_button.innerHTML = 'Continuar'
+    }
+    continue_button.style.backgroundColor = '#ffffff'
+    continue_button.classList.remove(0)
+    continue_button.classList.add(1)
+    switchbtn()
+
+    //reset guess counter
+    updateTitle(0)
+
     //start timer
     startTimer()
 
@@ -605,19 +648,22 @@ socket.on('new_vid', index => {
 
 
 socket.on(`replace_vid`, index => {
-    console.log('new video aknowledged')
+    console.log(`new video aknowledged, index ${index}`)
     //get new video
     var newvid = video_list[index]
     vid_index = index
     active_video = newvid
-    console.log(newvid)
     video_coords = [active_video[1],active_video[2]]
-    console.log(newvid)
-
 
     //update video
     player.loadVideoById(newvid[0],newvid[3]);
 
+
+    //remove previous video from credit array
+    credit_array.splice(-1)
+
+    //add new credit
+    addtocredit(active_video)
 
     //update credits
     var a = document.getElementById('credits');
@@ -649,8 +695,11 @@ socket.on('end', scores =>{
 
         orgscores[user.socket] = {username: user.username,points:user.points}
     } 
-    console.log(orgscores)
 
+    localStorage.setItem('credits', JSON.stringify(credit_array))
+    localStorage.setItem('scores', JSON.stringify(orgscores))
+
+    window.location.href = './resume.html'
 
 
     func(orgscores, false)
@@ -829,7 +878,7 @@ function final_guess(player_guessed) {
     }
 
 
-
+    updateTitle(players_guessed + 1)
 
 
     
@@ -838,7 +887,6 @@ function final_guess(player_guessed) {
 
 
 socket.on('all_guessed', data => {
-    console.log(marker.getLayers().length)
     //update scoreboard
     
     for(var k in data){
@@ -865,22 +913,37 @@ socket.on('all_guessed', data => {
 
     }
     map.setView([0, 0], 2.4)
-
+    players_guessed = 0
+    updateTitle('all')
 })
 
 
 socket.on('player_guessed', data => {
-    console.log(data)
+    players_guessed += 1
+    updateTitle(players_guessed)
     //data = [user, distance]
     document.getElementById('nice').play()
-    var x = document.createElement('div');
-    x.innerHTML = `${data.username} adivinó! <br>  (${data.distance} KM)`
-    x.classList.add('notif');
-    x.setAttribute("id", `${data.username}` )
-    document.getElementById("notif-placeholder").prepend(x);
+    var guess_notif = document.createElement('div');
+    console.log(guess_notif)
+
+    if(language == 'es'){
+        console.log('español')
+        guess_notif.innerHTML = `${data.username} adivinó! <br>  (${data.distance} KM)`
+    }
+    if(language == 'en'){
+        console.log('ingles')
+        guess_notif.innerHTML = `${data.username} guessed! <br>  (${data.distance} KM)`
+    }
+
+
+    guess_notif.classList.add('notif');
+    guess_notif.setAttribute("id", `${data.username}` )
+    document.getElementById("notif-placeholder").prepend(guess_notif);
+
     setTimeout(function(){
         document.getElementById(data.username).remove();
    },3000);
+
 });
 
 
@@ -891,6 +954,30 @@ map.on('click', function(e){
     }
 });
 
+
+function updateTitle(e){
+    var guesses_title = document.getElementById('guess_counter')
+
+    if(e == 'all'){
+        if(language == 'es'){
+            guesses_title.innerHTML = `Todos los jugadores adivinaron`
+        }
+        if(language == 'en'){
+            guesses_title.innerHTML = `All players guessed`
+        }
+    }
+    else{
+        if(language == 'es'){
+            guesses_title.innerHTML = `Jugadores que adivinaron: ${e}`
+        }
+        if(language == 'en'){
+            guesses_title.innerHTML = `Players that guessed: ${e}`
+        }
+    }
+
+
+
+}
 
 
 function rewindVideo() {
@@ -1032,10 +1119,16 @@ function country(index){
         case 'CZ':
             return('Czech Republic');
         case 'SG':
-            return('Singapore')
+            return('Singapore');
         case 'PAR':
-            return('Paraguay')
+            return('Paraguay');
+        case 'ARM':
+            return('Armenia');
         default:
             return('Unknown')
     }
+}
+
+function addtocredit(ar){
+    credit_array.push({'name':ar[5],'link':ar[6], 'round':rounds})
 }

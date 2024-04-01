@@ -10,6 +10,7 @@
         <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Gabarito&family=Mukta&family=Roboto">
         <script src="https://kit.fontawesome.com/493860cbeb.js" crossorigin="anonymous"></script>
+        <meta property="language" content="es">
     </head>
     <body>
         <title>VideoGuessr - Partida Online</title>
@@ -32,7 +33,8 @@
             </div>
 
         </div>
-    
+
+
 
         <div id="main_game" class="post">
             <audio id="cheers">
@@ -84,6 +86,11 @@
                 </div>
             </div>
                 <dialog id="modal">
+                        <div class="guess_counter_cont">
+                            <div class="guess_counter" id="guess_counter">
+                                Jugadores que adivinaron: 0
+                            </div>
+                        </div>
                         <div id="map"></div>
                         <div id="lowermodal">
                             <div id="distance">
@@ -98,12 +105,13 @@
                     <i class="fa-solid fa-location-dot fa-bounce" id="marker_warning" style="color: #005eff;"></i> 
                 </div>
             <div id="notif-placeholder"></div>
-            <button id = "continue" onclick="next()">Continuar</button>
+            <button id = "continue" class="1 es" onclick="next()">Continuar</button>
         </div>
     <script>
         function got(){
                 window.location.href = 'index.html'
         }
+
     </script>
     <script src="../socket.io/socket.io.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>

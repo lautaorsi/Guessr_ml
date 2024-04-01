@@ -10,6 +10,7 @@
         <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Gabarito&family=Mukta&family=Roboto">
         <script src="https://kit.fontawesome.com/493860cbeb.js" crossorigin="anonymous"></script>
+        <meta property="language" content="en">
     </head>
     <body>
         <title>VideoGuessr - Online Match</title>
@@ -84,6 +85,11 @@
                 </div>
             </div>
                 <dialog id="modal">
+                    <div class="guess_counter_cont">
+                        <div class="guess_counter" id="guess_counter">
+                            Players that guessed: 0
+                        </div>
+                    </div>
                         <div id="map"></div>
                         <div id="lowermodal">
                             <div id="distance">
@@ -98,7 +104,7 @@
                     <i class="fa-solid fa-location-dot fa-bounce" id="marker_warning" style="color: #005eff;"></i> 
                 </div>
             <div id="notif-placeholder"></div>
-            <button id = "continue" onclick="next()">Continue</button>
+            <button id = "continue" class="1 en" onclick="next()">Continue</button>
         </div>
     <script>
         function got(){
@@ -241,7 +247,6 @@
             var script = document.createElement('script');
             script.src = '../main_ml.js';
             document.head.appendChild(script)
-            
         })
 
 

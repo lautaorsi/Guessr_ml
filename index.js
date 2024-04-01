@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
   });
 
 
-
+ //user attempting to join sequence
   socket.on('username', (data, callback)=> {
     //add key value pair user id => username
     player_id[socket.id] = data.username
@@ -88,7 +88,7 @@ io.on('connection', (socket) => {
     var color = getColor()
 
 
-    //when user joins, join him to existent list or create one (w/ random color) 
+    //if room exists, add him 
     if(room in rooms){
       while(((rooms[room])['names']).includes(data.username)){
         data.username = `${data.username}${rando(100)}`
@@ -96,6 +96,8 @@ io.on('connection', (socket) => {
       }
       socket.emit('rules', rooms[room][['Rules']]);
     }
+    
+    //if room doesn't exist, create new one
     else{
       //create room object within rooms dictionary
       rooms[room] = {
@@ -105,6 +107,7 @@ io.on('connection', (socket) => {
         'guess_data': {},
         'current_round':1,
         'players_ready': 0,
+        'players_ready_list': [],
         'points': {},
         'error_counter': 0,
       };
@@ -133,6 +136,7 @@ io.on('connection', (socket) => {
     });
   }) 
 
+  //user disconnection sequence
   socket.on("disconnect", (reason) => {
     current_players -= 1;
     //when user disconnects, remove him from the player list
@@ -165,14 +169,20 @@ io.on('connection', (socket) => {
   });
 
 
+  //game start sequence
   socket.on('start', () => {
     //only host can start the match (person in first position)
     if(socket.id == rooms[room]['Players'][0].socketID){
+      
       //to start, minimum of 2 players required
       if(rooms[room]['Players'].length >= 2){
-         video = rando(videos_qty)
+        video = rando(videos_qty)
+
+        //add video id to lobby's video list
         rooms[room]['VIDEOS'] = []
         rooms[room]['VIDEOS'].push(video)
+
+        //fire game start event with video ID as param
         io.to(room).emit('game start', video)
       }
     }
@@ -181,36 +191,52 @@ io.on('connection', (socket) => {
 
 
 
-
+  //user guessing sequence
   socket.on('user_guessed', (data) => {
+    //increase guess counter
     rooms[room].guesses += 1
+    
+    //add guess information to room array for later use
     rooms[room].guess_data[data.username] = {coords1:data.coords1,coords2:data.coords2,points:data.points,color:data.color}
+    
+    //add points to user
     rooms[room]['points'][socket.id].points += parseInt(data.points) 
-    console.log(rooms[room].guess_data)
-    //format: {playerX: [coord 1, coord 2, points, color]}
+
+    //if user guessed on diff coords than 0,0 then they guessed, so notification should show 
     if(data.coords1 != 0 && data.coords2 != 0){
-    io.to(room).emit('player_guessed', {username:data.username,distance:((data.distance).toFixed(0))})
+    io.except(socket.id).to(room).emit('player_guessed', {username:data.username,distance:((data.distance).toFixed(0))})
     }
+    //if the guess amount equals the amount of players then all guessed event is triggered
     if (rooms[room].guesses == rooms[room]['Players'].length){
+
+      //fire all guessed event, passing guess data from all players
       io.to(room).emit('all_guessed',rooms[room].guess_data)
-      console.log(rooms[room].guess_data)
+      
+      //restart guess counter and data
       rooms[room].guess_data = {}
       rooms[room].guesses = 0
     }
-    console.log(rooms[room].points)
 
   })
 
+  //video error handling
   socket.on('video_error', () => {
+    //increase error counter
     (rooms[room]).error_counter += 1
     console.log(`error reported, counted: ${(rooms[room]).error_counter}`)
+
+    //only aknowledge error if more than half the players run into error
     if((rooms[room]).error_counter >= (rooms[room]['Players'].length/2)){
       console.log('error aknowledged')
+
+      //choose new rand video upon aknowledgment
       while(rooms[room]['VIDEOS'].includes(video)){
         video =  rando(videos_qty)
         console.log('searching new video')
       }
-      console.log('new video found')
+
+      //once new video is found, restart error counters, add new vid index to lobby's video list and fire replacing video event
+      console.log(`new video found, index ${video}`)
       rooms[room]['VIDEOS'].push(video)
       io.to(room).emit('replace_vid', video)
       rooms[room].players_ready = 0
@@ -219,10 +245,21 @@ io.on('connection', (socket) => {
     }
   })
 
-  socket.on('player_ready', () => {
+  //player ready for next round sequence
+  socket.on('player_ready', (callback) => {
+    //update player's ready counter
     rooms[room].players_ready += 1
+    //fire callback with amount of players ready for next round
+    callback({
+      users_ready: rooms[room].players_ready,
+    });
+    console.log('player ready')
+
+    //if players ready equals players in room, go to next round
     if(rooms[room].players_ready == rooms[room]['Players'].length){
       rooms[room]['current_round'] += 1
+      
+      //if round counter is less than max rounds set, start new round 
       if(rooms[room]['current_round'] <= parseInt(rooms[room]['rounds'])){
         video = rando(videos_qty)
         while(rooms[room]['VIDEOS'].includes(video)){
@@ -233,13 +270,19 @@ io.on('connection', (socket) => {
         rooms[room].players_ready = 0
         }
       else{
+        //if all rounds have been played, end match
         io.to(room).emit('end', rooms[room].points)
       }
     }
   })
 
+
+
+  //if player cancels ready, decrease counter by 1 (obviously)
   socket.on('player_unready', () => {
+    
     rooms[room].players_ready -= 1
+    console.log('player_unready')
   })
 
 
