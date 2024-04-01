@@ -261,14 +261,19 @@ io.on('connection', (socket) => {
       
       //if round counter is less than max rounds set, start new round 
       if(rooms[room]['current_round'] <= parseInt(rooms[room]['rounds'])){
-        video = rando(videos_qty)
-        while(rooms[room]['VIDEOS'].includes(video)){
-          video =  rando(videos_qty)
+        while(true){
+          video = rando(videos_qty)
+          if(validateVideo(rooms[room]['VIDEOS'],video)){
+            rooms[room]['VIDEOS'].push(video)
+            io.to(room).emit('new_vid', video)
+            rooms[room].players_ready = 0
+            break
+          }
+          else{
+            continue
+          }
         }
-        rooms[room]['VIDEOS'].push(video)
-        io.to(room).emit('new_vid', video)
-        rooms[room].players_ready = 0
-        }
+      }
       else{
         //if all rounds have been played, end match
         io.to(room).emit('end', rooms[room].points)
@@ -290,3 +295,17 @@ io.on('connection', (socket) => {
 
 });
 
+
+function randomlyChooseVideo(){
+
+}
+
+
+function validateVideo(list,ind){
+  if(list.includes(ind)){
+      return false;
+  }
+  else{
+      return true;
+  }
+}
