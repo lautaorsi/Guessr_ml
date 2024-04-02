@@ -275,7 +275,18 @@ var video_list = [
     ['RnWLl2HRgOQ',-34.60273514997674, -58.38345687276528,6771,'AR','Life & Travel Channel','https://www.youtube.com/@Life-Travel-Channel','Buenos Aires'],
     ['RnWLl2HRgOQ',-34.609690498628794, -58.38968946476691,7831,'AR','Life & Travel Channel','https://www.youtube.com/@Life-Travel-Channel','Buenos Aires'],
     ['7WCK5_JodiU',40.18206776788928, 44.52088794136007,1453,'ARM','Travel Monkey','https://www.youtube.com/@travelmonkey2022','Yerevan'],
-
+    ['j-wq6fTYmew',28.640959628460305, 77.21070536024683,206,'IN','Streets of Ambience','https://www.youtube.com/@streetsambience6054','New Delhi'],
+    ['dkTq0zuno_Q',37.39207286872985, -5.996576691388661,751,'ES','Teleport Walkers','https://www.youtube.com/@TeleportWalkers','Sevilla'],
+    ['dkTq0zuno_Q',37.39113625775936, -5.99537170546983,1282,'ES','Teleport Walkers','https://www.youtube.com/@TeleportWalkers','Sevilla'],
+    ['izAiKy89vwg',35.6569217,139.7536052,104,'JP','KiLn','https://www.youtube.com/@KiLn1009','Tokyo'],
+    ['izAiKy89vwg',35.65705497598221, 139.7523612827231,2606,'JP','KiLn','https://www.youtube.com/@KiLn1009','Tokyo'],
+    ['Cg_9hjAm5gU',35.64459951105388, 139.70046802196327,165,'JP','KiLn','https://www.youtube.com/@KiLn1009','Tokyo'],
+    ['Cg_9hjAm5gU',35.64829118114152, 139.69545494062717,1436,'JP','KiLn','https://www.youtube.com/@KiLn1009','Tokyo'],
+    ['ZOWygni0bOY',35.45334516639329, 139.6357929432623,324,'JP','KiLn','https://www.youtube.com/@KiLn1009','Tokyo'],
+    ['ZOWygni0bOY',35.454165512071, 139.63607863590607,794,'JP','KiLn','https://www.youtube.com/@KiLn1009','Tokyo'],
+    ['eTZxoAxsO8E',35.64898898382873, 139.69931674578416,33,'JP','KiLn','https://www.youtube.com/@KiLn1009','Tokyo'],
+    ['G-jXcsMb_PE',47.50031258841018, 19.048900232583723,368,'HU','https://www.youtube.com/@agitravelers5804','Budapest'],
+    ['G-jXcsMb_PE',47.492909876452806, 19.05322762448806,981,'HU','https://www.youtube.com/@agitravelers5804','Budapest']
 
 ]
 
