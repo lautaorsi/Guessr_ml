@@ -13,9 +13,18 @@ const {rando, randoSequence} = require('@nastyox/rando.js');
 
 var colors = ["#CC2A3D", "#9D2ECC", "#CBC52B", "#CB852B", "#3E3E3E", "#2C83CB"]
 
-var scr, vid_index, active_video, active_playlist
+var scr, vid_index, active_video, active_playlist, interval
 
 const videos_qty = 190
+
+updatetime()
+
+function updatetime(){
+  interval = setTimeout(function() {
+    console.log('time_updated')
+    updatetime()
+  }, 120000);
+}
 
 
 
@@ -29,6 +38,7 @@ function getColor(){
 
 server.listen(3000, () => {
   console.log('listening on *:3000');
+
 });
 
 
