@@ -827,6 +827,7 @@ h1{
   animation-duration: 3s;
   opacity: 0%;
   font-size: large;
+  text-wrap: pretty;
 }
 
 

@@ -96,7 +96,7 @@ document.getElementById("marker_warning").style.color = color_list[color]
 const modal = document.getElementById('modal')
 
 var video_list = [ 
-    ["jstF9EYr4IM", -37.992883, -57.564338, 833,'AR', 'CarpoWalks','https://www.youtube.com/@CarpoWalks','Mar del Plata'], 
+    ["jstF9EYr4IM", -38.005376808820586, -57.54250699591142, 833,'AR', 'CarpoWalks','https://www.youtube.com/@CarpoWalks','Mar del Plata'], 
     ["EIc2vyDRT20", -36.535465, -56.688901,300,'AR', 'CarpoWalks','https://www.youtube.com/@CarpoWalks','Santa Teresita'], 
     ["2G3Mq_D1Po8", 48.858907, 2.293025,140,'FR', 'CarpoWalks','https://www.youtube.com/@CarpoWalks','Paris'], 
     ["jYVJccE8Wa4", 43.322257, 11.330865, 935 ,'ITA', 'CarpoWalks','https://www.youtube.com/@CarpoWalks','Siena'], 
@@ -312,8 +312,8 @@ var total_players = document.getElementsByClassName('player').length
 var players_guessed = 0
 
 
-var x = document.getElementById("warning-container")
-var myvid = document.getElementById('myvid');
+const x = document.getElementById("warning-container")
+const myvid = document.getElementById('myvid');
 var bool_map = false
 var credit_array = []
 
@@ -376,7 +376,7 @@ document.getElementById('volumerange').oninput = function(){
     player.setVolume(parseFloat((document.getElementById('volumerange')).value))
 };
 
-var language =  ((document.getElementsByTagName('meta'))[0]).getAttribute('content')
+const language =  ((document.getElementsByTagName('meta'))[0]).getAttribute('content')
 
 
 
@@ -733,7 +733,7 @@ function startTimer(){
 }
 
 function looptime(){
-    if(time < 1 && marker_placed){
+    if(time < 1 && marker_placed  && players_guessed == false){
         final_guess(true)
     }
     if(time >= 1){
@@ -741,7 +741,7 @@ function looptime(){
           updatetime()
         }, 1000);
     }
-    if(time < 1 && marker_placed == false){
+    if(time < 1 && marker_placed == false && players_guessed == false){
         final_guess(false)
     }
     
@@ -806,7 +806,6 @@ function final_guess(player_guessed) {
     playing = false
     document.getElementById('tic').currentTime = 0
     document.getElementById('tic').pause()
-    pausado = true
 
                             
     //add marker on vid coords 
@@ -937,11 +936,9 @@ socket.on('player_guessed', data => {
     console.log(guess_notif)
 
     if(language == 'es'){
-        console.log('español')
         guess_notif.innerHTML = `${data.username} adivinó! <br>  (${data.distance} KM)`
     }
     if(language == 'en'){
-        console.log('ingles')
         guess_notif.innerHTML = `${data.username} guessed! <br>  (${data.distance} KM)`
     }
 
@@ -978,10 +975,10 @@ function updateTitle(e){
     }
     else{
         if(language == 'es'){
-            guesses_title.innerHTML = `Jugadores que adivinaron: ${e}`
+            guesses_title.innerHTML = `Jugadores que adivinaron: ${e} / ${total_players}`
         }
         if(language == 'en'){
-            guesses_title.innerHTML = `Players that guessed: ${e}`
+            guesses_title.innerHTML = `Players that guessed: ${e} / ${total_players}`
         }
     }
 
@@ -1134,6 +1131,8 @@ function country(index){
             return('Paraguay');
         case 'ARM':
             return('Armenia');
+        case 'AL':
+            return('Albania');
         default:
             return('Unknown')
     }

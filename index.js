@@ -90,8 +90,9 @@ io.on('connection', (socket) => {
 
     //if room exists, add him 
     if(room in rooms){
-      while(((rooms[room])['names']).includes(data.username)){
+      while(((rooms[room])['chosen_usernames']).includes(data.username)){
         data.username = `${data.username}${rando(100)}`
+        
         player_id[socket.id] = data.username
       }
       socket.emit('rules', rooms[room][['Rules']]);
@@ -103,6 +104,7 @@ io.on('connection', (socket) => {
       rooms[room] = {
         'Players': [],
         'names': [],
+        'chosen_usernames':[],
         'guesses' : 0,
         'guess_data': {},
         'current_round':1,
@@ -125,6 +127,7 @@ io.on('connection', (socket) => {
     //add player to room
     (rooms[room])['Players'].push({username:data.username,color:color,socketID:socket.id});
     ((rooms[room])['names']).push({socketID:socket.id,username:data.username});
+    ((rooms[room])['chosen_usernames']).push(data.username);
     (rooms[room])['points'][socket.id] = {username: data.username,points:0};
 
 
@@ -140,22 +143,29 @@ io.on('connection', (socket) => {
   socket.on("disconnect", (reason) => {
     current_players -= 1;
     //when user disconnects, remove him from the player list
-    for(var i = 0 ; i < (rooms[room]['Players']).length ; i++){
-      if((rooms[room]['Players'])[i]['socketID'] == [socket.id]){
-
-        //remove him from name list
-        (rooms[room]['names']).splice(i, 1)
-
-        //if admin left, give admin to next player
-        if(i == 0 && rooms[room]['Players'].length > 1){
-          io.to((rooms[room]['Players'])[1]['socketID']).emit('admin')
+    try{
+      var room_players_amnt = (rooms[room]['Players']).length
+      for(var i = 0 ; i < room_players_amnt; i++){
+        if((rooms[room]['Players'])[i]['socketID'] == [socket.id]){
+  
+          //remove him from name list
+          (rooms[room]['names']).splice(i, 1)
+  
+          //if admin left, give admin to next player
+          if(i == 0 && rooms[room]['Players'].length > 1){
+            io.to((rooms[room]['Players'])[1]['socketID']).emit('admin')
+          }
+  
+          //remove from player list
+          (rooms[room]['Players']).splice(i, 1)
+          break
         }
-
-        //remove from player list
-        (rooms[room]['Players']).splice(i, 1)
-        break
       }
+    }catch (TypeError){
+      console.log('player not in room handled')
     }
+
+   
 
 
     //if room is empty, delete it
@@ -296,9 +306,7 @@ io.on('connection', (socket) => {
 });
 
 
-function randomlyChooseVideo(){
 
-}
 
 
 function validateVideo(list,ind){
