@@ -365,7 +365,12 @@ player = new YT.Player("myvid", {
             },
 });
 
-
+if(language == 'es'){
+    document.getElementById('guess_counter').innerHTML = `Jugadores que adivinaron: 0/${total_players}`
+}
+if(language == 'en'){
+    document.getElementById('guess_counter').innerHTML = `Players that guessed: 0/${total_players}`
+}
 
 document.getElementById('speedrange').oninput = function(){
     player.setPlaybackRate(parseFloat((document.getElementById('speedrange')).value))
