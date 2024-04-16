@@ -17,14 +17,14 @@ var scr, vid_index, active_video, active_playlist, interval
 
 const videos_qty = 190
 
-updatetime()
+// updatetime()
 
-function updatetime(){
-  interval = setTimeout(function() {
-    console.log('time_updated')
-    updatetime()
-  }, 120000);
-}
+// function updatetime(){
+//   interval = setTimeout(function() {
+//     console.log('time_updated')
+//     updatetime()
+//   }, 120000);
+// }
 
 
 
@@ -105,6 +105,7 @@ io.on('connection', (socket) => {
         
         player_id[socket.id] = data.username
       }
+      console.log(`new player: ${data.username}`)
       socket.emit('rules', rooms[room][['Rules']]);
     }
     
