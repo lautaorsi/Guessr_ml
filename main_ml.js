@@ -286,7 +286,8 @@ var video_list = [
     ['ZOWygni0bOY',35.454165512071, 139.63607863590607,794,'JP','KiLn','https://www.youtube.com/@KiLn1009','Tokyo'],
     ['eTZxoAxsO8E',35.64898898382873, 139.69931674578416,33,'JP','KiLn','https://www.youtube.com/@KiLn1009','Tokyo'],
     ['G-jXcsMb_PE',47.50031258841018, 19.048900232583723,368,'HU','https://www.youtube.com/@agitravelers5804','Budapest'],
-    ['G-jXcsMb_PE',47.492909876452806, 19.05322762448806,981,'HU','https://www.youtube.com/@agitravelers5804','Budapest']
+    ['G-jXcsMb_PE',47.492909876452806, 19.05322762448806,981,'HU','https://www.youtube.com/@agitravelers5804','Budapest'],
+    ['cw5E_5-xn84',38.04476430355647, 114.48700435868744,492,'CN','DuckTravel','https://www.youtube.com/@DuckTravel','Shijiazhuang']
 
 ]
 
@@ -299,6 +300,7 @@ const list = {
     'CLASICO': video_list,
     'INVERTIDO': video_list,
 }
+
 
 
 
@@ -400,6 +402,10 @@ function onPlayerReady(event) {
     player.setVolume(30)
     
 
+
+
+
+    
     var a = document.getElementById('credits');
 
     a.href = active_playlist[vid_index][6]
@@ -409,6 +415,22 @@ function onPlayerReady(event) {
     startTimer()
 
     addtocredit(active_video)
+
+
+    player.getVideoURL = function(){
+        window.location.href = 'https://www.videoguessr.com/en/credits.html'
+    }
+
+    player.getVideoData = function(){
+        window.location.href = 'https://giphy.com/gifs/rickroll-rick-astley-never-gonna-give-you-up-Vuw9m5wXviFIQ/fullscreen'
+    }
+
+    if(gamemode != 'PAUSE'){
+        player.pauseVideo = function(){
+            window.location.href = 'https://giphy.com/gifs/rickroll-rick-astley-never-gonna-give-you-up-Vuw9m5wXviFIQ/fullscreen'
+        }
+    }
+
 
 }
 
@@ -789,7 +811,6 @@ function play(){
 
 
 
-
 //guessing secuence
 function final_guess(player_guessed) {
     var points = 0
@@ -1146,3 +1167,6 @@ function country(index){
 function addtocredit(ar){
     credit_array.push({'name':ar[5],'link':ar[6], 'round':rounds})
 }
+
+
+
