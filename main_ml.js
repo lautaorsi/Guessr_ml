@@ -287,7 +287,21 @@ var video_list = [
     ['eTZxoAxsO8E',35.64898898382873, 139.69931674578416,33,'JP','KiLn','https://www.youtube.com/@KiLn1009','Tokyo'],
     ['G-jXcsMb_PE',47.50031258841018, 19.048900232583723,368,'HU','https://www.youtube.com/@agitravelers5804','Budapest'],
     ['G-jXcsMb_PE',47.492909876452806, 19.05322762448806,981,'HU','https://www.youtube.com/@agitravelers5804','Budapest'],
-    ['cw5E_5-xn84',38.04476430355647, 114.48700435868744,492,'CN','DuckTravel','https://www.youtube.com/@DuckTravel','Shijiazhuang']
+    ['cw5E_5-xn84',38.04476430355647, 114.48700435868744,492,'CN','DuckTravel','https://www.youtube.com/@DuckTravel','Shijiazhuang'],
+    ['JYMwoDkf8Ws',-32.91959374398838, -68.84593538372067,22,'AR','Diego Salatino','https://www.youtube.com/@DiegoSalatino','Mendoza'],
+    ['v7NA0C5oJLY',59.94119243601341, 30.312381188069537,793,'RU','Ivar Maldeikis','https://www.youtube.com/@ivarmaldeikis','St. Petesburg'],
+    ['XTIMkOTFqqw',43.6477833940206, -79.39628648439763,575,'CA','A Dawn','https://www.youtube.com/@ADawn','Toronto'],
+    ['XTIMkOTFqqw',43.651706873252465, -79.37925148373166,2107,'CA','A Dawn','https://www.youtube.com/@ADawn','Toronto'],
+    ['PzIQBbnMzKM',40.757945238992114, -73.97789892352559,25,'US','Spirit of N','https://www.youtube.com/@spiritofnewyork1819','New York'],
+    ['PzIQBbnMzKM',40.76005535826208, -73.98290085099386,456,'US','Spirit of N','https://www.youtube.com/@spiritofnewyork1819','New York'],
+    ['WQEoE6bp0LY',40.756710163894034, -73.97883544564534,27,'US','Spirit of N','https://www.youtube.com/@spiritofnewyork1819','New York'],
+    ['NK_FQ7XLr6k',40.71430512734087, -74.01334106377642,7,'US','Spirit of N','https://www.youtube.com/@spiritofnewyork1819','New York'],
+    ['mUA1hhoL4p8',40.70645052325826, -74.00655877746622,34,'US','Spirit of N','https://www.youtube.com/@spiritofnewyork1819','New York'],
+    ['B4GQ9xSyPjo',40.711840770734796, -74.01193995088201,41,'US','Spirit of N','https://www.youtube.com/@spiritofnewyork1819','New York'],
+    ['1_4O-VMDm6E',40.705283281594134, -74.00600549345309,86,'US','Spirit of N','https://www.youtube.com/@spiritofnewyork1819','New York'],
+    ['NHPPgD3h6oA',40.70445337414764, -74.01584874329727,75,'US','Spirit of N','https://www.youtube.com/@spiritofnewyork1819','New York'],
+    ['9N6IpArMDG8',-34.55700181814424, -58.45222054648821,66,'AR','Martin Recorre','https://www.youtube.com/@MartinRecorre','Buenos Aires'],
+    ['9N6IpArMDG8',-34.55789954238547, -58.45025453263423,543,'AR','Martin Recorre','https://www.youtube.com/@MartinRecorre','Buenos Aires']
 
 ]
 
