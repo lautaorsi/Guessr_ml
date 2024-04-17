@@ -285,8 +285,6 @@ var video_list = [
     ['ZOWygni0bOY',35.45334516639329, 139.6357929432623,324,'JP','KiLn','https://www.youtube.com/@KiLn1009','Tokyo'],
     ['ZOWygni0bOY',35.454165512071, 139.63607863590607,794,'JP','KiLn','https://www.youtube.com/@KiLn1009','Tokyo'],
     ['eTZxoAxsO8E',35.64898898382873, 139.69931674578416,33,'JP','KiLn','https://www.youtube.com/@KiLn1009','Tokyo'],
-    ['G-jXcsMb_PE',47.50031258841018, 19.048900232583723,368,'HU','https://www.youtube.com/@agitravelers5804','Budapest'],
-    ['G-jXcsMb_PE',47.492909876452806, 19.05322762448806,981,'HU','https://www.youtube.com/@agitravelers5804','Budapest'],
     ['cw5E_5-xn84',38.04476430355647, 114.48700435868744,492,'CN','DuckTravel','https://www.youtube.com/@DuckTravel','Shijiazhuang'],
     ['JYMwoDkf8Ws',-32.91959374398838, -68.84593538372067,22,'AR','Diego Salatino','https://www.youtube.com/@DiegoSalatino','Mendoza'],
     ['v7NA0C5oJLY',59.94119243601341, 30.312381188069537,793,'RU','Ivar Maldeikis','https://www.youtube.com/@ivarmaldeikis','St. Petesburg'],
