@@ -20,6 +20,7 @@
             </button>
         </a>
         <div id="main_lobby" class="pre">
+            <img src="../static/logo.png" alt="logo" class="logoimg" draggable="false" onclick="window.location='https://videoguessr.com/es'">
             <div id="main_container">
                 <h1 id="title">Jugadores</h1>
                 <div id="players">
@@ -186,8 +187,14 @@
             player_list = users
         })
 
-        var username = localStorage.getItem('usern')
-        var room_id = localStorage.getItem('roomid')
+        try{
+            var username = localStorage.getItem('usern')
+            var room_id = localStorage.getItem('roomid')
+        }
+        catch(TypeError){
+            window.location.href = 'index.html'
+        }
+
         if(room_id == 1){
             room_id = Math.random().toString(36).substring(2, 13); 
         }

@@ -166,6 +166,20 @@ h1{
 
 
 
+.logoimg{
+  position: absolute;
+  z-index: 99;
+  cursor: pointer;
+  top: 0;
+  width: 7vw;
+  display: block;
+  left: 46.5%;
+}
+
+.logoimg:hover{
+  animation: rotation 1.5s infinite;
+}
+
 .pre{
     display: block;
 }
@@ -869,12 +883,13 @@ h1{
 }
 
 @keyframes rotation {
-  50% {
+  25% {
     transform: rotate(10deg);
   }
-  100% {
-    transform: rotate(0deg);
+  75% {
+    transform: rotate(-10deg);
   }
+
 }
 
 @keyframes full_rotation {

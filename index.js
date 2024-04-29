@@ -169,6 +169,15 @@ io.on('connection', (socket) => {
   
           //remove from player list
           (rooms[room]['Players']).splice(i, 1)
+
+          //if room is empty, delete it
+          if(rooms[room]['Players'].length == 0){
+            delete rooms[room]
+          }
+          else{
+          //emit disconnection event with player's username and new player list
+          io.to(room).emit('player_disconnected', ({username : player_id[socket.id], new_list: (rooms[room]['Players'])}))
+          }
           break
         }
       }
@@ -179,14 +188,7 @@ io.on('connection', (socket) => {
    
 
 
-    //if room is empty, delete it
-    if(rooms[room]['Players'].length == 0){
-      delete rooms[room]
-    }
-    else{
-    //emit disconnection event with player's username and new player list
-    io.to(room).emit('player_disconnected', ({username : player_id[socket.id], new_list: (rooms[room]['Players'])}))
-    }
+
   });
 
 
