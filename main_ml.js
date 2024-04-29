@@ -13,7 +13,7 @@ var prround = JSON.parse(prerounds)
 roundhtml.innerHTML = `1/${prround}`
 time = JSON.parse(pretime) + 1
 abstime =  JSON.parse(pretime) + 1
-
+var language =  ((document.getElementsByTagName('meta'))[0]).getAttribute('content')
 
 
 var redIcon = new L.Icon({
