@@ -299,9 +299,20 @@ var video_list = [
     ['1_4O-VMDm6E',40.705283281594134, -74.00600549345309,86,'US','Spirit of N','https://www.youtube.com/@spiritofnewyork1819','New York'],
     ['NHPPgD3h6oA',40.70445337414764, -74.01584874329727,75,'US','Spirit of N','https://www.youtube.com/@spiritofnewyork1819','New York'],
     ['9N6IpArMDG8',-34.55700181814424, -58.45222054648821,66,'AR','Martin Recorre','https://www.youtube.com/@MartinRecorre','Buenos Aires'],
-    ['9N6IpArMDG8',-34.55789954238547, -58.45025453263423,543,'AR','Martin Recorre','https://www.youtube.com/@MartinRecorre','Buenos Aires']
-
+    ['9N6IpArMDG8',-34.55789954238547, -58.45025453263423,543,'AR','Martin Recorre','https://www.youtube.com/@MartinRecorre','Buenos Aires'],
+    ['x_EIenax9zs',34.70404224115961, 135.49748490067643,163,'JP','Gaijin Adventures','https://www.youtube.com/@Gaijin_adventures','Osaka'],
+    ['x_EIenax9zs',34.70404224115961, 135.49748490067643,163,'JP','Gaijin Adventures','https://www.youtube.com/@Gaijin_adventures','Osaka'],
+    ['3_mlkTAi0ng',40.75540105748244, -73.94126244306398,213,'US','Walking ***** Luna','https://www.youtube.com/@WALKINGNYCLUNA','Long Island'],
+    ['JmABJdosEYw',40.42067234724074, -3.6990897586068767,410,'ES','Walking around city','https://www.youtube.com/@walkingaroundcity2160','Madrid'],
+    ['JmABJdosEYw',40.41896595101334, -3.707410450820669,966,'ES','Walking around city','https://www.youtube.com/@walkingaroundcity2160','Madrid'],
+    ['_MTtDni0xf0',46.061562055677115, 13.23479955741569,150,'IT','Walking Tour Master','https://www.youtube.com/@Walkingtourmaster','Udine'],
+    ['_MTtDni0xf0',46.06218805321954, 13.232298057574733,768,'IT','Walking Tour Master','https://www.youtube.com/@Walkingtourmaster','Udine'],
+    ['_MTtDni0xf0',46.065703356739476, 13.23358505175013,1406,'IT','Walking Tour Master','https://www.youtube.com/@Walkingtourmaster','Udine'],
+    ['uzumxoo7fSU',39.57224389251076, 2.6520803363015037,626,'ES','Walking Tour Master','https://www.youtube.com/@Walkingtourmaster','Mallorca'],
+    ['Yy_aVMmHlyM',43.669268841386135, -79.39174077998233,132,'CA','Eye Heart Cycling','https://www.youtube.com/@eyeheartcycling','Toronto']
+    ['Yy_aVMmHlyM',43.66132037858645, -79.38296345419354,1212,'CA','Eye Heart Cycling','https://www.youtube.com/@eyeheartcycling','Toronto']
 ]
+
 
 
 
