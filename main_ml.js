@@ -309,8 +309,45 @@ var video_list = [
     ['_MTtDni0xf0',46.06218805321954, 13.232298057574733,768,'IT','Walking Tour Master','https://www.youtube.com/@Walkingtourmaster','Udine'],
     ['_MTtDni0xf0',46.065703356739476, 13.23358505175013,1406,'IT','Walking Tour Master','https://www.youtube.com/@Walkingtourmaster','Udine'],
     ['uzumxoo7fSU',39.57224389251076, 2.6520803363015037,626,'ES','Walking Tour Master','https://www.youtube.com/@Walkingtourmaster','Mallorca'],
-    ['Yy_aVMmHlyM',43.669268841386135, -79.39174077998233,132,'CA','Eye Heart Cycling','https://www.youtube.com/@eyeheartcycling','Toronto']
-    ['Yy_aVMmHlyM',43.66132037858645, -79.38296345419354,1212,'CA','Eye Heart Cycling','https://www.youtube.com/@eyeheartcycling','Toronto']
+    ['Yy_aVMmHlyM',43.669268841386135, -79.39174077998233,132,'CA','Eye Heart Cycling','https://www.youtube.com/@eyeheartcycling','Toronto'],
+    ['Yy_aVMmHlyM',43.66132037858645, -79.38296345419354,1212,'CA','Eye Heart Cycling','https://www.youtube.com/@eyeheartcycling','Toronto'],
+    ['SeRmOzcEt9M',25.77708787085667, -80.13139835627238,62,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Miami'],
+    ['SeRmOzcEt9M',25.781532781847925, -80.1304494417622,554,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Miami'],
+    ['Ov2yZdbc8tc',25.765567842716514, -80.22148666671843,74,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Miami'],
+    ['Ov2yZdbc8tc',25.765890903267255, -80.2153357084752,821,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Miami'],
+    ['Ov2yZdbc8tc',25.765603571773422, -80.22116012873005,1486,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Miami'],
+    ['N14HuzfK6lk',27.94872893852301, -82.45457451150659,72,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Tampa'],
+    ['N14HuzfK6lk',27.946349104799385, -82.45730133913888,678,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Tampa'],
+    ['N14HuzfK6lk',27.950924464468596, -82.4594571010082,1388,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Tampa'],
+    ['N14HuzfK6lk',27.949630870659675, -82.45481988624489,2526,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Tampa'],
+    ['N14HuzfK6lk',27.950508177573308, -82.45507056277727,3063,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Tampa'],
+    ['1TCh11GJhdQ',27.943130324639423, -82.44760225190576,62,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Tampa'],
+    ['1TCh11GJhdQ',27.944402841140427, -82.44552237300563,694,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Tampa'],
+    ['1TCh11GJhdQ',27.95063724291666, -82.44574783425024,1481,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Tampa'],
+    ['z_vNwikJKH8',28.4734015558863, -81.46481061054276,20,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Orlando'],
+    ['z_vNwikJKH8',28.473805845479333, -81.46572064816162,972,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Orlando'],
+    ['z_vNwikJKH8',28.472645306613245, -81.46560030269957,1680,'US','Travels With Alain','https://www.youtube.com/@travelswithalain','Orlando'],
+    ['KFXoMOmz8as',37.45149496558525, 126.45324714141861,1636,'SK','Hodu Walker','https://www.youtube.com/@hoduwalker','Incheon'],
+    ['zyRsmqsGggY',37.56358242291375, 126.98283843689401,36,'SK','K*** Walking Tour','https://www.youtube.com/@WalkingTravel21','Seoul'],
+    ['hk_kAYwbQPw',34.11902970364856, -118.30041112031401,92,'US','Zero One','https://www.youtube.com/@zeroone_01','Los Angeles'],
+    ['sesj4QwZRO8',1.2811823196972463, 103.84915210345567,285,'SG','Walking Tour Master','https://www.youtube.com/@Walkingtourmaster','Singapore'],
+    ['sesj4QwZRO8',1.2837785296260664, 103.85113138288266,973,'SG','Walking Tour Master','https://www.youtube.com/@Walkingtourmaster','Singapore'],
+    ['kibhq0WR1XM',21.03135442192783, 105.84848129778157,1228,'VN','Walking Tour Master','https://www.youtube.com/@Walkingtourmaster','Hanoi'],
+    ['kibhq0WR1XM',21.02477459061477, 105.85308195947172,229,'VN','Walking Tour Master','https://www.youtube.com/@Walkingtourmaster','Hanoi'],
+    ['l5xe_yVgFoY',38.71213351186336, -9.139431060787198,286,'PT','Walking Portugal','https://www.youtube.com/@Walking_Portugal','Lisboa'],
+    ['aRHweyKtvgA',36.106934075089065, -115.17331520947201,281,'US','Zero One','https://www.youtube.com/@zeroone_01','Las Vegas'],
+    ['wFZy3owiG2U',41.31062522440086, 19.436809373232837,8,'AL','Walking Tour Master','https://www.youtube.com/@Walkingtourmaster','Durres'],
+    ['0QLhb01jfKI',38.7677920644157, -9.098308290512026,58,'PT','Walking Portugal','https://www.youtube.com/@Walking_Portugal','Lisboa'],
+    ['vfzPQCk87m0',40.753621277050414,-73.98697438819755,33,'US','WizardP','https://www.youtube.com/@wizardp7467','New York'],
+    ['vfzPQCk87m0',40.75800626075224, -73.98533519938796,538,'US','WizardP','https://www.youtube.com/@wizardp7467','New York'],
+    ['9llK66sQmEw',47.37576442233883, 8.53751871378099,321,'SWZ','Street To Street','https://www.youtube.com/@streettostreet','Zurich'],
+    ['9llK66sQmEw',47.36765650776644, 8.545285779759638,2431,'SWZ','Street To Street','https://www.youtube.com/@streettostreet','Zurich'],
+    ['alRKhZjdR9M',52.363643496946096, 4.8851677083576135,286,'NTH','TourDrift','https://www.youtube.com/@tourdrift8580','Amsterdam'],
+    ['alRKhZjdR9M',52.36676788423055, 4.891316691120381,842,'NTH','TourDrift','https://www.youtube.com/@tourdrift8580','Amsterdam'],
+    ['y4RN6MusjY8',46.20222395335237, 6.153557598327851,84,'SWZ','Walking Tour Master','https://www.youtube.com/@Walkingtourmaster','Geneva'],
+    ['nsa82K9x7A0',40.419925821610235, -3.700989645180039,426,'ES','TourDrift','https://www.youtube.com/@tourdrift8580','Madrid'],
+    ['nsa82K9x7A0',40.419324478139835, -3.693570792713237,895,'ES','TourDrift','https://www.youtube.com/@tourdrift8580','Madrid'],
+    ['nsa82K9x7A0',40.41673318930838, -3.702573047558823,1536,'ES','TourDrift','https://www.youtube.com/@tourdrift8580','Madrid'],
 ]
 
 
@@ -864,7 +901,9 @@ function final_guess(player_guessed) {
         .addTo(vidmarker)
         .bindPopup(`${active_playlist[vid_index][7]}, ${country(active_playlist[vid_index][4])}`);
     map.addLayer(vidmarker);
-    green_marker.openPopup();
+    green_marker.on('add', function(){
+        green_marker.openPopup();
+   });
 
     
     if(player_guessed == false && time == 0){
