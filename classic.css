@@ -532,8 +532,8 @@ h2{
 }
 
 #continue{
+  cursor: default !important;
   color: rgb(0, 0, 0);
-  cursor: pointer;
   size: 20%;
   background-color: #ffffff;
   border-radius: 4px;

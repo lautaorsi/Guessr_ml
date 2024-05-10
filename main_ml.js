@@ -13,7 +13,7 @@ var prround = JSON.parse(prerounds)
 roundhtml.innerHTML = `1/${prround}`
 time = JSON.parse(pretime) + 1
 abstime =  JSON.parse(pretime) + 1
-var language =  ((document.getElementsByTagName('meta'))[0]).getAttribute('content')
+const language =  ((document.getElementsByTagName('meta'))[0]).getAttribute('content')
 
 
 var redIcon = new L.Icon({
@@ -379,6 +379,19 @@ var video_list = [
     ['mxZGFvBpo',40.41920472478652, -3.698070580562131,554,'ES','POPtravel','https://www.youtube.com/@poptravelorg','Madrid'],
     ['mxZGFvBpo',40.41855294989362, -3.696661923858176,1052,'ES','POPtravel','https://www.youtube.com/@poptravelorg','Madrid'],
     ['mxZGFvBpo',40.416092615992575, -3.7069638393876336,1761,'ES','POPtravel','https://www.youtube.com/@poptravelorg','Madrid'],
+    ['v_pDQLxe_mQ',37.33229090988114, -121.88468847168534,30,'US','Gala Daily','https://www.youtube.com/@galadaily240','San Jose'],
+    ['v_pDQLxe_mQ',37.33524746903032, -121.88998726682321,548,'US','Gala Daily','https://www.youtube.com/@galadaily240','San Jose'],
+    ['v_pDQLxe_mQ',37.33776800777274, -121.89393627930158,1164,'US','Gala Daily','https://www.youtube.com/@galadaily240','San Jose'],
+    ['GmI4WLZ3RWU',37.34899567313431, -121.89437410442511,68,'US','Gala Daily','https://www.youtube.com/@galadaily240','San Jose'],
+    ['HKiyU2JtlMI',41.37392680733299, 2.1502713792964676,460,'ES','The World is Yours','https://www.youtube.com/@Gmadeira04','Barcelona'],
+    ['HKiyU2JtlMI',41.37513632941855, 2.1618819597737793,1173,'ES','The World is Yours','https://www.youtube.com/@Gmadeira04','Barcelona'],
+    ['HKiyU2JtlMI',41.37459760904399, 2.176548066407066,1840,'ES','The World is Yours','https://www.youtube.com/@Gmadeira04','Barcelona'],
+    ['HKiyU2JtlMI',41.375538746884736, 2.180178823327157,2950,'ES','The World is Yours','https://www.youtube.com/@Gmadeira04','Barcelona'],
+    ['HKiyU2JtlMI',41.381142564092656, 2.1732598151770866,3493,'ES','The World is Yours','https://www.youtube.com/@Gmadeira04','Barcelona'],
+    ['AL5WRHVSO34',41.40401781117569, 2.174923371244246,99,'ES','POPtravel','https://www.youtube.com/@poptravelorg','Barcelona'],
+    ['AL5WRHVSO34',41.401175139691674, 2.1790790562265423,696,'ES','POPtravel','https://www.youtube.com/@poptravelorg','Barcelona'],
+    ['AL5WRHVSO34',41.40136222316096, 2.1856607334370897,1282,'ES','POPtravel','https://www.youtube.com/@poptravelorg','Barcelona'],
+    ['6nsAktkBDhg',41.387092718368294, 2.1699289769037966,2295,'ES','POPtravel','https://www.youtube.com/@poptravelorg','Barcelona'],
 ]
 
 
@@ -397,12 +410,50 @@ const list = {
 
 
 
-var score, video_coords, Enable_marking,marker_coords, map, marker, score_id, vidmarker, polyline, src, lat, lng, active_video, playersmarkers, time, inter, pause, interval, player, active_playlist, marker_placed, players_ready
+var score, video_coords, Enable_marking, map, marker, score_id, vidmarker, polyline, src, lat, lng, active_video, playersmarkers, time, inter, pause, interval, player, active_playlist, players_ready
 var guessed = true
 var pausado = false
 var playing = true
+var already_guessed = false
 var total_players = document.getElementsByClassName('player').length
 var players_guessed = 0
+var marker_placed = false
+var marker_coords = [0,0]
+
+
+
+if(language == 'es'){
+    if(admin){
+        console.log('admin')
+        document.getElementById('continue').innerHTML = 'Continuar'
+    }
+    else{
+        console.log('not admin')
+        document.getElementById('continue').innerHTML = 'Esperando al host'
+    }
+    
+}
+if(language == 'en'){
+    if(admin){
+        console.log('admin')
+        document.getElementById('continue').innerHTML = 'Continue'
+    }
+    else{
+        console.log('not admin')
+        document.getElementById('continue').innerHTML = 'Waiting for host'
+
+    }
+    
+} 
+
+
+
+if(admin){
+    document.getElementById('continue').disabled = false
+    document.getElementById('continue').style.cursor = 'pointer'
+}
+
+
 
 
 const x = document.getElementById("warning-container")
@@ -474,7 +525,7 @@ document.getElementById('volumerange').oninput = function(){
     player.setVolume(parseFloat((document.getElementById('volumerange')).value))
 };
 
-const language =  ((document.getElementsByTagName('meta'))[0]).getAttribute('content')
+
 
 
 
@@ -660,37 +711,26 @@ function calc_points(){
 
 
 function next(e) {
-    var button_classes = (document.getElementById('continue').classList)
-    console.log(`Classes: ${button_classes}`)
-    if(button_classes.contains(0)){
-        console.log('unready')
-        socket.emit('player_unready')
-        button_classes.remove(0)
-        button_classes.add(1)
         if(language == 'es'){
-            document.getElementById('continue').innerHTML = 'Continuar'
+            if(admin){
+                document.getElementById('continue').innerHTML = 'Continuar'
+            }
+            else{
+                document.getElementById('continue').innerHTML = 'Esperando al host'
+            }
+            
         }
         if(language == 'en'){
-            document.getElementById('continue').innerHTML = 'Continue'
-        } 
-        document.getElementById('continue').style.backgroundColor = 'white'
-    }
-    if(button_classes.contains(1)){
-        console.log('ready')
-        button_classes.remove(1)
-        button_classes.add(0)
-        socket.emit('player_ready', callback =>{
-            players_ready = callback.users_ready
-            if(language == 'es'){
-                document.getElementById('continue').innerHTML = `Esperando a los jugadores (${players_ready}/${total_players})`
+            if(admin){
+                document.getElementById('continue').innerHTML = 'Continue'
             }
-            if(language == 'en'){
-                document.getElementById('continue').innerHTML = `Waiting for players (${players_ready}/${total_players})`
-            } 
+            else{
+                document.getElementById('continue').innerHTML = 'Waiting for host'
+
+            }
             
-        })
-        document.getElementById('continue').style.backgroundColor = 'green'
-    }
+        } 
+        socket.emit('player_ready')
 }
 
 
@@ -751,18 +791,6 @@ socket.on('new_vid', index => {
     time = abstime
     pausado = false
 
-
-    //update reset buttons
-    var continue_button = document.getElementById('continue') 
-    if(continue_button.classList.contains('en')){
-        continue_button.innerHTML = 'Continue'
-    }
-    if(continue_button.classList.contains('es')){
-        continue_button.innerHTML = 'Continuar'
-    }
-    continue_button.style.backgroundColor = '#ffffff'
-    continue_button.classList.remove(0)
-    continue_button.classList.add(1)
     switchbtn()
 
     //reset guess counter
@@ -804,7 +832,12 @@ socket.on(`replace_vid`, index => {
     startTimer()
 })
 
-
+socket.on('player_disconnected',(data)=>{
+    total_players -= 1
+    var disconnected_player = (document.getElementsByClassName(`scoreboard${data.username}`)[0]).parentElement
+    disconnected_player.remove()
+    
+})
 
 socket.on('end', scores =>{
     var pointarr = []
@@ -838,7 +871,19 @@ socket.on('end', scores =>{
 })
 
     
+socket.on('admin', ()=>{
 
+    document.getElementById('continue').disabled = false
+    document.getElementById('continue').style.cursor = 'pointer'
+    if(language == 'en'){
+        document.getElementById('continue').innerHTML = 'Continue'
+    }
+    if(language == 'es'){
+        document.getElementById('continue').innerHTML = 'Continuar'
+    }
+
+
+})
 
 
 
@@ -851,7 +896,7 @@ function startTimer(){
 }
 
 function looptime(){
-    if(time < 1 && marker_placed  && players_guessed == false){
+    if(time < 1 && marker_placed  && already_guessed == false){
         final_guess(true)
     }
     if(time >= 1){
@@ -859,7 +904,8 @@ function looptime(){
           updatetime()
         }, 1000);
     }
-    if(time < 1 && marker_placed == false && players_guessed == false){
+    if(time < 1 && marker_placed == false && already_guessed == false){
+        console.log('didnt guess')
         final_guess(false)
     }
     
@@ -906,6 +952,7 @@ function play(){
 function final_guess(player_guessed) {
     var points = 0
     if(player_guessed && time != 0){
+        console.log('B1')
         try{
             //if user tried guessing without clicking map show warning
            if (marker_coords[0] == null ||  marker_coords[1] == null){
@@ -917,13 +964,14 @@ function final_guess(player_guessed) {
            showWarning()
            return
        }
+       console.log('B2')
     }
 
 
     playing = false
     document.getElementById('tic').currentTime = 0
     document.getElementById('tic').pause()
-
+    already_guessed = true
                             
     //add marker on vid coords 
     vidmarker = L.layerGroup();
@@ -939,7 +987,6 @@ function final_guess(player_guessed) {
     
     if(player_guessed == false && time == 0){
 
-        
         guessed = false
         document.getElementById('modal').showModal()
         invsze()
@@ -954,6 +1001,7 @@ function final_guess(player_guessed) {
         switchbtn()
     }
     if(player_guessed){
+        console.log('B4')
         console.log('guessed')
 
 
@@ -986,7 +1034,7 @@ function final_guess(player_guessed) {
         polyline = L.polyline(latlngs, {color: 'black'})
         try{polyline.addTo(map);}
         catch(err){
-        
+            console.log('B5')
             showWarning()
             return
         }    
@@ -1009,7 +1057,7 @@ function final_guess(player_guessed) {
     updateTitle(players_guessed + 1)
 
 
-    
+    console.log('test')
     socket.emit(`user_guessed`,({username: username,coords1:marker_coords[0],coords2:marker_coords[1],points:points.toFixed(0),color:color,distance:distance}))
 }
 
