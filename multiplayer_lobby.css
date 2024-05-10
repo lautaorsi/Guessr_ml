@@ -148,9 +148,7 @@ h1{
 
 
 #start_button{
-  display: none;
-  font-size: x-large;
-  font-family: 'Mukta';
+  border: 2px solid transparent;
   position: relative;
   background-color: #02c91d;
   padding: 5px;
@@ -164,6 +162,30 @@ h1{
   cursor: pointer;
 }
 
+#start_button:hover{
+  cursor: pointer;
+  border: 2px;
+  border-color: gold;
+  border-style: solid;
+  box-shadow: inset 300px 0 0 0 #01470a;
+}
+
+#start_button:hover #start_text{
+  color: rgb(255, 208, 0)
+}
+
+
+
+
+
+#start_text{
+  color: black;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
 
 
 .logoimg{

@@ -5,11 +5,13 @@
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4047903443253489"
      crossorigin="anonymous"></script>
      <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap" rel="stylesheet">
+
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../index.css">
         <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Gabarito&family=Merriweather Sans">
+        href="https://fonts.googleapis.com/css2?family=Gabarito&family=Merriweather Sans&family=Mukta">
         <script src="https://kit.fontawesome.com/493860cbeb.js" crossorigin="anonymous"></script>
 
         <script>
@@ -68,7 +70,7 @@
                 localStorage.setItem('roomid',1)
                 var hname = document.getElementById('HostName').value.replace(/\s/g, "")
                 if(document.getElementById('modeselect').value == 'none' || document.getElementById('roundselect').value == 'none' || document.getElementById('timeselect').value == 'none'){
-                    alert('Debes elegir modo, rondas y tiempo!')
+                    alert('Please choose mode, rounds and time!')
                     return('error')
                 }
                 else{
@@ -104,15 +106,24 @@
     </head>
     <body>
             <title>VideoGuessr - Online Menu</title>
-            <a onclick="got()">
-                <button id="return" >
-                    <i class="fa-solid fa-arrow-left" style="color: #000000;"></i>
-                </button>
-            </a>
+            <div id="Top_menu">
+                <img src="../static/logo.png" alt="logo" class="logoimg" draggable="false" onclick="window.location='https://videoguessr.com/en'">
+                <div id="centerheader">
+                    <a href="https://videoguessr.com/en/info.html" draggable="false" id="howto" class="headers">How to play</a>
+                </div>
+                <div id="leftheader">
+                    <a href="https://videoguessr.com/en" draggable="false" id="howto" class="headers">Singleplayer</a>
+                </div>
+                <div id="rightheader">
+                    <a href="https://videoguessr.com/en/credits.html" draggable="false" id="howto" class="headers">Credits</a>
+                </div>
+            </div>
             <div id="main_container">
                 <div id="create_container">
                     <h2 id="gamemode">Create Lobby</h2>
+                    <h3 class="setting">Settings:</h3>
                     <div id="selectors">
+                        
                             <select id="modeselect" class="selects">
                                 <option value="none" disabled selected>Mode</option>
                                 <option value='CLASICO' >Normal</option>
@@ -142,7 +153,7 @@
                 <div id="middle_container">
                     <div id="Ads"></div>
                     <div id="title">
-                        <img src="../static/logo.png"  draggable="false" id="logo_middle">
+                        <img src="../static/logo.png"  draggable="false" id="logo_middle" onclick="window.location='https://videoguessr.com/en'">
                         <!-- <h2 id="t_p">VideoGuessr</h2> -->
                     </div>
                     <div id="tips">
