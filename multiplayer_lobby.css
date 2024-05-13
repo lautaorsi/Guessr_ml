@@ -170,6 +170,7 @@ body{
   width: fit-content;
   border-radius: 6px;
   cursor: pointer;
+  display: none;
 }
 
 #start_text{
