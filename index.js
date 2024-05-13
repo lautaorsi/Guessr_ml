@@ -285,28 +285,29 @@ io.on('connection', (socket) => {
 
 
   //Admin ready for next round sequence
-  socket.on('player_ready', (callback) => {
+  socket.on('new_round', (callback) => {
 
     //validate user is admin
     if(rooms[room]['is_host'][socket.id]){
 
       rooms[room]['allow_guess'] = true
       //if round counter is less than max rounds set, start new round 
-      if(rooms[room]['current_round'] <= parseInt(rooms[room]['rounds'])){
+      if(rooms[room]['current_round'] < parseInt(rooms[room]['rounds'])){
+        console.log(`round: ${rooms[room]['current_round']}/${parseInt(rooms[room]['rounds'])}`)
         while(true){
           video = rando(videos_qty)
           if(validateVideo(rooms[room]['VIDEOS'],video)){
+            rooms[room]['current_round'] += 1
             rooms[room]['VIDEOS'].push(video)
             io.to(room).emit('new_vid', video)
             rooms[room].players_ready = 0
+            console.log(rooms[room][`VIDEOS`])
             break
-          }
-          else{
-            continue
           }
         }
       }
       else{
+        console.log('ending game')
         //if all rounds have been played, end match
         io.to(room).emit('end', rooms[room].points)
       }

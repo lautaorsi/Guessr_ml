@@ -173,7 +173,7 @@ socket.on('admin', (data) => {
 //-------------bots won't actually join the game-------------//
 function bot(n){
     for(var i = 0; i < n; i++){
-    var usern = Math.random(50)
+    var usern = `Player${i}`
     var x = document.createElement('div');
     x.classList.add('player', usern);
     x.innerHTML = `${usern} <i class="fa-solid fa-location-dot right marker ${usern} " style="color: #005eff;"></i>`;

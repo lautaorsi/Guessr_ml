@@ -414,6 +414,7 @@ var score, video_coords, Enable_marking, map, marker, score_id, vidmarker, polyl
 var guessed = true
 var pausado = false
 var playing = true
+var all_guessed = false
 var already_guessed = false
 var total_players = document.getElementsByClassName('player').length
 var players_guessed = 0
@@ -422,29 +423,7 @@ var marker_coords = [0,0]
 
 
 
-if(language == 'es'){
-    if(admin){
-        console.log('admin')
-        document.getElementById('continue').innerHTML = 'Continuar'
-    }
-    else{
-        console.log('not admin')
-        document.getElementById('continue').innerHTML = 'Esperando al host'
-    }
-    
-}
-if(language == 'en'){
-    if(admin){
-        console.log('admin')
-        document.getElementById('continue').innerHTML = 'Continue'
-    }
-    else{
-        console.log('not admin')
-        document.getElementById('continue').innerHTML = 'Waiting for host'
 
-    }
-    
-} 
 
 
 
@@ -710,12 +689,24 @@ function calc_points(){
 
 
 
-function next(e) {
+function next() {
+        if((time < 1 && admin) || (admin && all_guessed)){
+            socket.emit('new_round')
+        }
+}
+
+function continueMessage(b){
+    if(b){
+        if(admin){
+            document.getElementById('continue').disabled = false
+            document.getElementById('continue').style.cursor = 'pointer'
+        }
         if(language == 'es'){
             if(admin){
                 document.getElementById('continue').innerHTML = 'Continuar'
             }
             else{
+                console.log('not admin')
                 document.getElementById('continue').innerHTML = 'Esperando al host'
             }
             
@@ -725,81 +716,100 @@ function next(e) {
                 document.getElementById('continue').innerHTML = 'Continue'
             }
             else{
+                console.log('not admin')
                 document.getElementById('continue').innerHTML = 'Waiting for host'
-
+        
             }
             
         } 
-        socket.emit('player_ready')
+
+    }
+    else{
+        document.getElementById('continue').disabled = true
+        document.getElementById('continue').style.cursor = 'defaul'
+        if(language == 'es'){
+            document.getElementById('continue').innerHTML = 'Esperando a los demas jugadores'
+        }
+        if(language == 'en'){
+                document.getElementById('continue').innerHTML = 'Waiting for other players'
+        } 
+    }
+
 }
 
 
 socket.on('new_vid', index => {
-    addtocredit(active_video)
-    rounds += 1
-    roundhtml.innerHTML = `${rounds}/${prround}`
-    marker_placed = false
-    playing = true
-    pausado = false
-    
-    //end()
-    
-    Enable_marking = true
-
-
-
-    //clear all map layers
-    if(marker.getLayers().length > 0){
-        marker.clearLayers()
+    if(index == null){
+        socket.emit('video_error')
     }
-    if(guessed){
-    polyline.removeFrom(map)
-    marker_coords.length = 0
-    }
-    map.removeLayer(vidmarker)
-
-    //readjust map's zoom
-    map.setView([0, 0], 2.4)
-    map_open();
-
-    //erase distance text
-    document.getElementById("h2").innerHTML = "";
-    showDistance()
-
-    //close map modal
-    document.getElementById('modal').close()
-
-
-
-    //get new video
-    var newvid = video_list[index]
-    vid_index = index
-    active_video = newvid
-    video_coords = [active_video[1],active_video[2]]
-    console.log(newvid)
-
-
-    //update video
-    player.loadVideoById(newvid[0],newvid[3]);
-
-
-    //update credits
-    var a = document.getElementById('credits');
-    a.href = active_playlist[vid_index][6]
-    a.innerHTML = `${active_playlist[vid_index][5]}`
+    else{
+        addtocredit(active_video)
+        rounds += 1
+        roundhtml.innerHTML = `${rounds}/${prround}`
+        marker_placed = false
+        playing = true
+        pausado = false
         
-    time = abstime
-    pausado = false
-
-    switchbtn()
-
-    //reset guess counter
-    updateTitle(0)
-
-    //start timer
-    startTimer()
-
-
+        //end()
+        
+        Enable_marking = true
+    
+    
+    
+        //clear all map layers
+        if(marker.getLayers().length > 0){
+            marker.clearLayers()
+        }
+        if(guessed){
+        polyline.removeFrom(map)
+        marker_coords.length = 0
+        }
+        map.removeLayer(vidmarker)
+    
+        //readjust map's zoom
+        map.setView([0, 0], 2.4)
+        map_open();
+    
+        //erase distance text
+        document.getElementById("h2").innerHTML = "";
+        showDistance()
+    
+        //close map modal
+        document.getElementById('modal').close()
+    
+    
+    
+        //get new video
+        var newvid = video_list[index]
+        vid_index = index
+        active_video = newvid
+        video_coords = [active_video[1],active_video[2]]
+        console.log(newvid)
+    
+    
+        //update video
+        player.loadVideoById(newvid[0],newvid[3]);
+    
+    
+        //update credits
+        var a = document.getElementById('credits');
+        a.href = active_playlist[vid_index][6]
+        a.innerHTML = `${active_playlist[vid_index][5]}`
+            
+        time = abstime
+        pausado = false
+    
+        continueMessage(false)
+        switchbtn()
+    
+        //reset guess counter
+        updateTitle(0)
+    
+        //start timer
+        startTimer()
+    
+    
+    }
 })
 
 
@@ -898,6 +908,7 @@ function startTimer(){
 function looptime(){
     if(time < 1 && marker_placed  && already_guessed == false){
         final_guess(true)
+        continueMessage(true)
     }
     if(time >= 1){
        interval = setTimeout(function() {
@@ -905,8 +916,8 @@ function looptime(){
         }, 1000);
     }
     if(time < 1 && marker_placed == false && already_guessed == false){
-        console.log('didnt guess')
         final_guess(false)
+        continueMessage(true)
     }
     
 }
@@ -1057,14 +1068,13 @@ function final_guess(player_guessed) {
     updateTitle(players_guessed + 1)
 
 
-    console.log('test')
     socket.emit(`user_guessed`,({username: username,coords1:marker_coords[0],coords2:marker_coords[1],points:points.toFixed(0),color:color,distance:distance}))
 }
 
 
 socket.on('all_guessed', data => {
     //update scoreboard
-    
+    all_guessed = true
     for(var k in data){
         //data format: {playerX1: [coord 1, coord 2, points, color],
         //              playerX2: [coord 1, coord 2, points, color],...}
@@ -1091,6 +1101,7 @@ socket.on('all_guessed', data => {
     map.setView([0, 0], 2.4)
     players_guessed = 0
     updateTitle('all')
+    continueMessage(true)
 })
 
 
@@ -1183,9 +1194,6 @@ document.addEventListener('keydown', (event) => {
         if (x.style.visibility != "hidden"){
            
             final_guess(true)
-        }
-        else{
-            next()
         }
     }
     if (name == ' ' && gamemode == 'PAUSE'){

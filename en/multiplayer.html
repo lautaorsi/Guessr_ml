@@ -33,16 +33,25 @@
         </a>
         <div id="main_lobby" class="pre">
             <img src="../static/logo.png" alt="logo" class="logoimg" draggable="false" onclick="window.location='https://videoguessr.com/en'">
-            <div id="main_container">
-                <h1 id="title">Players</h1>
-                <div id="players">
+            <div id="main_lobby">
+                <div id="main_container">
+                    <div class="title_cont">
+                        <h1 id="title-text">Players</h1>
+                    </div>
+                    <div class="players_cont">
+                        <div id="players"></div>
+                    </div>
+                    <div class="room_id_cont">
+                        <h3 id="room_id">Room ID: xxxxxxxxxxx</h3>
+                        <div class="start_cont" >
+                            <div id="start_button" onclick="game()">
+                                <h3 id="start_text" style="font-family: Mukta;">Start</h3>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
-            </div>
-            <div id="room_id_container" >
-                <h3 id="room_id">Room ID: xxxxxxxxxxx</h3>
-                <div id="start_button" onclick="game()" >
-                    <h3 id="start_text" style="font-family: Mukta;">Start</h3>
-                </div>
+
             </div>
 
         </div>
@@ -116,7 +125,7 @@
                     <i class="fa-solid fa-location-dot fa-bounce" id="marker_warning" style="color: #005eff;"></i> 
                 </div>
             <div id="notif-placeholder"></div>
-            <button id = "continue"  onclick="next()" disabled>Continue</button>
+            <button id = "continue"  onclick="next()" disabled>Waiting for other players</button>
         </div>
     <script>
         function got(){
