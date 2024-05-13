@@ -107,15 +107,14 @@
     <body>
             <title>VideoGuessr - Online Menu</title>
             <div id="Top_menu">
-                <img src="../static/logo.png" alt="logo" class="logoimg" draggable="false" onclick="window.location='https://videoguessr.com/en'">
-                <div id="centerheader">
-                    <a href="https://videoguessr.com/en/info.html" draggable="false" id="howto" class="headers">How to play</a>
+                <div id="centerheader" class="headercont">
+                    <a href="https://videoguessr.com/en/info.html" draggable="false" id="howto" class="headers center-underline">How to play</a>
                 </div>
-                <div id="leftheader">
-                    <a href="https://videoguessr.com/en" draggable="false" id="howto" class="headers">Singleplayer</a>
+                <div id="leftheader" class="headercont">
+                    <a href="https://videoguessr.com/en" draggable="false" id="howto" class="headers center-underline">Singleplayer</a>
                 </div>
-                <div id="rightheader">
-                    <a href="https://videoguessr.com/en/credits.html" draggable="false" id="howto" class="headers">Credits</a>
+                <div id="rightheader" class="headercont">
+                    <a href="https://videoguessr.com/en/credits.html" draggable="false" id="howto" class="headers center-underline">Credits</a>
                 </div>
             </div>
             <div id="main_container">
@@ -125,19 +124,19 @@
                     <div id="selectors">
                         
                             <select id="modeselect" class="selects">
-                                <option value="none" disabled selected>Mode</option>
+                                <option value="none" disabled selected class="placeholder">Mode</option>
                                 <option value='CLASICO' >Normal</option>
                                 <option value='INVERTIDO' >Upside Down</option>
                             </select>
                             <select id="roundselect" class="selects">
-                                <option value="none" disabled selected>Rounds</option>
+                                <option value="none" disabled selected class="placeholder">Rounds</option>
                                 <option value=5 >5 rounds</option>
                                 <option value=10 >10 rounds</option>
                                 <option value=15 >15 rounds</option>
                                 <option value=20 >20 rounds</option>
                             </select>
                             <select id="timeselect" class="selects">
-                                <option value="none" disabled selected>Time</option>
+                                <option value="none" disabled selected class="placeholder">Time</option>
                                 <option value=30 id="time1">30s</option>
                                 <option value=50 id="time2">50s</option>
                                 <option value=90 id="time3">90s</option>
@@ -172,14 +171,6 @@
                         <button id="join_room" onclick="nam(false)">Join</button>
                     </div>
                 </div>
-            </div>
-            <div id="mode">
-                <a id="darken" onclick="whiten()" display="none">🌑</a>
-                <a id="whiten" onclick="darken()">🔆</a>
-            </div> 
-            <div id="credits_container">
-                <a href="https://www.pexels.com/photo/downtown-buenos-aires-agrentina-15574935/" target="_blank" class="credits" id="white">Photo by Franco Garcia</a>
-                <a href="https://www.pexels.com/photo/monument-of-al-chacho-penaloza-in-la-rioja-argentina-13572011/" target="_blank" class="credits" id="black">Photo by Maxi Leiva</a>
             </div>
     </body>
 </html>
