@@ -192,6 +192,8 @@ body{
 .marker{
   font-size: xx-large;
   bottom: 25%;
+  right: 5%;
+  position: absolute;
 }
 
 

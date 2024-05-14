@@ -26,44 +26,16 @@ function func(list,cond){
     players = list
     document.querySelectorAll('.player').forEach(e => e.remove());
     //when called, func will delete the html content and create a new one with the updated list
-    if(cond){
         for(var element = 0; element < list.length; element++ ){
             var x = document.createElement('div');
             x.classList.add('player', `lobby${list[element].username}`);
-            x.innerHTML = `${list[element].username} <i class="fa-solid fa-location-dot right marker ${list[element].username} " style="color: ${list[element].color};"></i>`;
+            x.innerHTML = `${list[element].username}`;
+            if(element= 0){
+                document.getElementsByClassName('player')[0].innerHTML += `<i class="fa-solid fa-crown fa-lg" style="color: #FFD43B; margin-left:3%;text-shadow: 0 0 5px black;"></i>`
+            }
+            x.innerHTML += '<i class="fa-solid fa-location-dot right marker ${list[element].username} " style="color: ${list[element].color};"></i>'
             document.getElementById("players").appendChild(x);
         };   
-        document.getElementsByClassName('player')[0].innerHTML += `<i class="fa-solid fa-crown fa-lg" style="color: #FFD43B; margin-left:3%;text-shadow: 0 0 5px black;"></i>`
-    }
-    else{
-        document.getElementById('title').innerHTML = 'Scoreboard'
-        //create final scoreboard with all players
-        for(let element in list){
-            var x = document.createElement('div');
-            x.classList.add('player', `end${element}`);
-            x.innerHTML = `${list[element].username} <p class="right score">${list[element].points}</p>`;
-            document.getElementById("players").appendChild(x);
-        }
-
-        document.getElementsByClassName(`player`)[0].classList.add('winner', 'p1')
-        document.getElementsByClassName(`player`)[1].classList.add('winner','p2')
-        if((document.getElementsByClassName('player')).length >= 3){
-            document.getElementsByClassName(`player`)[2].classList.add('winner','p3')
-        }
-
-        //paint gold
-        document.getElementsByClassName(`player`)[0].style.backgroundColor = '#ffd700'
-        //paint silver
-        document.getElementsByClassName(`player`)[1].style.backgroundColor = '#c0c0c0'
-        if((document.getElementsByClassName('player')).length >= 3){
-            //paint copper
-            document.getElementsByClassName(`player`)[2].style.backgroundColor = '#b87333'
-        }
-
-        
-
-    
-}
 }
 
 
