@@ -392,6 +392,24 @@ var video_list = [
     ['AL5WRHVSO34',41.401175139691674, 2.1790790562265423,696,'ES','POPtravel','https://www.youtube.com/@poptravelorg','Barcelona'],
     ['AL5WRHVSO34',41.40136222316096, 2.1856607334370897,1282,'ES','POPtravel','https://www.youtube.com/@poptravelorg','Barcelona'],
     ['6nsAktkBDhg',41.387092718368294, 2.1699289769037966,2295,'ES','POPtravel','https://www.youtube.com/@poptravelorg','Barcelona'],
+    ['32AwZU4FhXc',39.458615,-0.3558719,109,'ES','Impresiones Todas Partes','https://www.youtube.com/@ImpressionsFromEverywhere','Valencia'],    
+    ["3ZygN1uKRok",41.39816350624864, 2.1708645837607694, 940,'ES', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Barcelona'], 
+    ["3ZygN1uKRok",41.39134588744798, 2.163983735547655, 1399,'ES', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Barcelona'],
+    ["3ZygN1uKRok",41.39131950408178, 2.170793474286792, 1845,'ES', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Barcelona'],
+    ["-dZyG7zYxOw",40.550594350190096, 14.24251863078365, 136,'ITA', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Capri'],
+    ["-dZyG7zYxOw",40.54749542909699, 14.243634184697326, 1000,'ITA', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Capri'],
+    ["BSxV9nUfDAU",-33.903989032285516, 18.421244996936988, 220,'SA', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Cape Town'],
+    ["BSxV9nUfDAU",-33.962639071304785, 18.409769655891978, 1084,'SA', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Cape Town'],
+    ["BSxV9nUfDAU",-33.91892476085363, 18.38477143542082, 1727,'SA', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Cape Town'],
+    ["MWvrDzIzfhQ",25.29601844342615, 51.543429526763305, 554,'QA', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Doha'],
+    ["MWvrDzIzfhQ",25.38908155374747, 51.53220891943388, 1170,'QA', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Doha'],
+    ["MWvrDzIzfhQ",25.359066095510858, 51.52503677572895, 1800,'QA', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Doha'],
+    ["MWvrDzIzfhQ",25.3575483220633, 51.52671547354513, 2482,'QA', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Doha'],
+    ["MWvrDzIzfhQ",25.289014281798337, 51.54778197321127, 3051,'QA', 'AtmosWalks','https://www.youtube.com/@AtmosWalks','Doha'],
+    ['5FEvcCa6Jhs',25.765179185992753, -80.18563531843044,71,'US','Traveling W/ Andrew','https://www.youtube.com/@TravelingwithAndrew','Miami'],
+    ['5FEvcCa6Jhs',25.763312160213868, -80.19002556781052,680,'US','Traveling W/ Andrew','https://www.youtube.com/@TravelingwithAndrew','Miami'],
+    ['5FEvcCa6Jhs',25.767262486412545, -80.18841434631132,1405,'US','Traveling W/ Andrew','https://www.youtube.com/@TravelingwithAndrew','Miami'],
+
 ]
 
 
@@ -1308,8 +1326,12 @@ function country(index){
             return('Armenia');
         case 'AL':
             return('Albania');
+        case 'SA':
+            return('South Africa');
+        case 'QA':
+            return('Qatar');
         default:
-            return('Unknown')
+            return('Planet Earth');
     }
 }
 
