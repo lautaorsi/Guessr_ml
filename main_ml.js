@@ -1330,6 +1330,8 @@ function country(index){
             return('South Africa');
         case 'QA':
             return('Qatar');
+        case 'ES':
+            return('España');
         default:
             return('Planet Earth');
     }
