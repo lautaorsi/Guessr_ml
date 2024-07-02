@@ -9,6 +9,7 @@ var start_id, player_list, color
 console.log(admin)
 
 function game(){
+    console.log("1")
     if(players.length < 2){
         alert('No hay suficientes jugadores!')
     }
@@ -21,27 +22,32 @@ function game(){
 var players = []
 
 function func(list,cond){
+    console.log("2")
     //if cond == True => initial board w/ marker colors
     //if cond == False => final board w/ scores
     players = list
     document.querySelectorAll('.player').forEach(e => e.remove());
+    console.log("2a")
     //when called, func will delete the html content and create a new one with the updated list
-        for(var element = 0; element < list.length; element++ ){
+        for(let element = 0; element < list.length; element++ ){
+            console.log("2b")
             var x = document.createElement('div');
             x.classList.add('player', `lobby${list[element].username}`);
             x.innerHTML = `${list[element].username}`;
-            if(element= 0){
-                document.getElementsByClassName('player')[0].innerHTML += `<i class="fa-solid fa-crown fa-lg" style="color: #FFD43B; margin-left:3%;text-shadow: 0 0 5px black;"></i>`
-            }
             x.innerHTML += '<i class="fa-solid fa-location-dot right marker ${list[element].username} " style="color: ${list[element].color};"></i>'
             document.getElementById("players").appendChild(x);
+            if(element == 0){
+                document.getElementsByClassName('player')[0].innerHTML += `<i class="fa-solid fa-crown fa-lg" style="color: #FFD43B; margin-left:3%;text-shadow: 0 0 5px black;"></i>`
+            }
         };   
 }
 
 
 socket.on('users', (users) => {
+    console.log("3")
     //add user to html list and array on new user connection
     func(users, true)
+    console.log("4")
     player_list = users
 })
 
@@ -56,7 +62,7 @@ if(room_id == 1){
 
 
 socket.on('accepted',(rules) => {
-    
+    console.log("5")
     
     try{
         document.getElementById('room_id').innerHTML = `ID de Sala : ${room_id}`
@@ -73,6 +79,7 @@ socket.on('accepted',(rules) => {
     })
 })
 socket.on('rules?', response => {
+    console.log("6")
     document.getElementById('start_button').style.display = 'block'
     response({
         mode: localStorage.getItem('mode'), 
@@ -82,6 +89,7 @@ socket.on('rules?', response => {
 })
 
 socket.on('rules', data => {
+    console.log("7")
     localStorage.setItem('mode', data.mode)
     localStorage.setItem('rounds', data.rounds)
     localStorage.setItem('time', data.time)
@@ -128,6 +136,7 @@ socket.on('game start', (id) => {
 
 
 socket.on('admin', (data) => {
+    console.log("9")
     if(socket.id == data.socket){
         console.log('im admin')
         admin = true

@@ -101,6 +101,7 @@ io.on('connection', (socket) => {
 
     //if room exists, check valid username 
     if(room_id in rooms){
+      console.log("user joined valid room")
 
       while(((rooms[room_id])['chosen_usernames']).includes(data.username)){
         data.username = `${data.username}${rando(100)}`;
@@ -117,6 +118,8 @@ io.on('connection', (socket) => {
     
     //if room doesn't exist, create new one
     else{
+      console.log("user joined non existent room, creating new one")
+      
       //create room object within rooms dictionary
       rooms[room_id] = {
         'Players': [],
@@ -144,17 +147,16 @@ io.on('connection', (socket) => {
       room['is_host'][socket.id] = true; 
     }
 
+    
     //add player to room
     room['Players'].push({username:data.username,color:color,socketID:socket.id});
     (room['names']).push({socketID:socket.id,username:data.username});
     (room['chosen_usernames']).push(data.username);
     (room)['points'][socket.id] = {username: data.username,points:0};
-    
 
     io.emit('admin',({username:(room['Players'])[0]['username'], socket:(room['Players'])[0]['socketID']}));
     //update player list to all players in room
     io.to(room_id).emit('users', room['Players'])
-    console.log(room['Players'])
     callback({
       col: color,
       name: data.username
