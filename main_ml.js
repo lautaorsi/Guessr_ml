@@ -409,7 +409,7 @@ var video_list = [
     ['5FEvcCa6Jhs',25.765179185992753, -80.18563531843044,71,'US','Traveling W/ Andrew','https://www.youtube.com/@TravelingwithAndrew','Miami'],
     ['5FEvcCa6Jhs',25.763312160213868, -80.19002556781052,680,'US','Traveling W/ Andrew','https://www.youtube.com/@TravelingwithAndrew','Miami'],
     ['5FEvcCa6Jhs',25.767262486412545, -80.18841434631132,1405,'US','Traveling W/ Andrew','https://www.youtube.com/@TravelingwithAndrew','Miami'],
-
+    ['qpoSnBvqZDg',26.713511244082316, -80.05680413027588,357,'US','Traveling W/ Andrew','https://www.youtube.com/@TravelingwithAndrew','Florida'],
 ]
 
 

@@ -9,7 +9,6 @@ var start_id, player_list, color
 console.log(admin)
 
 function game(){
-    console.log("1")
     if(players.length < 2){
         alert('No hay suficientes jugadores!')
     }
@@ -22,15 +21,12 @@ function game(){
 var players = []
 
 function func(list,cond){
-    console.log("2")
     //if cond == True => initial board w/ marker colors
     //if cond == False => final board w/ scores
     players = list
     document.querySelectorAll('.player').forEach(e => e.remove());
-    console.log("2a")
     //when called, func will delete the html content and create a new one with the updated list
         for(let element = 0; element < list.length; element++ ){
-            console.log("2b")
             var x = document.createElement('div');
             x.classList.add('player', `lobby${list[element].username}`);
             x.innerHTML = `${list[element].username}`;
@@ -44,10 +40,7 @@ function func(list,cond){
 
 
 socket.on('users', (users) => {
-    console.log("3")
-    //add user to html list and array on new user connection
     func(users, true)
-    console.log("4")
     player_list = users
 })
 
@@ -79,7 +72,6 @@ socket.on('accepted',(rules) => {
     })
 })
 socket.on('rules?', response => {
-    console.log("6")
     document.getElementById('start_button').style.display = 'block'
     response({
         mode: localStorage.getItem('mode'), 
@@ -89,7 +81,6 @@ socket.on('rules?', response => {
 })
 
 socket.on('rules', data => {
-    console.log("7")
     localStorage.setItem('mode', data.mode)
     localStorage.setItem('rounds', data.rounds)
     localStorage.setItem('time', data.time)

@@ -257,7 +257,7 @@ io.on('connection', (socket) => {
 
     //if user guessed on diff coords than 0,0 then they guessed, so notification should show 
     if(data.coords1 != 0 && data.coords2 != 0){
-    io.except(socket.id).room_id.emit('player_guessed', {username:data.username,distance:((data.distance).toFixed(0))})
+      io.to(room_id).emit('player_guessed', {username:data.username,distance:((data.distance).toFixed(0))})
     }
     //if the guess amount equals the amount of players then all guessed event is triggered
     if (room.guesses == room['Players'].length){
